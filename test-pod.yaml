@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-test-pod
+  labels:
+    app: my-test-app
+spec:
+  # Цей рядок важливий для прив'язки до вашого правила в SPIRE
+  serviceAccountName: test-sa
+  containers:
+  - name: spire-client # <--- Один контейнер для отримання SVID
+    image: ghcr.io/spiffe/spire-agent:1.11.2 # Використовуємо той самий образ, що й у агента
+    # Ця команда запускається при старті, отримує SVID і виводить його
+    command: ["/opt/spire/bin/spire-agent", "api", "fetch", "x509", "-socketPath", "/tmp/spire/agent.sock"]
+    volumeMounts:
+    - name: spire-agent-socket
+      # Шлях всередині контейнера
+      mountPath: /tmp/spire
+      readOnly: true
+  volumes:
+  - name: spire-agent-socket
+    hostPath:
+      # ПРАВИЛЬНИЙ ШЛЯХ, який ви знайшли за допомогою docker exec
+      path: /run/spire/sockets # <--- ОСЬ ТУТ БУЛА ГОЛОВНА ПОМИЛКА
+      type: DirectoryOrCreate
+  # Додаємо, щоб Kubernetes не перезапускав под після виконання команди
+  restartPolicy: Never
