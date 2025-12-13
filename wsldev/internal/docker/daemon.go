@@ -1,4 +1,4 @@
-package wsl
+package docker
 
 import (
     "os/exec"

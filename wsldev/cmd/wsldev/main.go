@@ -6,7 +6,7 @@ import (
 
     "github.com/spf13/cobra"
     "wsldev/internal/kubernetes"
-    "wsldev/internal/wsl"
+    "wsldev/internal/docker"
 )
 
 func main() {
@@ -27,7 +27,7 @@ func main() {
         Use:   "start",
         Short: "Запустити dockerd",
         Run: func(cmd *cobra.Command, args []string) {
-            err := wsl.StartDockerd()
+            err := docker.StartDockerd()
             if err != nil {
                 fmt.Println("Error:", err)
                 os.Exit(1)
@@ -40,7 +40,7 @@ func main() {
         Use:   "status",
         Short: "Перевірити чи працює dockerd",
         Run: func(cmd *cobra.Command, args []string) {
-            running, err := wsl.IsDockerdRunning()
+            running, err := docker.IsDockerdRunning()
             if err != nil {
                 fmt.Println("Error:", err)
                 os.Exit(1)
@@ -142,14 +142,14 @@ func main() {
 			cm := kubernetes.NewClusterManager(name)
 
 			// 1️⃣ Docker
-			running, err := wsl.IsDockerdRunning()
+			running, err := docker.IsDockerdRunning()
 			if err != nil {
 				fmt.Println("Error checking Docker:", err)
 				os.Exit(1)
 			}
 			if !running {
 				fmt.Println("Docker не запущено, запускаємо...")
-				err := wsl.StartDockerd()
+				err := docker.StartDockerd()
 				if err != nil {
 					fmt.Println("Error starting Docker:", err)
 					os.Exit(1)
