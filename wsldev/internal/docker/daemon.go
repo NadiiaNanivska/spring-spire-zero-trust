@@ -1,14 +1,31 @@
 package docker
 
 import (
-    "os/exec"
-    "strings"
+	"errors"
+	"os/exec"
+	"strings"
+	"time"
 )
 
 // StartDockerd запускає dockerd у фоні
 func StartDockerd() error {
     cmd := exec.Command("sh", "-c", "dockerd > /dev/null 2>&1 &")
-    return cmd.Start()
+    cmd.Start()
+    return waitForDocker(30 * time.Second)
+}
+
+func waitForDocker(timeout time.Duration) error {
+	deadline := time.Now().Add(timeout)
+
+	for time.Now().Before(deadline) {
+		ok, _ := IsDockerdRunning()
+		if ok {
+			return nil
+		}
+		time.Sleep(1 * time.Second)
+	}
+
+	return errors.New("docker daemon did not become ready in time")
 }
 
 // IsDockerdRunning перевіряє чи працює Docker daemon
