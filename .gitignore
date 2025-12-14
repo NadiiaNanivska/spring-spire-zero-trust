@@ -3,4 +3,6 @@ target/
 HELP.md
 mvnw
 mvnw.cmd
-/.idea/
+.idea/
+wsldev/.idea/
+/*.iml
