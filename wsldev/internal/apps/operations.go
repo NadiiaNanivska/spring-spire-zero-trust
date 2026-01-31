@@ -2,9 +2,18 @@ package apps
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"strings"
 	"wsldev/internal/kubernetes"
 )
+
+func RunCmd(name string, args ...string) error {
+	cmd := exec.Command(name, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
 
 func Deploy(app App) error {
 	return kubernetes.Kubectl(
@@ -53,7 +62,6 @@ func Exec(app App, cmd []string) error {
 		"exec", "-it",
 		"-n", app.Namespace,
 		"deployment/" + app.Name,
-		"-c", app.Container,
 		"--",
 	}
 	args = append(args, cmd...)

@@ -1,10 +1,10 @@
-package main
+package app
 
 import (
 	"github.com/spf13/cobra"
 )
 
-func appCmd() *cobra.Command {
+func AppCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "app",
 		Short: "Manage Kubernetes applications",
@@ -12,10 +12,8 @@ func appCmd() *cobra.Command {
 
 	cmd.AddCommand(
 		appDeployCmd(),
-		//appDeleteCmd(),
-		//appRestartCmd(),
-		//appStatusCmd(),
-		//appLogsCmd(),
+		appPortForwardCmd(),
+		appLogsCmd(),
 	)
 
 	return cmd

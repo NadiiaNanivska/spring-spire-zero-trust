@@ -1,64 +1,66 @@
 package main
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
+	"wsldev/cmd/wsldev/app"
+	"wsldev/cmd/wsldev/spire"
 
-    "github.com/spf13/cobra"
-    "wsldev/internal/kubernetes"
-    "wsldev/internal/docker"
+	"github.com/spf13/cobra"
+	"wsldev/internal/docker"
+	"wsldev/internal/kubernetes"
 )
 
 func main() {
-    rootCmd := &cobra.Command{
-        Use:   "wsldev",
-        Short: "WSL DevOps Helper",
-    }
+	rootCmd := &cobra.Command{
+		Use:   "wsldev",
+		Short: "WSL DevOps Helper",
+	}
 
-    // ----------------------
-    // Docker daemon
-    // ----------------------
-    daemonCmd := &cobra.Command{
-        Use:   "daemon",
-        Short: "Управління Docker daemon у WSL",
-    }
+	// ----------------------
+	// Docker daemon
+	// ----------------------
+	daemonCmd := &cobra.Command{
+		Use:   "daemon",
+		Short: "Управління Docker daemon у WSL",
+	}
 
-    startCmd := &cobra.Command{
-        Use:   "start",
-        Short: "Запустити dockerd",
-        Run: func(cmd *cobra.Command, args []string) {
-            err := docker.StartDockerd()
-            if err != nil {
-                fmt.Println("Error:", err)
-                os.Exit(1)
-            }
-            fmt.Println("Docker daemon запущено")
-        },
-    }
+	startCmd := &cobra.Command{
+		Use:   "start",
+		Short: "Запустити dockerd",
+		Run: func(cmd *cobra.Command, args []string) {
+			err := docker.StartDockerd()
+			if err != nil {
+				fmt.Println("Error:", err)
+				os.Exit(1)
+			}
+			fmt.Println("Docker daemon запущено")
+		},
+	}
 
-    statusCmd := &cobra.Command{
-        Use:   "status",
-        Short: "Перевірити чи працює dockerd",
-        Run: func(cmd *cobra.Command, args []string) {
-            running, err := docker.IsDockerdRunning()
-            if err != nil {
-                fmt.Println("Error:", err)
-                os.Exit(1)
-            }
-            if running {
-                fmt.Println("Docker daemon працює ✅")
-            } else {
-                fmt.Println("Docker daemon не запущено ❌")
-            }
-        },
-    }
+	statusCmd := &cobra.Command{
+		Use:   "status",
+		Short: "Перевірити чи працює dockerd",
+		Run: func(cmd *cobra.Command, args []string) {
+			running, err := docker.IsDockerdRunning()
+			if err != nil {
+				fmt.Println("Error:", err)
+				os.Exit(1)
+			}
+			if running {
+				fmt.Println("Docker daemon працює ✅")
+			} else {
+				fmt.Println("Docker daemon не запущено ❌")
+			}
+		},
+	}
 
-    daemonCmd.AddCommand(startCmd, statusCmd)
-    rootCmd.AddCommand(daemonCmd)
+	daemonCmd.AddCommand(startCmd, statusCmd)
+	rootCmd.AddCommand(daemonCmd)
 
-    // ----------------------
-    // Kubernetes Kind
-    // ----------------------
+	// ----------------------
+	// Kubernetes Kind
+	// ----------------------
 	clusterCmd := &cobra.Command{
 		Use:   "cluster",
 		Short: "Управління Kind кластером",
@@ -132,12 +134,12 @@ func main() {
 	rootCmd.AddCommand(clusterCmd)
 
 	// ----------------------
-    // Environment setup: docker and kubectl cluster
-    // ----------------------
+	// Environment setup: docker and kubectl cluster
+	// ----------------------
 	upCmd := &cobra.Command{
-	Use:   "up",
-	Short: "Підняти Docker та Kubernetes кластер",
-	Run: func(cmd *cobra.Command, args []string) {
+		Use:   "up",
+		Short: "Підняти Docker та Kubernetes кластер",
+		Run: func(cmd *cobra.Command, args []string) {
 			name, _ := cmd.Flags().GetString("name")
 			cm := kubernetes.NewClusterManager(name)
 
@@ -188,11 +190,14 @@ func main() {
 	upCmd.Flags().String("name", "kind", "Назва кластера")
 	rootCmd.AddCommand(upCmd)
 
-    // ----------------------
-    // Execute
-    // ----------------------
-    if err := rootCmd.Execute(); err != nil {
-        fmt.Println(err)
-        os.Exit(1)
-    }
+	rootCmd.AddCommand(spire.SpireCmd())
+	rootCmd.AddCommand(app.AppCmd())
+
+	// ----------------------
+	// Execute
+	// ----------------------
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

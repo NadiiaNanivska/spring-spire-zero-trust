@@ -33,6 +33,7 @@ public class SpiffeServerConfig {
     @Bean(destroyMethod = "close")
     public X509Source x509Source() throws SocketEndpointAddressException, X509SourceException {
         DefaultX509Source.X509SourceOptions options = DefaultX509Source.X509SourceOptions.builder()
+                .spiffeSocketPath("unix:///run/spire/sockets/agent.sock")
                 .build();
 
         return DefaultX509Source.newSource(options);
