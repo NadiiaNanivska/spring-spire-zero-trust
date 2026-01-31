@@ -5,10 +5,12 @@ import com.example.paymentsservice.dto.PaymentResponse;
 import com.example.paymentsservice.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,15 +21,19 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/process")
-    public Mono<PaymentResponse> process(@RequestBody PaymentRequest request) {
-        // Тут немає перевірки паролів!
-        // Автентифікація відбулася на рівні TLS (SslContext),
-        // а Авторизація (перевірка SPIFFE ID) буде в Security Filter Chain (окремий клас)
-        return paymentService.processPayment(request);
-    }
+    public Mono<PaymentResponse> process(
+            @RequestBody PaymentRequest request,
+            ServerWebExchange exchange
+    ) {
+        return exchange.getPrincipal()
+                .flatMap(principal -> {
+                    log.info("Secure Request authenticated via mTLS. Caller Identity: {}", principal.getName());
 
-    @GetMapping("/health")
-    public Mono<String> health() {
-        return Mono.just("Payments Service is Running");
+                    return paymentService.processPayment(request);
+                })
+                .switchIfEmpty(Mono.defer(() -> {
+                    log.warn("Request without Identity!");
+                    return paymentService.processPayment(request);
+                }));
     }
 }

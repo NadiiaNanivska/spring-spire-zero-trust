@@ -10,11 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class PaymentRepository {
 
-    // Наша "База даних" в оперативній пам'яті
-    // ConcurrentHashMap гарантує безпеку при доступі з багатьох потоків Netty
     private final Map<String, Payment> storage = new ConcurrentHashMap<>();
 
-    // Зберігання даних
     public Mono<Payment> save(Payment payment) {
         return Mono.fromSupplier(() -> {
             storage.put(payment.transactionId(), payment);
@@ -22,12 +19,6 @@ public class PaymentRepository {
         });
     }
 
-    // Пошук (на випадок, якщо захочеш зробити endpoint GET /status/{id})
-    public Mono<Payment> findById(String transactionId) {
-        return Mono.justOrEmpty(storage.get(transactionId));
-    }
-
-    // Метод для метрик - подивитися скільки всього записів
     public int count() {
         return storage.size();
     }

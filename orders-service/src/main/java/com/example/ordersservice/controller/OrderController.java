@@ -3,6 +3,8 @@ package com.example.ordersservice.controller;
 import com.example.ordersservice.dto.OrderRequest;
 import com.example.ordersservice.dto.PaymentRequest;
 import com.example.ordersservice.dto.PaymentResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,23 +14,36 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
 
     private final WebClient webClient;
 
-    public OrderController(WebClient webClient) {
-        this.webClient = webClient;
+    @Value("${app.services.payments-url}")
+    private String paymentsServiceUrl;
+
+    public OrderController(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.build();
     }
 
     @PostMapping("/create")
     public Mono<PaymentResponse> createOrder(@RequestBody OrderRequest orderRequest) {
-        PaymentRequest paymentRequest = new PaymentRequest(UUID.randomUUID().toString(), 100.0); // Dummy amount
+        log.info("Initiating order for item: {}", orderRequest.itemId());
+
+        PaymentRequest paymentRequest = new PaymentRequest(
+                UUID.randomUUID().toString(),
+                orderRequest.quantity(),
+                "USD"
+        );
+
         return webClient.post()
-                .uri("http://localhost:8081/api/payments/process")
+                .uri(paymentsServiceUrl + "/api/payments/process")
                 .bodyValue(paymentRequest)
                 .retrieve()
-                .bodyToMono(PaymentResponse.class);
+                .bodyToMono(PaymentResponse.class)
+                .doOnSuccess(res -> log.info("Payment successful: {}", res.transactionId()))
+                .doOnError(err -> log.error("Payment failed: {}", err.getMessage()));
     }
 }

@@ -24,7 +24,6 @@ public class PaymentService {
     public Mono<PaymentResponse> processPayment(PaymentRequest request) {
         log.info("Received payment request for Order ID: {}", request.orderId());
 
-        // 1. Створюємо сутність
         String txId = UUID.randomUUID().toString();
         Payment entity = new Payment(
                 txId,
@@ -34,13 +33,9 @@ public class PaymentService {
                 Instant.now()
         );
 
-        // 2. Ланцюжок виконання (Reactive Chain)
         return Mono.just(entity)
-                // Імітуємо затримку обробки (наприклад, 20 мс), не блокуючи потік
                 .delayElement(Duration.ofMillis(20))
-                // Зберігаємо в "БД"
                 .flatMap(repository::save)
-                // Логуємо та конвертуємо у відповідь
                 .map(savedPayment -> {
                     log.info("Payment processed successfully. TxID: {}", savedPayment.transactionId());
                     return new PaymentResponse(
