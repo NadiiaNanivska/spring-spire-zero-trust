@@ -11,6 +11,7 @@ import io.spiffe.spiffeid.SpiffeId;
 import io.spiffe.workloadapi.DefaultX509Source;
 import io.spiffe.workloadapi.X509Source;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -18,13 +19,15 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.net.ssl.SSLContext;
 import java.security.Security;
-import java.util.Collections;
 import java.util.Set;
 import java.util.function.Supplier;
 
 @Configuration
 @Slf4j
 public class SpiffeServerConfig {
+
+    @Value("${app.security.allowed-client-spiffe-id}")
+    private String allowedClientSpiffeId;
 
     static {
         Security.addProvider(new SpiffeProvider());
@@ -41,7 +44,7 @@ public class SpiffeServerConfig {
 
     @Bean
     public SSLContext spiffeSslContext(X509Source x509Source) {
-        Supplier<Set<SpiffeId>> acceptedSpiffeIds = Collections::emptySet;
+        Supplier<Set<SpiffeId>> acceptedSpiffeIds = () -> Set.of(SpiffeId.parse(allowedClientSpiffeId));
 
         SpiffeSslContextFactory.SslContextOptions options = SpiffeSslContextFactory.SslContextOptions.builder()
                 .x509Source(x509Source)
@@ -58,13 +61,15 @@ public class SpiffeServerConfig {
     @Bean
     public WebServerFactoryCustomizer<NettyReactiveWebServerFactory>
     nettyCustomizer(SSLContext sslContext) {
+        log.info("Configuring SPIRE mTLS.");
+        log.info("Only accepting connections from: {}", allowedClientSpiffeId);
 
         return factory -> factory.addServerCustomizers(httpServer -> {
 
             SslContext nettySslContext =
                     new JdkSslContext(
                             sslContext,
-                            true,
+                            false,
                             ClientAuth.REQUIRE
                     );
 

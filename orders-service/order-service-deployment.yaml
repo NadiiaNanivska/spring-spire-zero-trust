@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: payments-service
+  name: orders-service
   namespace: spire
   labels:
-    app: payments-service
+    app: orders-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: payments-service
+      app: orders-service
   template:
     metadata:
       labels:
-        app: payments-service
+        app: orders-service
     spec:
-      serviceAccountName: payments-sa
+      serviceAccountName: orders-sa
       containers:
-        - name: payments-service
-          image: payments-service:1.0
+        - name: orders-service
+          image: orders-service:1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: SPIFFE_ENDPOINT_SOCKET

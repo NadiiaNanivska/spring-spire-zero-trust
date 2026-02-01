@@ -3,6 +3,7 @@ package com.example.ordersservice.controller;
 import com.example.ordersservice.dto.OrderRequest;
 import com.example.ordersservice.dto.PaymentRequest;
 import com.example.ordersservice.dto.PaymentResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,16 +18,13 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/api/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final WebClient webClient;
 
     @Value("${app.services.payments-url}")
     private String paymentsServiceUrl;
-
-    public OrderController(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.build();
-    }
 
     @PostMapping("/create")
     public Mono<PaymentResponse> createOrder(@RequestBody OrderRequest orderRequest) {
