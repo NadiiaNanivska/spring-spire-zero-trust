@@ -42,7 +42,6 @@ Interact with the Docker daemon using the `daemon` command:
 ```bash
 wsldev daemon start       # Запустити Docker daemon у WSL
 wsldev daemon status      # Перевірити, чи Docker запущено```
-wsldev daemon stop        # Зупинити Docker daemon у WSL
 ```
 
 #### 3. Kubernetes Cluster Management
@@ -53,6 +52,23 @@ wsldev cluster delete --name kind   # Видалити кластер
 wsldev cluster reset --name kind    # Повний reset (delete + create)
 wsldev cluster info --name kind     # Показати інформацію про кластер 
 wsldev up --name kind   # Підняти Docker та Kubernetes кластер одним викликом
+```
+
+#### 4. SPIRE Infrastructure Management
+Manage SPIRE Infrastructure using the `spire` command:
+```bash
+wsldev spire deploy             # Розгорнути SPIRE
+wsldev spire entry create       # Створити новий entry у SPIRE
+wsldev spire entry show         # Показати список entry
+wsldev spire svid rotate        # Форсована ротація SVID (планується)
+```
+
+#### 5. Backend Apps Management
+Manage Spring apps using the `app` command:
+```bash
+wsldev app deploy [app names]   # Розгорнути сервіс
+wsldev app logs                 # Показати логи сервісу
+wsldev app port-forward         # Проброс портів на локальну машину
 ```
 
 ## Configuration
