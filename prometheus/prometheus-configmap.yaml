@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: spire
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 5s
+      evaluation_interval: 5s
+
+    scrape_configs:
+      - job_name: 'spring-actuator'
+        metrics_path: '/actuator/prometheus'
+        kubernetes_sd_configs:
+        - role: pod
+          namespaces:
+            names: ['spire']
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_metrics]
+          action: keep
+          regex: "true"
+
+        - source_labels: [__meta_kubernetes_pod_container_port_number]
+          action: keep
+          regex: "9090"
+
+        - source_labels: [__meta_kubernetes_pod_label_app]
+          target_label: service

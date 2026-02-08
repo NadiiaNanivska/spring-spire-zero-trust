@@ -42,6 +42,9 @@ public class SecurityConfig {
                 )
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/payments/health").permitAll()
+                        .pathMatchers("/actuator/prometheus").permitAll()
+                        .pathMatchers("/actuator/health").permitAll()
+                        .pathMatchers("/actuator/metrics").permitAll()
                         .anyExchange().authenticated()
                 )
                 .build();

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"wsldev/cmd/wsldev/app"
+	"wsldev/cmd/wsldev/observability"
 	"wsldev/cmd/wsldev/spire"
 
 	"github.com/spf13/cobra"
@@ -192,6 +193,7 @@ func main() {
 
 	rootCmd.AddCommand(spire.SpireCmd())
 	rootCmd.AddCommand(app.AppCmd())
+	rootCmd.AddCommand(observability.ObservabilityCmd())
 
 	// ----------------------
 	// Execute
