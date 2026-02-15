@@ -60,3 +60,10 @@ data:
       live_path = "/live"
       ready_path = "/ready"
     }
+    
+    telemetry {
+    Prometheus {
+        host = "0.0.0.0"
+        port = 8088
+      }
+    }

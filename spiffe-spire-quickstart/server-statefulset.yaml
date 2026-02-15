@@ -28,6 +28,9 @@ spec:
             - /run/spire/config/server.conf
           ports:
             - containerPort: 8081
+            - containerPort: 8088
+              name: metrics
+              protocol: TCP
           volumeMounts:
             - name: spire-config
               mountPath: /run/spire/config

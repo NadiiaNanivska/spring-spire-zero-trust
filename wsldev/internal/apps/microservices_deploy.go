@@ -31,19 +31,19 @@ func DeployPaymentsPoC() error {
 		"-n", "spire",
 	)
 
-	if err := RunCmd("docker", "inspect", "registry"); err != nil {
-		fmt.Println("Local registry not found, starting registry:2")
-		if err := RunCmd(
-			"docker",
-			"run",
-			"-d",
-			"-p", "5000:5000",
-			"--name", "registry",
-			"registry:2",
-		); err != nil {
-			return err
-		}
-	}
+	//if err := RunCmd("docker", "inspect", "registry"); err != nil {
+	//	fmt.Println("Local registry not found, starting registry:2")
+	//	if err := RunCmd(
+	//		"docker",
+	//		"run",
+	//		"-d",
+	//		"-p", "5000:5000",
+	//		"--name", "registry",
+	//		"registry:2",
+	//	); err != nil {
+	//		return err
+	//	}
+	//}
 
 	serviceDir := "/mnt/c/Users/User/Desktop/LNU/Poc/payments-service"
 	if err := os.Chdir(serviceDir); err != nil {
@@ -72,13 +72,13 @@ func DeployPaymentsPoC() error {
 		return err
 	}
 
-	if err := RunCmd(
-		"docker",
-		"push",
-		"localhost:5000/payments-service:1.0",
-	); err != nil {
-		return err
-	}
+	//if err := RunCmd(
+	//	"docker",
+	//	"push",
+	//	"localhost:5000/payments-service:1.0",
+	//); err != nil {
+	//	return err
+	//}
 
 	if err := RunCmd(
 		"kind",
@@ -122,19 +122,19 @@ func DeployOrdersPoC() error {
 		"-n", "spire",
 	)
 
-	if err := RunCmd("docker", "inspect", "registry"); err != nil {
-		fmt.Println("Local registry not found, starting registry:2")
-		if err := RunCmd(
-			"docker",
-			"run",
-			"-d",
-			"-p", "5000:5000",
-			"--name", "registry",
-			"registry:2",
-		); err != nil {
-			return err
-		}
-	}
+	//if err := RunCmd("docker", "inspect", "registry"); err != nil {
+	//	fmt.Println("Local registry not found, starting registry:2")
+	//	if err := RunCmd(
+	//		"docker",
+	//		"run",
+	//		"-d",
+	//		"-p", "5000:5000",
+	//		"--name", "registry",
+	//		"registry:2",
+	//	); err != nil {
+	//		return err
+	//	}
+	//}
 
 	serviceDir := "/mnt/c/Users/User/Desktop/LNU/Poc/orders-service"
 	if err := os.Chdir(serviceDir); err != nil {
@@ -163,13 +163,13 @@ func DeployOrdersPoC() error {
 		return err
 	}
 
-	if err := RunCmd(
-		"docker",
-		"push",
-		"localhost:5000/orders-service:1.0",
-	); err != nil {
-		return err
-	}
+	//if err := RunCmd(
+	//	"docker",
+	//	"push",
+	//	"localhost:5000/orders-service:1.0",
+	//); err != nil {
+	//	return err
+	//}
 
 	if err := RunCmd(
 		"kind",
