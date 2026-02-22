@@ -1,4 +1,4 @@
-package com.example.ordersservice.config;
+package com.example.ordersservice.config.spire;
 
 import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.JdkSslContext;
@@ -13,6 +13,7 @@ import io.spiffe.workloadapi.X509Source;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
@@ -22,6 +23,7 @@ import java.security.Security;
 import java.util.Set;
 import java.util.function.Supplier;
 
+@Profile("spire")
 @Configuration
 public class WebClientConfig {
 

@@ -1,4 +1,4 @@
-package com.example.paymentsservice.config;
+package com.example.paymentsservice.config.spire;
 
 import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.JdkSslContext;
@@ -16,12 +16,14 @@ import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import javax.net.ssl.SSLContext;
 import java.security.Security;
 import java.util.Set;
 import java.util.function.Supplier;
 
+@Profile("spire")
 @Configuration
 @Slf4j
 public class SpiffeServerConfig {

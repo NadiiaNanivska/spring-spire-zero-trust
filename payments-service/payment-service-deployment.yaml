@@ -28,12 +28,16 @@ spec:
           env:
             - name: SPIFFE_ENDPOINT_SOCKET
               value: /run/spire/sockets/agent.sock
+            - name: SPRING_PROFILES_ACTIVE
+              value: "spire" # spire/jwt
+            - name: SERVER_PORT
+              value: "8081"
           volumeMounts:
             - name: spire-agent-socket
               mountPath: /run/spire/sockets
               readOnly: true
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
             - containerPort: 9090
               name: metrics
       volumes:

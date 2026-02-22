@@ -1,8 +1,9 @@
-package com.example.paymentsservice.config;
+package com.example.paymentsservice.config.spire;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +16,7 @@ import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.List;
 
+@Profile("spire")
 @Slf4j
 @Configuration
 @EnableWebFluxSecurity
