@@ -1,0 +1,1 @@
+{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"__name__":"spire_server_rpc_svid_v1_svid_batch_new_x509svid","application":"spire-server","host":"spire-server-0","instance":"spire-server-0","job":"spire-infrastructure","status":"OK"},"values":[[1773314750,"2"],[1773314765,"2"]]}]}}
