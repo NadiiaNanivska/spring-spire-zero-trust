@@ -45,11 +45,6 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.spiffe</groupId>
-            <artifactId>java-spiffe-provider</artifactId>
-            <version>0.8.4</version>
-        </dependency>
-        <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
         </dependency>

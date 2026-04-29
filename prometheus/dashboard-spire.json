@@ -18,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 0,
   "links": [],
   "panels": [
     {
@@ -156,7 +155,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -260,7 +259,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -360,7 +359,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -464,7 +463,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -568,7 +567,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -684,30 +683,6 @@
                 }
               }
             ]
-          },
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "Heap Used - 10.244.0.13:9090 - "
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": true,
-                  "viz": true
-                }
-              }
-            ]
           }
         ]
       },
@@ -735,7 +710,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -743,21 +718,10 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance, application) (jvm_memory_used_bytes{area=\"heap\"})",
-          "legendFormat": "Heap Used - {{instance}} - {{application}}",
+          "expr": "sum by(instance, service) (jvm_memory_used_bytes{area=\"heap\"})",
+          "legendFormat": "Heap Used - {{instance}} - {{service}}",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "sum by(instance, application) (jvm_memory_max_bytes{area=\"heap\"})",
-          "legendFormat": "Max Heap - {{instance}} - {{application}}",
-          "range": true,
-          "refId": "B"
         }
       ],
       "title": "Memory Heap",
@@ -846,7 +810,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -854,8 +818,8 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance, application) (jvm_memory_used_bytes{area=\"nonheap\"})",
-          "legendFormat": "Non-Heap - {{instance}} - {{application}}",
+          "expr": "sum by(instance, service) (jvm_memory_used_bytes{area=\"nonheap\"})",
+          "legendFormat": "Non-Heap - {{instance}} - {{service}}",
           "range": true,
           "refId": "A"
         }
@@ -956,7 +920,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -965,7 +929,7 @@
           },
           "editorMode": "code",
           "expr": "rate(process_cpu_usage[$__rate_interval]) * 100",
-          "legendFormat": "Process CPU - {{instance}} - {{application}}",
+          "legendFormat": "Process CPU - {{instance}} - {{service}}",
           "range": true,
           "refId": "A"
         }
@@ -1066,7 +1030,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1075,7 +1039,7 @@
           },
           "editorMode": "code",
           "expr": "rate(system_cpu_usage[$__rate_interval]) * 100",
-          "legendFormat": "System CPU - {{instance}} - {{application}}",
+          "legendFormat": "System CPU - {{instance}} - {{service}}",
           "range": true,
           "refId": "A"
         }
@@ -1178,7 +1142,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1308,7 +1272,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1317,7 +1281,7 @@
           },
           "editorMode": "code",
           "expr": "sum by (common_name) (\r\n  label_replace(\r\n    rate(container_network_transmit_bytes_total{pod=~\"(payments-service|orders-service).*\"}[$__rate_interval]),\r\n    \"common_name\", \"$1\", \"pod\", \"(payments-service|orders-service).*\"\r\n  )\r\n)\r\n/ on(common_name)\r\nsum by (common_name) (\r\n  label_replace(\r\n    rate(http_server_requests_seconds_count{uri!~\"/actuator.*\"}[$__rate_interval]),\r\n    \"common_name\", \"$1\", \"service\", \"(.*)\"\r\n  )\r\n)",
-          "legendFormat": "Bytes/Request - {{common_name}} - {{application}}",
+          "legendFormat": "Bytes/Request - {{common_name}}",
           "range": true,
           "refId": "A"
         }
@@ -1421,7 +1385,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1524,7 +1488,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1627,7 +1591,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1701,7 +1665,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1814,7 +1778,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1921,7 +1885,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -1947,10 +1911,44 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
-          "max": 100,
+          "max": 1,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1975,27 +1973,25 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
+        "w": 8,
         "x": 0,
         "y": 77
       },
       "id": 5,
       "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -2010,7 +2006,7 @@
         }
       ],
       "title": "SPIRE Agent CPU",
-      "type": "gauge"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -2021,10 +2017,44 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
-          "max": 100,
+          "max": 1,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2048,28 +2078,26 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 6,
+        "h": 8,
+        "w": 8,
+        "x": 8,
         "y": 77
       },
       "id": 107,
       "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -2078,13 +2106,13 @@
           },
           "editorMode": "code",
           "expr": "sum by(instance) (rate(container_cpu_usage_seconds_total{container=\"spire-server\"}[$__rate_interval])) * 100",
-          "legendFormat": "SPIRE Agent - {{instance}}",
+          "legendFormat": "SPIRE Server - {{instance}}",
           "range": true,
           "refId": "A"
         }
       ],
       "title": "SPIRE Server CPU",
-      "type": "gauge"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -2177,8 +2205,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
+        "w": 8,
+        "x": 16,
         "y": 77
       },
       "id": 108,
@@ -2199,7 +2227,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -2246,9 +2274,9 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 6,
-        "x": 6,
-        "y": 82
+        "w": 8,
+        "x": 8,
+        "y": 85
       },
       "id": 106,
       "options": {
@@ -2268,7 +2296,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -2291,7 +2319,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 88
       },
       "id": 105,
       "panels": [],
@@ -2361,7 +2389,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 86
+        "y": 89
       },
       "id": 14,
       "options": {
@@ -2380,7 +2408,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.3",
+      "pluginVersion": "12.4.1",
       "targets": [
         {
           "datasource": {
@@ -2428,8 +2456,8 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2026-03-16T11:15:00.000Z",
+    "to": "2026-03-16T11:25:00.000Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -2441,8 +2469,9 @@
       "15m"
     ]
   },
-  "timezone": "",
-  "title": "JWT SPIRE mTLS - Порівняльний аналіз за інстансами",
+  "timezone": "browser",
+  "title": "SPIRE mTLS - Scale Up",
   "uid": "spire-by-instance",
-  "version": 4
+  "version": 2,
+  "weekStart": ""
 }

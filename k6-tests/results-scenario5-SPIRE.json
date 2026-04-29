@@ -1,0 +1,8 @@
+{
+  "scenario": "Identity Issuance Stress",
+  "auth_type": "SPIRE",
+  "total_requests": 37426,
+  "avg_latency": 58.92429566312199,
+  "error_rate": 1,
+  "duration_sec": 381.994123487
+}
