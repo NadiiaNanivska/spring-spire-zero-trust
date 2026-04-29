@@ -1,0 +1,159 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: scenario3-keepalive-efficiency.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 10 max VUs, 10m30s max duration (incl. graceful stop):
+              * keepalive_test: 1000 iterations for each of 10 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+running (00m01.5s), 10/10 VUs, 0 complete and 0 interrupted iterations
+keepalive_test   [   0% ] 10 VUs  00m01.0s/10m0s  00000/10000 iters, 1000 per VU
+
+running (00m00.5s), 10/10 VUs, 200 complete and 0 interrupted iterations
+keepalive_test   [   2% ] 10 VUs  00m02.0s/10m0s  00200/10000 iters, 1000 per VU
+
+running (00m00.5s), 10/10 VUs, 430 complete and 0 interrupted iterations
+keepalive_test   [   4% ] 10 VUs  00m03.0s/10m0s  00430/10000 iters, 1000 per VU
+
+running (00m01.5s), 10/10 VUs, 695 complete and 0 interrupted iterations
+keepalive_test   [   7% ] 10 VUs  00m04.0s/10m0s  00695/10000 iters, 1000 per VU
+
+running (00m02.5s), 10/10 VUs, 995 complete and 0 interrupted iterations
+keepalive_test   [  10% ] 10 VUs  00m05.0s/10m0s  00995/10000 iters, 1000 per VU
+
+running (00m03.5s), 10/10 VUs, 1307 complete and 0 interrupted iterations
+keepalive_test   [  13% ] 10 VUs  00m06.0s/10m0s  01308/10000 iters, 1000 per VU
+
+running (00m04.5s), 10/10 VUs, 1608 complete and 0 interrupted iterations
+keepalive_test   [  16% ] 10 VUs  00m07.0s/10m0s  01608/10000 iters, 1000 per VU
+
+running (00m05.5s), 10/10 VUs, 1908 complete and 0 interrupted iterations
+keepalive_test   [  19% ] 10 VUs  00m08.0s/10m0s  01908/10000 iters, 1000 per VU
+
+running (00m06.5s), 10/10 VUs, 2218 complete and 0 interrupted iterations
+keepalive_test   [  22% ] 10 VUs  00m09.0s/10m0s  02218/10000 iters, 1000 per VU
+
+running (00m07.5s), 10/10 VUs, 2528 complete and 0 interrupted iterations
+keepalive_test   [  25% ] 10 VUs  00m10.0s/10m0s  02528/10000 iters, 1000 per VU
+
+running (00m08.5s), 10/10 VUs, 2838 complete and 0 interrupted iterations
+keepalive_test   [  28% ] 10 VUs  00m11.0s/10m0s  02838/10000 iters, 1000 per VU
+
+running (00m09.5s), 10/10 VUs, 3148 complete and 0 interrupted iterations
+keepalive_test   [  31% ] 10 VUs  00m12.0s/10m0s  03148/10000 iters, 1000 per VU
+
+running (00m10.5s), 10/10 VUs, 3448 complete and 0 interrupted iterations
+keepalive_test   [  34% ] 10 VUs  00m13.0s/10m0s  03448/10000 iters, 1000 per VU
+
+running (00m11.5s), 10/10 VUs, 3748 complete and 0 interrupted iterations
+keepalive_test   [  37% ] 10 VUs  00m14.0s/10m0s  03748/10000 iters, 1000 per VU
+
+running (00m12.5s), 10/10 VUs, 4068 complete and 0 interrupted iterations
+keepalive_test   [  41% ] 10 VUs  00m15.0s/10m0s  04068/10000 iters, 1000 per VU
+
+running (00m13.5s), 10/10 VUs, 4408 complete and 0 interrupted iterations
+keepalive_test   [  44% ] 10 VUs  00m16.0s/10m0s  04408/10000 iters, 1000 per VU
+
+running (00m14.5s), 10/10 VUs, 4738 complete and 0 interrupted iterations
+keepalive_test   [  47% ] 10 VUs  00m17.0s/10m0s  04738/10000 iters, 1000 per VU
+
+running (00m15.5s), 10/10 VUs, 5068 complete and 0 interrupted iterations
+keepalive_test   [  51% ] 10 VUs  00m18.0s/10m0s  05068/10000 iters, 1000 per VU
+
+running (00m16.5s), 10/10 VUs, 5408 complete and 0 interrupted iterations
+keepalive_test   [  54% ] 10 VUs  00m19.0s/10m0s  05408/10000 iters, 1000 per VU
+
+running (00m17.5s), 10/10 VUs, 5738 complete and 0 interrupted iterations
+keepalive_test   [  57% ] 10 VUs  00m20.0s/10m0s  05738/10000 iters, 1000 per VU
+
+running (00m18.5s), 10/10 VUs, 6068 complete and 0 interrupted iterations
+keepalive_test   [  61% ] 10 VUs  00m21.0s/10m0s  06068/10000 iters, 1000 per VU
+
+running (00m19.5s), 10/10 VUs, 6408 complete and 0 interrupted iterations
+keepalive_test   [  64% ] 10 VUs  00m22.0s/10m0s  06408/10000 iters, 1000 per VU
+
+running (00m20.5s), 10/10 VUs, 6738 complete and 0 interrupted iterations
+keepalive_test   [  67% ] 10 VUs  00m23.0s/10m0s  06738/10000 iters, 1000 per VU
+
+running (00m21.5s), 10/10 VUs, 7068 complete and 0 interrupted iterations
+keepalive_test   [  71% ] 10 VUs  00m24.0s/10m0s  07068/10000 iters, 1000 per VU
+
+running (00m22.5s), 10/10 VUs, 7408 complete and 0 interrupted iterations
+keepalive_test   [  74% ] 10 VUs  00m25.0s/10m0s  07408/10000 iters, 1000 per VU
+
+running (00m23.5s), 10/10 VUs, 7758 complete and 0 interrupted iterations
+keepalive_test   [  78% ] 10 VUs  00m26.0s/10m0s  07758/10000 iters, 1000 per VU
+
+running (00m24.5s), 10/10 VUs, 8108 complete and 0 interrupted iterations
+keepalive_test   [  81% ] 10 VUs  00m27.0s/10m0s  08108/10000 iters, 1000 per VU
+
+running (00m25.5s), 10/10 VUs, 8457 complete and 0 interrupted iterations
+keepalive_test   [  85% ] 10 VUs  00m28.0s/10m0s  08457/10000 iters, 1000 per VU
+
+running (00m26.5s), 10/10 VUs, 8798 complete and 0 interrupted iterations
+keepalive_test   [  88% ] 10 VUs  00m29.0s/10m0s  08798/10000 iters, 1000 per VU
+
+running (00m27.5s), 10/10 VUs, 9148 complete and 0 interrupted iterations
+keepalive_test   [  91% ] 10 VUs  00m30.0s/10m0s  09148/10000 iters, 1000 per VU
+
+running (00m28.5s), 10/10 VUs, 9498 complete and 0 interrupted iterations
+keepalive_test   [  95% ] 10 VUs  00m31.0s/10m0s  09498/10000 iters, 1000 per VU
+
+running (00m29.5s), 10/10 VUs, 9856 complete and 0 interrupted iterations
+keepalive_test   [  99% ] 10 VUs  00m32.0s/10m0s  09857/10000 iters, 1000 per VU
+
+
+  █ THRESHOLDS 
+
+    errors
+    ✗ 'rate<0.001' rate=100.00%
+
+    http_req_duration
+    ✓ 'p(95)<200' p(95)=36.85ms
+    ✓ 'p(99)<300' p(99)=47.54ms
+
+
+  █ TOTAL RESULTS
+
+    checks_total.......: 30000  1002.208611/s
+    checks_succeeded...: 99.66% 29900 out of 30000
+    checks_failed......: 0.33%  100 out of 30000
+
+    ✓ status is 200
+    ✗ connection reused
+      ↳  99% — ✓ 9900 / ✗ 100
+    ✓ low latency
+
+    CUSTOM
+    errors.........................: 100.00% 100 out of 100
+    requests_per_connection........: 10000   334.069537/s
+
+    HTTP
+    http_req_duration..............: avg=29.49ms min=8.29ms  med=28.61ms max=73.55ms p(90)=33.26ms p(95)=36.85ms
+      { expected_response:true }...: avg=29.49ms min=8.29ms  med=28.61ms max=73.55ms p(90)=33.26ms p(95)=36.85ms
+    http_req_failed................: 0.00%   0 out of 10000
+    http_reqs......................: 10000   334.069537/s
+
+    EXECUTION
+    iteration_duration.............: avg=32.37ms min=25.11ms med=30.45ms max=1.08s   p(90)=35.15ms p(95)=38.86ms
+    iterations.....................: 10000   334.069537/s
+    vus............................: 10      min=10         max=10
+    vus_max........................: 10      min=10         max=10
+
+    NETWORK
+    data_received..................: 2.5 MB  83 kB/s
+    data_sent......................: 2.0 MB  68 kB/s
+
+
+
+
+running (00m29.9s), 00/10 VUs, 10000 complete and 0 interrupted iterations
+keepalive_test ✓ [ 100% ] 10 VUs  00m32.4s/10m0s  10000/10000 iters, 1000 per VU
