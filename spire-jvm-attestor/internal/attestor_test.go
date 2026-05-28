@@ -51,14 +51,11 @@ type procEnv struct {
 //
 // procFSRoot is the parent of the per-PID directory, i.e. what you pass to
 // newWithProcFS. The per-PID dir itself is procFSRoot/<testPID>.
+//
+// Each call creates a fresh directory; newWithProcFS creates fresh caches,
+// so there is no global state to reset between tests.
 func buildFakeProcFS(t *testing.T, env procEnv) (procFSRoot string, jarHash string, manifestPath string) {
 	t.Helper()
-
-	// Reset global caches to avoid cross-test pollution
-	resetManifestCache()
-	globalHashCache.mu.Lock()
-	globalHashCache.store = make(map[cacheKey]string)
-	globalHashCache.mu.Unlock()
 
 	fsRoot := t.TempDir()
 	pidDir := filepath.Join(fsRoot, fmt.Sprintf("%d", testPID))
@@ -74,10 +71,10 @@ func buildFakeProcFS(t *testing.T, env procEnv) (procFSRoot string, jarHash stri
 	// ── /proc/<PID>/cmdline ──────────────────────────────────────────────────
 	args := env.cmdlineArgs
 	if len(args) == 0 {
-		// Default clean cmdline
-		args = []string{"java", "-Xmx512m", "-jar", "/app/service.jar"}
 		if env.useSpringBootCmdline && env.jarContainerPath != "" {
 			args = []string{"java", "-Xmx512m", "-jar", env.jarContainerPath}
+		} else {
+			args = []string{"java", "-Xmx512m", "-jar", "/app/service.jar"}
 		}
 	}
 	writeFile(t, filepath.Join(pidDir, "cmdline"), joinNUL(args))
@@ -107,14 +104,14 @@ func buildFakeProcFS(t *testing.T, env procEnv) (procFSRoot string, jarHash stri
 			t.Fatalf("write jar: %v", err)
 		}
 
-		// Get actual inode for the TOCTOU check
+		// Get actual inode for the TOCTOU check.
 		info, err := os.Stat(jarFSPath)
 		if err != nil {
 			t.Fatalf("stat jar: %v", err)
 		}
 		inode := info.Sys().(*syscall.Stat_t).Ino
 
-		// Write maps — include the real inode so TOCTOU check passes
+		// Write maps — include the real inode so the TOCTOU check passes.
 		var mapsContent string
 		if !env.useSpringBootCmdline {
 			mapsContent = fmt.Sprintf(
@@ -122,12 +119,12 @@ func buildFakeProcFS(t *testing.T, env procEnv) (procFSRoot string, jarHash stri
 				inode, env.jarContainerPath,
 			)
 		}
-		// Empty maps → Spring Boot fallback reads from cmdline
+		// Empty maps → Spring Boot fallback reads from cmdline.
 		writeFile(t, filepath.Join(pidDir, "maps"), mapsContent)
 
 		manifestJars[env.jarContainerPath] = jarHash
 	} else {
-		// No jar at all — write empty maps and no -jar cmdline
+		// No jar at all — write empty maps and a -cp cmdline (no -jar).
 		writeFile(t, filepath.Join(pidDir, "maps"), "")
 		writeFile(t, filepath.Join(pidDir, "cmdline"), joinNUL([]string{"java", "-cp", "/app/classes", "com.example.Main"}))
 	}
@@ -148,7 +145,7 @@ func buildFakeProcFS(t *testing.T, env procEnv) (procFSRoot string, jarHash stri
 	if len(manifestJars) > 0 {
 		writeManifest(t, manifestPath, manifestJars)
 	} else {
-		// Write a manifest that lists a different jar (won't match)
+		// Write a manifest that lists a different jar (won't match).
 		writeManifest(t, manifestPath, map[string]string{"/app/other.jar": "aabb"})
 	}
 
@@ -270,7 +267,7 @@ func TestAttest_DebuggerAttached(t *testing.T) {
 		t.Errorf("expected tracer_pid=9999, got %v", resp.SelectorValues)
 	}
 
-	// Check 2 and 3 must NOT have run — no agent_flags or jar selectors
+	// Checks 2 and 3 must NOT have run — no agent_flags or jar selectors.
 	for _, absent := range []string{"agent_flags_clean=true", "maps_verified=true"} {
 		if responseContains(resp, absent) {
 			t.Errorf("selector %q must not appear in fail-fast debug response", absent)
@@ -298,7 +295,7 @@ func TestAttest_JavaAgentFlag(t *testing.T) {
 	if !responseContains(resp, "agent_flags_clean=false") {
 		t.Errorf("expected agent_flags_clean=false, got %v", resp.SelectorValues)
 	}
-	// Check 3 must NOT have run
+	// Check 3 must NOT have run.
 	if responseContains(resp, "maps_verified=true") {
 		t.Errorf("maps_verified must not appear when Check 2 fails")
 	}
@@ -351,7 +348,7 @@ func TestAttest_AttachSocket_SelectorMode(t *testing.T) {
 	if !responseContains(resp, "attach_socket_exposed=true") {
 		t.Errorf("expected attach_socket_exposed=true, got %v", resp.SelectorValues)
 	}
-	// Jar hash check should still have run
+	// Jar hash check should still have run.
 	if !responseContains(resp, "jar_sha256:"+jarHash) {
 		t.Errorf("expected jar_sha256 selector, got %v", resp.SelectorValues)
 	}
@@ -388,13 +385,10 @@ func TestAttest_JarHashMismatch(t *testing.T) {
 		jarContainerPath: "/app/service.jar",
 	})
 
-	// Overwrite manifest with a wrong hash after procFS is built
+	// Overwrite manifest with a wrong hash after procFS is built.
 	writeManifest(t, manifestPath, map[string]string{
 		"/app/service.jar": "000000000000000000000000000000000000000000000000000000000000dead",
 	})
-
-	// Reset manifest cache so the overwritten file is read fresh
-	resetManifestCache()
 
 	p := newWithProcFS(fsRoot, defaultConfig(manifestPath))
 	_, err := attest(t, p)

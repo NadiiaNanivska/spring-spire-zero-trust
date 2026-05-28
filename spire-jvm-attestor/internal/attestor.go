@@ -56,7 +56,15 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 		p.buildPipeline(cfg)
 	}
 	return p
+}
+
+func (p *JVMAttestor) buildPipeline(cfg *config.Config) {
+	p.checkers = []Checker{
+		NewAntiDebugChecker(),
+		NewAntiTamperChecker(cfg.BlockOnAttachSocket),
+		NewJarHashChecker(cfg.HashManifestPath),
 	}
+}
 
 func (p *JVMAttestor) Configure(
 	_ context.Context,
@@ -69,6 +77,7 @@ func (p *JVMAttestor) Configure(
 
 	p.mu.Lock()
 	p.config = cfg
+	p.buildPipeline(cfg)
 	p.mu.Unlock()
 
 	return &configv1.ConfigureResponse{}, nil
@@ -109,7 +118,7 @@ func (p *JVMAttestor) Attest(
 		allSelectors = append(allSelectors, selectors...)
 
 		if containsSelector(selectors, "jvm:debug_clean=false") ||
-		   containsSelector(selectors, "jvm:agent_flags_clean=false") {
+			containsSelector(selectors, "jvm:agent_flags_clean=false") {
 			break
 		}
 	}
