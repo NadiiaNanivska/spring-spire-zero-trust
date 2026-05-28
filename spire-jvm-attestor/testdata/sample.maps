@@ -1,0 +1,13 @@
+# Sample /proc/<PID>/maps for a Spring Boot JVM process
+# Used as reference for maps.go parser tests and documentation
+#
+# Columns: address perms offset dev inode pathname
+7f3a00000000-7f3a10000000 r--p 00000000 fd:01 1234567 /app/payments-service.jar
+7f3a10000000-7f3a20000000 r-xp 01000000 fd:01 1234567 /app/payments-service.jar
+7f3a20000000-7f3a30000000 rw-p 02000000 fd:01 1234567 /app/payments-service.jar
+7f4000000000-7f4010000000 r-xp 00000000 fd:01 9876543 /usr/lib/jvm/java-21/lib/server/libjvm.so
+7f5000000000-7f5001000000 r--p 00000000 fd:01 1111111 /usr/lib/jvm/java-21/lib/modules
+7ffe00000000-7ffe00100000 rw-p 00000000 00:00 0        [stack]
+7ffe00100000-7ffe00104000 r--p 00000000 00:00 0        [vvar]
+7ffe00104000-7ffe00106000 r-xp 00000000 00:00 0        [vdso]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0 [vsyscall]
