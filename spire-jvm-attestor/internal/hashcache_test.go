@@ -6,8 +6,10 @@ import (
 	"time"
 )
 
-func freshCache() *hashCache {
-	return &hashCache{store: make(map[cacheKey]string)}
+// freshCache returns a new empty HashCache for isolated unit tests.
+// Each test gets its own instance — no global state to reset.
+func freshCache() *HashCache {
+	return NewHashCache()
 }
 
 func TestHashCache_Miss(t *testing.T) {
@@ -20,9 +22,9 @@ func TestHashCache_Miss(t *testing.T) {
 	f.WriteString("content-v1")
 	f.Close()
 
-	hash, err := c.getOrCompute(f.Name())
+	hash, err := c.GetOrCompute(f.Name())
 	if err != nil {
-		t.Fatalf("getOrCompute: %v", err)
+		t.Fatalf("GetOrCompute: %v", err)
 	}
 	if hash == "" {
 		t.Error("expected non-empty hash")
@@ -39,13 +41,13 @@ func TestHashCache_Hit(t *testing.T) {
 	f.WriteString("content-v1")
 	f.Close()
 
-	hash1, err := c.getOrCompute(f.Name())
+	hash1, err := c.GetOrCompute(f.Name())
 	if err != nil {
 		t.Fatalf("first call: %v", err)
 	}
 
-	// Overwrite with different content, but restore original mtime so the
-	// cache key (inode+mtime) stays the same — simulates "no file change"
+	// Overwrite with different content but restore original mtime so the
+	// cache key (inode+mtime) stays the same — simulates "no file change".
 	info, _ := os.Stat(f.Name())
 	origMtime := info.ModTime()
 
@@ -54,12 +56,12 @@ func TestHashCache_Hit(t *testing.T) {
 	}
 	os.Chtimes(f.Name(), origMtime, origMtime)
 
-	hash2, err := c.getOrCompute(f.Name())
+	hash2, err := c.GetOrCompute(f.Name())
 	if err != nil {
 		t.Fatalf("second call: %v", err)
 	}
 
-	// Should return cached value (hash1), not the new file content
+	// Should return cached value (hash1), not the new file content.
 	if hash1 != hash2 {
 		t.Errorf("cache miss when key unchanged: got %s, want %s", hash2, hash1)
 	}
@@ -75,12 +77,12 @@ func TestHashCache_InvalidatedOnMtimeChange(t *testing.T) {
 	f.WriteString("content-v1")
 	f.Close()
 
-	hash1, err := c.getOrCompute(f.Name())
+	hash1, err := c.GetOrCompute(f.Name())
 	if err != nil {
 		t.Fatalf("first call: %v", err)
 	}
 
-	// Change the file AND advance mtime so cache key changes
+	// Change the file AND advance mtime so the cache key changes.
 	time.Sleep(10 * time.Millisecond)
 	if err := os.WriteFile(f.Name(), []byte("content-v2-DIFFERENT"), 0o644); err != nil {
 		t.Fatal(err)
@@ -88,7 +90,7 @@ func TestHashCache_InvalidatedOnMtimeChange(t *testing.T) {
 	future := time.Now().Add(2 * time.Second)
 	os.Chtimes(f.Name(), future, future)
 
-	hash2, err := c.getOrCompute(f.Name())
+	hash2, err := c.GetOrCompute(f.Name())
 	if err != nil {
 		t.Fatalf("second call: %v", err)
 	}
@@ -100,14 +102,14 @@ func TestHashCache_InvalidatedOnMtimeChange(t *testing.T) {
 
 func TestHashCache_MissingFile(t *testing.T) {
 	c := freshCache()
-	_, err := c.getOrCompute("/nonexistent/path/file.jar")
+	_, err := c.GetOrCompute("/nonexistent/path/file.jar")
 	if err == nil {
 		t.Fatal("expected error for missing file")
 	}
 }
 
 func TestHashCache_ConcurrentAccess(t *testing.T) {
-	// Smoke test: concurrent reads/writes should not race.
+	// Smoke test: concurrent reads/writes must not race.
 	// Run with: go test -race ./internal/...
 	c := freshCache()
 
@@ -121,7 +123,7 @@ func TestHashCache_ConcurrentAccess(t *testing.T) {
 	done := make(chan struct{})
 	for i := 0; i < 10; i++ {
 		go func() {
-			c.getOrCompute(f.Name()) //nolint:errcheck
+			c.GetOrCompute(f.Name()) //nolint:errcheck
 			done <- struct{}{}
 		}()
 	}
