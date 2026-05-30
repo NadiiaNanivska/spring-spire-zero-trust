@@ -35,8 +35,8 @@ VmRSS:	102400 kB
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(selectors) != 1 || selectors[0] != "jvm:debug_clean=true" {
-		t.Errorf("expected [jvm:debug_clean=true], got %v", selectors)
+	if len(selectors) != 1 || selectors[0] != SelectorDebugCleanTrue {
+		t.Errorf("expected [%s], got %v", SelectorDebugCleanTrue, selectors)
 	}
 }
 
@@ -51,11 +51,11 @@ VmRSS:	102400 kB
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if !containsSelector(selectors, "jvm:debug_clean=false") {
-		t.Errorf("expected jvm:debug_clean=false in selectors, got %v", selectors)
+	if !containsSelector(selectors, SelectorDebugCleanFalse) {
+		t.Errorf("expected %s in selectors, got %v", SelectorDebugCleanFalse, selectors)
 	}
-	if !containsSelector(selectors, "jvm:tracer_pid=5678") {
-		t.Errorf("expected jvm:tracer_pid=5678 in selectors, got %v", selectors)
+	if !containsSelector(selectors, SelectorTracerPidPrefix+"5678") {
+		t.Errorf("expected %s5678 in selectors, got %v", SelectorTracerPidPrefix, selectors)
 	}
 }
 
@@ -76,7 +76,7 @@ VmRSS:	102400 kB
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(selectors) != 1 || selectors[0] != "jvm:debug_clean=true" {
-		t.Errorf("expected [jvm:debug_clean=true], got %v", selectors)
+	if len(selectors) != 1 || selectors[0] != SelectorDebugCleanTrue {
+		t.Errorf("expected [%s], got %v", SelectorDebugCleanTrue, selectors)
 	}
 }

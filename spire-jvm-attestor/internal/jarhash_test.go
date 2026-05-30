@@ -109,14 +109,14 @@ func TestVerifyJarHash_HappyPath(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if !containsSelector(selectors, "jvm:maps_verified=true") {
+	if !containsSelector(selectors, SelectorMapsVerified) {
 		t.Errorf("expected maps_verified=true, got %v", selectors)
 	}
-	if !containsSelector(selectors, "jvm:inode_consistent=true") {
+	if !containsSelector(selectors, SelectorInodeConsistentTrue) {
 		t.Errorf("expected inode_consistent=true, got %v", selectors)
 	}
-	if !containsSelector(selectors, "jvm:jar_sha256:"+hash) {
-		t.Errorf("expected jvm:jar_sha256:%s in selectors, got %v", hash, selectors)
+	if !containsSelector(selectors, SelectorJarSha256Prefix+hash) {
+		t.Errorf("expected %s%s in selectors, got %v", SelectorJarSha256Prefix, hash, selectors)
 	}
 }
 
@@ -184,7 +184,7 @@ func TestVerifyJarHash_InodeConsistentFalse_BaitAndSwitch(t *testing.T) {
 	}
 
 	// Should return inode_consistent=false — policy decides what to do.
-	if !containsSelector(selectors, "jvm:inode_consistent=false") {
+	if !containsSelector(selectors, SelectorInodeConsistentFalse) {
 		t.Errorf("expected inode_consistent=false for bait-and-switch, got %v", selectors)
 	}
 }
@@ -224,11 +224,11 @@ func TestVerifyJarHash_SpringBootFallback(t *testing.T) {
 		t.Fatalf("Spring Boot fallback failed: %v", err)
 	}
 
-	if !containsSelector(selectors, "jvm:maps_verified=true") {
+	if !containsSelector(selectors, SelectorMapsVerified) {
 		t.Errorf("expected maps_verified=true, got %v", selectors)
 	}
 	// inode=0 path skips the TOCTOU check → should still report consistent.
-	if !containsSelector(selectors, "jvm:inode_consistent=true") {
+	if !containsSelector(selectors, SelectorInodeConsistentTrue) {
 		t.Errorf("expected inode_consistent=true for Spring Boot path, got %v", selectors)
 	}
 }
@@ -278,7 +278,7 @@ func TestVerifyJarHash_CacheHit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("first call failed: %v", err)
 	}
-	if !containsSelector(selectors, "jvm:jar_sha256:"+hash) {
+	if !containsSelector(selectors, SelectorJarSha256Prefix+hash) {
 		t.Fatalf("first call: wrong hash selector, got %v", selectors)
 	}
 
@@ -287,7 +287,7 @@ func TestVerifyJarHash_CacheHit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("second call failed: %v", err)
 	}
-	if !containsSelector(selectors2, "jvm:jar_sha256:"+hash) {
+	if !containsSelector(selectors2, SelectorJarSha256Prefix+hash) {
 		t.Errorf("second call: expected same hash, got %v", selectors2)
 	}
 }
