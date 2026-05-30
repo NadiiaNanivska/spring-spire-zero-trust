@@ -25,7 +25,13 @@ type Config struct {
 	//   true  — attestation fails with an error (strict mode)
 	//   false — attestation continues but selector jvm:attach_socket_exposed=true is set
 	BlockOnAttachSocket bool `hcl:"block_on_attach_socket"`
-}
+	// ArtifactoryURL is the base URL of the Artifactory instance
+	// Optional. If provided with ArtifactoryAPIKey, used to fetch jar hashes remotely
+	ArtifactoryURL string `hcl:"artifactory_url"`
+
+	// ArtifactoryAPIKey is the API key for Artifactory authentication
+	// Optional. Required if ArtifactoryURL is set
+	ArtifactoryAPIKey string `hcl:"artifactory_api_key"`}
 
 // Parse decodes raw HCL string (the plugin_data block body) into Config.
 func Parse(hclData string) (*Config, error) {

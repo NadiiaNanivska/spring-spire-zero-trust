@@ -9,6 +9,7 @@ import (
 	workloadattestorv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/plugin/agent/workloadattestor/v1"
 	configv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/service/common/config/v1"
 	"github.com/yourorg/spire-jvm-attestor/config"
+	"github.com/yourorg/spire-jvm-attestor/internal/hashsource"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -34,14 +35,12 @@ type JVMAttestor struct {
 	checkers []Checker
 
 	hashCache     *HashCache
-	manifestCache *ManifestCache
 }
 
 func New() *JVMAttestor {
 	return &JVMAttestor{
 		procFS:        "/proc",
 		hashCache:     NewHashCache(),
-		manifestCache: NewManifestCache(),
 	}
 }
 
@@ -50,7 +49,6 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 		procFS:        procFS,
 		config:        cfg,
 		hashCache:     NewHashCache(),
-		manifestCache: NewManifestCache(),
 	}
 	if cfg != nil {
 		p.buildPipeline(cfg)
@@ -59,10 +57,18 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 }
 
 func (p *JVMAttestor) buildPipeline(cfg *config.Config) {
+	var source hashsource.HashSource
+
+	if cfg.ArtifactoryURL != "" && cfg.ArtifactoryAPIKey != "" {
+		source = hashsource.NewArtifactorySource(cfg.ArtifactoryURL, cfg.ArtifactoryAPIKey)
+	} else {
+		source = hashsource.NewLocalManifestSource(cfg.HashManifestPath)
+	}
+
 	p.checkers = []Checker{
 		NewAntiDebugChecker(),
 		NewAntiTamperChecker(cfg.BlockOnAttachSocket),
-		NewJarHashChecker(cfg.HashManifestPath),
+		NewJarHashChecker(source),
 	}
 }
 
@@ -101,7 +107,6 @@ func (p *JVMAttestor) Attest(
 		PID:           req.Pid,
 		ProcRoot:      fmt.Sprintf("%s/%d", p.procFS, req.Pid),
 		HashCache:     p.hashCache,
-		ManifestCache: p.manifestCache,
 	}
 
 	var allSelectors []string
