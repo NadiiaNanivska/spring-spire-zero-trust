@@ -1,18 +1,4 @@
 #!/usr/bin/env bash
-# generate-manifest.sh
-#
-# Generates the jvm-hashes.json manifest consumed by the SPIRE JVM Attestor.
-# Run this script in your CI/CD pipeline after docker build, before image push.
-#
-# Usage:
-#   ./generate-manifest.sh <jar-path-inside-container> <output-file>
-#
-# Example:
-#   ./generate-manifest.sh /app/payments-service.jar ./jvm-hashes.json
-#
-# The output file should be mounted into the SPIRE Agent container at the path
-# configured in agent.conf: hash_manifest_path = "/etc/spire/jvm-hashes.json"
-
 set -euo pipefail
 
 JAR_PATH="${1:-/app/payments-service.jar}"
@@ -33,7 +19,7 @@ cat > "$OUTPUT" <<EOF
   "generated_at": "${TIMESTAMP}",
   "generated_by": "ci/build@sha:${GIT_SHA}",
   "jars": {
-    "$(basename "$JAR_PATH")": "${HASH}"
+    "${JAR_PATH}": "${HASH}"
   }
 }
 EOF
