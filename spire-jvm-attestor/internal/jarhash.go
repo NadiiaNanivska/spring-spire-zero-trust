@@ -55,7 +55,7 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 			}
 
 			if diskStat.Ino != entry.inode {
-				return []string{"jvm:inode_consistent=false"}, nil
+				return []string{SelectorInodeConsistentFalse}, nil
 			}
 		}
 
@@ -77,9 +77,9 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 		}
 
 		return []string{
-			"jvm:jar_sha256:" + hash,
-			"jvm:maps_verified=true",
-			"jvm:inode_consistent=true",
+			SelectorJarSha256Prefix + hash,
+			SelectorMapsVerified,
+			SelectorInodeConsistentTrue,
 		}, nil
 	}
 
