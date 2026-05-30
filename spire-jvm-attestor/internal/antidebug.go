@@ -42,12 +42,12 @@ func (c *AntiDebugChecker) Check(ctx *AttestationContext) ([]string, error) {
 
 		if tracerPid > 0 {
 			return []string{
-				"jvm:debug_clean=false",
-				fmt.Sprintf("jvm:tracer_pid=%d", tracerPid),
+				SelectorDebugCleanFalse,
+				SelectorTracerPidPrefix + fmt.Sprintf("%d", tracerPid),
 			}, nil
 		}
 		break
 	}
 
-	return []string{"jvm:debug_clean=true"}, nil
+	return []string{SelectorDebugCleanTrue}, nil
 }

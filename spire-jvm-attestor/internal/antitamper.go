@@ -49,8 +49,8 @@ func (c *AntiTamperChecker) Check(ctx *AttestationContext) ([]string, error) {
 		for _, flag := range dangerousFlags {
 			if strings.HasPrefix(arg, flag) {
 				return []string{
-					"jvm:agent_flags_clean=false",
-					"jvm:suspicious_flag=" + sanitizeSelector(flag),
+					SelectorAgentFlagsCleanFalse,
+					SelectorSuspiciousFlagPrefix + sanitizeSelector(flag),
 				}, nil
 			}
 		}
@@ -66,8 +66,8 @@ func (c *AntiTamperChecker) Check(ctx *AttestationContext) ([]string, error) {
 	for _, key := range dangerousEnvVars {
 		if val, exists := envMap[key]; exists && strings.TrimSpace(val) != "" {
 			return []string{
-				"jvm:agent_flags_clean=false",
-				"jvm:suspicious_env=" + key,
+				SelectorAgentFlagsCleanFalse,
+				SelectorSuspiciousEnvPrefix + key,
 			}, nil
 		}
 	}
@@ -79,13 +79,13 @@ func (c *AntiTamperChecker) Check(ctx *AttestationContext) ([]string, error) {
 			return nil, fmt.Errorf("JVM Attach API socket exposed at %s; refusing attestation", attachSocketPath)
 		}
 		return []string{
-			"jvm:agent_flags_clean=true",
-			"jvm:attach_socket_exposed=true",
+			SelectorAgentFlagsCleanTrue,
+			SelectorAttachSocketExposed,
 		}, nil
 	}
 
 	return []string{
-		"jvm:agent_flags_clean=true",
-		"jvm:attach_socket_exposed=false",
+		SelectorAgentFlagsCleanTrue,
+		SelectorAttachSocketClean,
 	}, nil
 }

@@ -28,10 +28,10 @@ type JVMAttestor struct {
 	workloadattestorv1.UnsafeWorkloadAttestorServer
 	configv1.UnsafeConfigServer
 
-	mu            sync.RWMutex
-	config        *config.Config
-	procFS        string
-	checkers      []Checker
+	mu       sync.RWMutex
+	config   *config.Config
+	procFS   string
+	checkers []Checker
 
 	hashCache     *HashCache
 	manifestCache *ManifestCache
@@ -117,8 +117,8 @@ func (p *JVMAttestor) Attest(
 
 		allSelectors = append(allSelectors, selectors...)
 
-		if containsSelector(selectors, "jvm:debug_clean=false") ||
-			containsSelector(selectors, "jvm:agent_flags_clean=false") {
+		if containsSelector(selectors, SelectorDebugCleanFalse) ||
+			containsSelector(selectors, SelectorAgentFlagsCleanFalse) {
 			break
 		}
 	}

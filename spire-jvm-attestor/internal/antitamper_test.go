@@ -53,10 +53,10 @@ func TestCheckAntiTamper_Clean(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if !containsSelector(selectors, "jvm:agent_flags_clean=true") {
+	if !containsSelector(selectors, SelectorAgentFlagsCleanTrue) {
 		t.Errorf("expected agent_flags_clean=true, got %v", selectors)
 	}
-	if !containsSelector(selectors, "jvm:attach_socket_exposed=false") {
+	if !containsSelector(selectors, SelectorAttachSocketClean) {
 		t.Errorf("expected attach_socket_exposed=false, got %v", selectors)
 	}
 }
@@ -72,7 +72,7 @@ func TestCheckAntiTamper_JavaAgent(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if !containsSelector(selectors, "jvm:agent_flags_clean=false") {
+	if !containsSelector(selectors, SelectorAgentFlagsCleanFalse) {
 		t.Errorf("expected agent_flags_clean=false, got %v", selectors)
 	}
 }
@@ -87,7 +87,7 @@ func TestCheckAntiTamper_JDWP(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !containsSelector(selectors, "jvm:agent_flags_clean=false") {
+	if !containsSelector(selectors, SelectorAgentFlagsCleanFalse) {
 		t.Errorf("expected agent_flags_clean=false for JDWP flag, got %v", selectors)
 	}
 }
@@ -102,10 +102,10 @@ func TestCheckAntiTamper_JavaToolOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !containsSelector(selectors, "jvm:agent_flags_clean=false") {
+	if !containsSelector(selectors, SelectorAgentFlagsCleanFalse) {
 		t.Errorf("expected agent_flags_clean=false for JAVA_TOOL_OPTIONS, got %v", selectors)
 	}
-	if !containsSelector(selectors, "jvm:suspicious_env=JAVA_TOOL_OPTIONS") {
+	if !containsSelector(selectors, SelectorSuspiciousEnvPrefix+"JAVA_TOOL_OPTIONS") {
 		t.Errorf("expected suspicious_env selector, got %v", selectors)
 	}
 }
@@ -121,7 +121,7 @@ func TestCheckAntiTamper_EmptyJavaToolOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !containsSelector(selectors, "jvm:agent_flags_clean=true") {
+	if !containsSelector(selectors, SelectorAgentFlagsCleanTrue) {
 		t.Errorf("empty JAVA_TOOL_OPTIONS should be safe, got %v", selectors)
 	}
 }
@@ -167,7 +167,7 @@ func TestCheckAntiTamper_AttachSocket_SelectorMode(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error in selector mode: %v", err)
 	}
-	if !containsSelector(selectors, "jvm:attach_socket_exposed=true") {
+	if !containsSelector(selectors, SelectorAttachSocketExposed) {
 		t.Errorf("expected attach_socket_exposed=true, got %v", selectors)
 	}
 }
