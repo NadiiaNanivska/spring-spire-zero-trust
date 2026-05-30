@@ -7,7 +7,6 @@ type AttestationContext struct {
 	PID           int32
 	ProcRoot      string
 	HashCache     *HashCache
-	ManifestCache *ManifestCache
 }
 
 type Checker interface {
