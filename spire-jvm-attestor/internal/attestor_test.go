@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	workloadattestorv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/plugin/agent/workloadattestor/v1"
-	"github.com/yourorg/spire-jvm-attestor/config" // Твій пакет конфігурації
+	"github.com/yourorg/spire-jvm-attestor/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -61,10 +61,10 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 	t.Run("Success: Full clean pipeline attestation", func(t *testing.T) {
 		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
 
-		// Ініціалізуємо config, щоб пройти проверку cfg == nil в attestor.go
+		// Ініціалізуємо конфігурацію плагіна
 		attestor := &JVMAttestor{
 			procFS:    tmpDir,
-			config:    &config.Config{BlockOnAttachSocket: false}, 
+			config:    &config.Config{BlockOnAttachSocket: false},
 			hashCache: NewHashCache(),
 			checkers: []Checker{
 				NewAntiDebugChecker(),
@@ -76,13 +76,19 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 		req := &workloadattestorv1.AttestRequest{Pid: int32(pid)}
 		resp, err := attestor.Attest(context.Background(), req)
 
-		require.NoError(t, err) // Використовуємо require, щоб зупинити тест, якщо resp == nil
+		require.NoError(t, err)
 		require.NotNil(t, resp)
 
+		// ФІКС СИГНАТУР И КОНСТАНТ ЗБІГУ СЕЛЕКТОРІВ
 		assert.Contains(t, resp.SelectorValues, "debug_clean=true")
 		assert.Contains(t, resp.SelectorValues, "agent_flags_clean=true")
-		assert.Contains(t, resp.SelectorValues, "attach_socket_clean=true")
-		assert.Contains(t, resp.SelectorValues, "jar_sha256="+expectedHash)
+
+		// Виправлено: заміна сирого "attach_socket_clean=true" на реальну константу "attach_socket_exposed=false"
+		assert.Contains(t, resp.SelectorValues, "attach_socket_exposed=false")
+
+		// Виправлено: заміна знаку "=" на константну двокрапку ":" відповідно до SelectorJarSha256Prefix
+		assert.Contains(t, resp.SelectorValues, "jar_sha256:"+expectedHash)
+
 		assert.Contains(t, resp.SelectorValues, "maps_verified=true")
 		assert.Contains(t, resp.SelectorValues, "inode_consistent=true")
 	})
