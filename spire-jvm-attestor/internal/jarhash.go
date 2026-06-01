@@ -9,23 +9,24 @@ import (
 	"path/filepath"
 	"sync"
 	"syscall"
+
 	"github.com/yourorg/spire-jvm-attestor/internal/hashsource"
 )
 
-// Створюємо глобальний пул буферів для оптимізації GC при обчисленні SHA-256 (Ішка №7)
-var bufferPool = sync.Pool{
-	New: func() interface{} {
-		b := make([]byte, 64*1024) // 64KB буфер для io.CopyBuffer
-		return &b
-	},
-}
-
 type JarHashChecker struct {
 	hashSource hashsource.HashSource
+	bufPool    sync.Pool
 }
 
 func NewJarHashChecker(hashSource hashsource.HashSource) *JarHashChecker {
-	return &JarHashChecker{hashSource: hashSource}
+	return &JarHashChecker{
+		hashSource: hashSource,
+		bufPool: sync.Pool{
+			New: func() interface{} {
+				return make([]byte, 64*1024)
+			},
+		},
+	}
 }
 
 func (c *JarHashChecker) Name() string {
@@ -49,11 +50,8 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 	}
 
 	var allSelectors []string
-
-	// Флаг для відслідковування загального стану inode по всім jar-файлам додатка
 	globalInodeConsistent := true
 
-	// Виправляємо Баг №8: ітеруємося по ВСІХ jar-файлах, прибираємо ранній return
 	for _, entry := range jarEntries {
 		nsPath := filepath.Join(ctx.ProcRoot, "root", entry.path)
 
@@ -68,53 +66,59 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 		}
 
 		var actualHash string
-		
-		// Виправляємо Баг №9 + Оптимізуємо OverlayFS (Ішка №4):
-		// Якщо entry.inode == 0 (Spring Boot), або diskStat.Ino != entry.inode (OverlayFS Copy-Up / bait-and-switch)
-		// Ми НЕ перериваємо роботу hard-fail помилкою. Ми інвалідуємо швидкий шлях кешу,
-		// вираховуємо хеш напряму з диску і даємо криптографічну гарантію.
-		if entry.inode == 0 || diskStat.Ino != entry.inode {
-			if entry.inode != 0 {
-				// Якщо inode в maps був, але на диску змінився — фіксуємо асиметрію метаданих
-				globalInodeConsistent = false
+
+		if entry.inode == 0 {
+			sbKey := fmt.Sprintf("%s:%d:%d", entry.path, diskInfo.ModTime().Unix(), diskInfo.Size())
+
+			if cachedHash, found := ctx.HashCache.GetSpringBoot(sbKey); found {
+				actualHash = cachedHash
+			} else {
+				computedHash, err := c.calculateFileSHA256(nsPath)
+				if err != nil {
+					return nil, fmt.Errorf("failed calculating spring boot jar hash for %s: %w", nsPath, err)
+				}
+				actualHash = computedHash
+				ctx.HashCache.SetSpringBoot(sbKey, actualHash)
 			}
 
-			// Примусовий перерахунок SHA-256 (минаючи GetOrCompute, якщо inode нестабільний)
-			computedHash, err := c.calculateFileSHA256(nsPath)
-			if err != nil {
-				return nil, fmt.Errorf("forced hash computation failed for %s: %w", nsPath, err)
+		} else if diskStat.Ino != entry.inode {
+			globalInodeConsistent = false
+
+			if cachedHash, err := ctx.HashCache.Get(diskStat.Ino, diskInfo.ModTime().Unix()); err == nil && cachedHash != "" {
+				actualHash = cachedHash
+			} else {
+				computedHash, err := c.calculateFileSHA256(nsPath)
+				if err != nil {
+					return nil, fmt.Errorf("forced hash computation failed for overlayfs path %s: %w", nsPath, err)
+				}
+				actualHash = computedHash
+				ctx.HashCache.Set(diskStat.Ino, diskInfo.ModTime().Unix(), actualHash)
 			}
-			actualHash = computedHash
+
 		} else {
-			// Якщо inode збігається — використовуємо твій стандартний швидкий кеш
-			hash, err := ctx.HashCache.GetOrCompute(nsPath)
+			hash, err := ctx.HashCache.GetOrCompute(entry.inode, diskInfo.ModTime().Unix(), func() (string, error) {
+				return c.calculateFileSHA256(nsPath)
+			})
 			if err != nil {
-				return nil, fmt.Errorf("hash computation failed for %s: %w", nsPath, err)
+				return nil, fmt.Errorf("hash cache fetch failed for %s: %w", nsPath, err)
 			}
 			actualHash = hash
 		}
 
-		// Запитуємо очікуваний хеш через новий інтерфейс джерела (Локальний чи Artifactory)
 		expected, err := c.hashSource.GetExpectedHash(ctx.Context, entry.path)
 		if err != nil {
 			return nil, fmt.Errorf("integrity configuration error for %s: %w", entry.path, err)
 		}
 
-		// Криптографічний hard-fail (Рівень 3). Тут компромісів немає.
 		if actualHash != expected {
-			return nil, fmt.Errorf(
-				"jar crypto integrity mismatch for %s: computed=%s expected=%s",
-				entry.path, actualHash, expected,
-			)
+			return nil, fmt.Errorf("jar crypto integrity mismatch for %s: computed=%s expected=%s", entry.path, actualHash, expected)
 		}
 
-		// Додаємо селектор хешу конкретного перевіреного JAR файлу додатка
 		allSelectors = append(allSelectors, SelectorJarSha256Prefix+actualHash)
 	}
 
-	// Коли ВСІ файли успішно пройшли перевірку, формуємо фінальні селектори стану
+	// Додаємо інфраструктурні селектори верифікації
 	allSelectors = append(allSelectors, SelectorMapsVerified)
-	
 	if globalInodeConsistent {
 		allSelectors = append(allSelectors, SelectorInodeConsistentTrue)
 	} else {
@@ -124,19 +128,18 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 	return allSelectors, nil
 }
 
-// Оптимізована функція підрахунку хешу з використанням sync.Pool буферів
 func (c *JarHashChecker) calculateFileSHA256(filePath string) (string, error) {
-	f, err := os.Open(filePath)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return "", err
 	}
-	defer f.Close()
+	defer file.Close()
+
+	buf := c.bufPool.Get().([]byte)
+	defer c.bufPool.Put(buf)
 
 	hasher := sha256.New()
-	bufPtr := bufferPool.Get().(*[]byte)
-	defer bufferPool.Put(bufPtr) // Обов'язкове повернення в пул
-
-	if _, err := io.CopyBuffer(hasher, f, *bufPtr); err != nil {
+	if _, err := io.CopyBuffer(hasher, file, buf); err != nil {
 		return "", err
 	}
 
