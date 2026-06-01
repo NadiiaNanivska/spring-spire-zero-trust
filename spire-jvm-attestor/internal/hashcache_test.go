@@ -22,9 +22,9 @@ func TestHashCache_Miss(t *testing.T) {
 	f.WriteString("content-v1")
 	f.Close()
 
-	hash, err := c.GetOrCompute(f.Name())
+	hash, err := c.GetOrComputeByPath(f.Name())
 	if err != nil {
-		t.Fatalf("GetOrCompute: %v", err)
+		t.Fatalf("GetOrComputeByPath: %v", err)
 	}
 	if hash == "" {
 		t.Error("expected non-empty hash")
@@ -41,7 +41,7 @@ func TestHashCache_Hit(t *testing.T) {
 	f.WriteString("content-v1")
 	f.Close()
 
-	hash1, err := c.GetOrCompute(f.Name())
+	hash1, err := c.GetOrComputeByPath(f.Name())
 	if err != nil {
 		t.Fatalf("first call: %v", err)
 	}
@@ -56,7 +56,7 @@ func TestHashCache_Hit(t *testing.T) {
 	}
 	os.Chtimes(f.Name(), origMtime, origMtime)
 
-	hash2, err := c.GetOrCompute(f.Name())
+	hash2, err := c.GetOrComputeByPath(f.Name())
 	if err != nil {
 		t.Fatalf("second call: %v", err)
 	}
@@ -77,7 +77,7 @@ func TestHashCache_InvalidatedOnMtimeChange(t *testing.T) {
 	f.WriteString("content-v1")
 	f.Close()
 
-	hash1, err := c.GetOrCompute(f.Name())
+	hash1, err := c.GetOrComputeByPath(f.Name())
 	if err != nil {
 		t.Fatalf("first call: %v", err)
 	}
@@ -90,7 +90,7 @@ func TestHashCache_InvalidatedOnMtimeChange(t *testing.T) {
 	future := time.Now().Add(2 * time.Second)
 	os.Chtimes(f.Name(), future, future)
 
-	hash2, err := c.GetOrCompute(f.Name())
+	hash2, err := c.GetOrComputeByPath(f.Name())
 	if err != nil {
 		t.Fatalf("second call: %v", err)
 	}
@@ -102,7 +102,7 @@ func TestHashCache_InvalidatedOnMtimeChange(t *testing.T) {
 
 func TestHashCache_MissingFile(t *testing.T) {
 	c := freshCache()
-	_, err := c.GetOrCompute("/nonexistent/path/file.jar")
+	_, err := c.GetOrComputeByPath("/nonexistent/path/file.jar")
 	if err == nil {
 		t.Fatal("expected error for missing file")
 	}
@@ -123,7 +123,7 @@ func TestHashCache_ConcurrentAccess(t *testing.T) {
 	done := make(chan struct{})
 	for i := 0; i < 10; i++ {
 		go func() {
-			c.GetOrCompute(f.Name()) //nolint:errcheck
+			c.GetOrComputeByPath(f.Name()) //nolint:errcheck
 			done <- struct{}{}
 		}()
 	}
