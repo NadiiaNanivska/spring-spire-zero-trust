@@ -1,28 +1,29 @@
-// spire-jvm-attestor/internal/antitamper.go
-package internal
+package checkers
 
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/yourorg/spire-jvm-attestor/internal/procfs"
 )
 
 var dangerousFlags = []string{
-	"-javaagent:",                       // Java agent — ASM bytecode manipulation
-	"-agentlib:",                        // Native JVMTI agent (.so)
-	"-agentpath:",                       // Absolute path to native JVMTI agent
-	"-Xrunjdwp:",                        // Java Debug Wire Protocol (legacy)
-	"-Xdebug",                           // Legacy debug flag (enables JDWP)
-	"-Djdk.attach.allowAttachSelf=true", // Permits self-attach via Attach API
-	"-Dcom.sun.management.jmxremote",    // JMX remote management (exploitable)
+	"-javaagent:",
+	"-agentlib:",
+	"-agentpath:",
+	"-Xrunjdwp:",
+	"-Xdebug",
+	"-Djdk.attach.allowAttachSelf=true",
+	"-Dcom.sun.management.jmxremote",
 }
 
 var dangerousEnvVars = []string{
-	"JAVA_TOOL_OPTIONS", // Standard — supported by all JVM implementations
-	"_JAVA_OPTIONS",     // HotSpot-specific
-	"JDK_JAVA_OPTIONS",  // JDK 9+
-	"IBM_JAVA_OPTIONS",  // IBM J9 / Eclipse OpenJ9
+	"JAVA_TOOL_OPTIONS",
+	"_JAVA_OPTIONS",
+	"JDK_JAVA_OPTIONS",
+	"IBM_JAVA_OPTIONS",
 }
 
 type AntiTamperChecker struct {
@@ -38,7 +39,6 @@ func (c *AntiTamperChecker) Name() string {
 }
 
 func (c *AntiTamperChecker) Check(ctx *AttestationContext) ([]string, error) {
-	// --- 1: cmdline flags ---
 	cmdlineRaw, err := os.ReadFile(filepath.Join(ctx.ProcRoot, "cmdline"))
 	if err != nil {
 		return nil, fmt.Errorf("cannot read cmdline: %w", err)
@@ -50,19 +50,18 @@ func (c *AntiTamperChecker) Check(ctx *AttestationContext) ([]string, error) {
 			if strings.HasPrefix(arg, flag) {
 				return []string{
 					SelectorAgentFlagsCleanFalse,
-					SelectorSuspiciousFlagPrefix + sanitizeSelector(flag),
+					SelectorSuspiciousFlagPrefix + procfs.SanitizeSelector(flag),
 				}, nil
 			}
 		}
 	}
 
-	// --- 2: environment variables ---
 	environRaw, err := os.ReadFile(filepath.Join(ctx.ProcRoot, "environ"))
 	if err != nil {
 		return nil, fmt.Errorf("cannot read environ: %w", err)
 	}
 
-	envMap := parseEnviron(string(environRaw))
+	envMap := procfs.ParseEnviron(string(environRaw))
 	for _, key := range dangerousEnvVars {
 		if val, exists := envMap[key]; exists && strings.TrimSpace(val) != "" {
 			return []string{
@@ -72,7 +71,6 @@ func (c *AntiTamperChecker) Check(ctx *AttestationContext) ([]string, error) {
 		}
 	}
 
-	// --- 3: JVM Attach API socket ---
 	attachSocketPath := filepath.Join(ctx.ProcRoot, "root", "tmp", fmt.Sprintf(".java_pid%d", ctx.PID))
 	if _, err := os.Stat(attachSocketPath); err == nil {
 		if c.blockOnAttachSocket {

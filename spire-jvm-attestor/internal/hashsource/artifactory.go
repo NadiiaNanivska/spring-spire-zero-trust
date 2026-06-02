@@ -32,7 +32,6 @@ func NewArtifactorySource(baseURL, apiKey string) *ArtifactorySource {
 }
 
 func (a *ArtifactorySource) GetExpectedHash(ctx context.Context, jarPath string) (string, error) {
-	// Ключ для singleflight — це унікальний шлях до JAR
 	v, err, _ := a.sfGroup.Do(jarPath, func() (interface{}, error) {
 		return a.fetchFromArtifactory(ctx, jarPath)
 	})
@@ -44,7 +43,6 @@ func (a *ArtifactorySource) GetExpectedHash(ctx context.Context, jarPath string)
 }
 
 func (a *ArtifactorySource) fetchFromArtifactory(ctx context.Context, jarPath string) (string, error) {
-	// Формуємо URL до Artifactory Storage API для отримання метаданих файлу
 	url := fmt.Sprintf("%s/api/storage/%s", a.baseURL, jarPath)
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)

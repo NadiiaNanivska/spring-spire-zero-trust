@@ -1,4 +1,4 @@
-package internal
+package procfs
 
 import (
 	"testing"
@@ -59,17 +59,15 @@ func TestSanitizeSelector(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := sanitizeSelector(tt.input)
+			got := SanitizeSelector(tt.input)
 			if got != tt.want {
-				t.Errorf("sanitizeSelector(%q) = %q, want %q", tt.input, got, tt.want)
+				t.Errorf("SanitizeSelector(%q) = %q, want %q", tt.input, got, tt.want)
 			}
 		})
 	}
 }
 
 func TestSanitizeSelector_OutputIsValidSelectorValue(t *testing.T) {
-	// Any output from sanitizeSelector must not contain characters
-	// that would break SPIRE selector parsing.
 	dangerous := []string{
 		"-javaagent:/evil.jar",
 		"-Xrunjdwp:transport=dt_socket,server=y",
@@ -79,11 +77,11 @@ func TestSanitizeSelector_OutputIsValidSelectorValue(t *testing.T) {
 		"\x00null\x00byte\x00",
 	}
 	for _, input := range dangerous {
-		got := sanitizeSelector(input)
+		got := SanitizeSelector(input)
 		for i, r := range got {
 			if r == ':' || r == '=' || r == ' ' || r < 0x20 {
 				t.Errorf(
-					"sanitizeSelector(%q): illegal rune %q at position %d in output %q",
+					"SanitizeSelector(%q): illegal rune %q at position %d in output %q",
 					input, r, i, got,
 				)
 			}
@@ -145,21 +143,21 @@ func TestParseEnviron(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := parseEnviron(tt.input)
+			got := ParseEnviron(tt.input)
 
 			if len(got) != len(tt.want) {
-				t.Errorf("parseEnviron(%q): got %d entries, want %d; got=%v want=%v",
+				t.Errorf("ParseEnviron(%q): got %d entries, want %d; got=%v want=%v",
 					tt.input, len(got), len(tt.want), got, tt.want)
 				return
 			}
 			for k, wantV := range tt.want {
 				gotV, ok := got[k]
 				if !ok {
-					t.Errorf("parseEnviron(%q): missing key %q", tt.input, k)
+					t.Errorf("ParseEnviron(%q): missing key %q", tt.input, k)
 					continue
 				}
 				if gotV != wantV {
-					t.Errorf("parseEnviron(%q): key %q = %q, want %q", tt.input, k, gotV, wantV)
+					t.Errorf("ParseEnviron(%q): key %q = %q, want %q", tt.input, k, gotV, wantV)
 				}
 			}
 		})
@@ -167,21 +165,19 @@ func TestParseEnviron(t *testing.T) {
 }
 
 func TestParseEnviron_JavaToolOptionsScenarios(t *testing.T) {
-	// These cases mirror exactly what antitamper.go checks at runtime.
 	dangerous := map[string]string{
 		"JAVA_TOOL_OPTIONS": "-javaagent:/evil.jar",
 		"_JAVA_OPTIONS":     "-agentlib:jdwp",
 		"JDK_JAVA_OPTIONS":  "-Xrunjdwp:transport=dt_socket",
 	}
 
-	// Build a raw environ string from the dangerous map.
 	raw := ""
 	for k, v := range dangerous {
 		raw += k + "=" + v + "\x00"
 	}
 	raw += "PATH=/usr/bin\x00"
 
-	got := parseEnviron(raw)
+	got := ParseEnviron(raw)
 
 	for k, wantV := range dangerous {
 		if got[k] != wantV {

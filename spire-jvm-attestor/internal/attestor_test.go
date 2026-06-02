@@ -11,9 +11,11 @@ import (
 	"testing"
 
 	workloadattestorv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/plugin/agent/workloadattestor/v1"
-	"github.com/yourorg/spire-jvm-attestor/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/yourorg/spire-jvm-attestor/config"
+	"github.com/yourorg/spire-jvm-attestor/internal/cache"
+	"github.com/yourorg/spire-jvm-attestor/internal/checkers"
 )
 
 type fakeHashSource struct {
@@ -61,15 +63,14 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 	t.Run("Success: Full clean pipeline attestation", func(t *testing.T) {
 		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
 
-		// Ініціалізуємо конфігурацію плагіна
 		attestor := &JVMAttestor{
 			procFS:    tmpDir,
 			config:    &config.Config{BlockOnAttachSocket: false},
-			hashCache: NewHashCache(),
-			checkers: []Checker{
-				NewAntiDebugChecker(),
-				NewAntiTamperChecker(false),
-				NewJarHashChecker(fakeRegistry),
+			hashCache: cache.NewHashCache(),
+			pipeline: []checkers.Checker{
+				checkers.NewAntiDebugChecker(),
+				checkers.NewAntiTamperChecker(false),
+				checkers.NewJarHashChecker(fakeRegistry),
 			},
 		}
 
@@ -79,41 +80,35 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 
-		// ФІКС СИГНАТУР И КОНСТАНТ ЗБІГУ СЕЛЕКТОРІВ
 		assert.Contains(t, resp.SelectorValues, "debug_clean=true")
 		assert.Contains(t, resp.SelectorValues, "agent_flags_clean=true")
-
-		// Виправлено: заміна сирого "attach_socket_clean=true" на реальну константу "attach_socket_exposed=false"
 		assert.Contains(t, resp.SelectorValues, "attach_socket_exposed=false")
-
-		// Виправлено: заміна знаку "=" на константну двокрапку ":" відповідно до SelectorJarSha256Prefix
 		assert.Contains(t, resp.SelectorValues, "jar_sha256:"+expectedHash)
-
 		assert.Contains(t, resp.SelectorValues, "maps_verified=true")
 		assert.Contains(t, resp.SelectorValues, "inode_consistent=true")
 	})
 
 	t.Run("Fail-Fast: Stop execution if process is under debug", func(t *testing.T) {
 		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
-		
+
 		statusPath := filepath.Join(procRoot, "status")
 		require.NoError(t, os.WriteFile(statusPath, []byte("Name: java\nTracerPid: 9999\n"), 0644))
 
 		attestor := &JVMAttestor{
 			procFS:    tmpDir,
 			config:    &config.Config{BlockOnAttachSocket: false},
-			hashCache: NewHashCache(),
-			checkers: []Checker{
-				NewAntiDebugChecker(),
-				NewAntiTamperChecker(false),
-				NewJarHashChecker(fakeRegistry),
+			hashCache: cache.NewHashCache(),
+			pipeline: []checkers.Checker{
+				checkers.NewAntiDebugChecker(),
+				checkers.NewAntiTamperChecker(false),
+				checkers.NewJarHashChecker(fakeRegistry),
 			},
 		}
 
 		req := &workloadattestorv1.AttestRequest{Pid: int32(pid)}
 		resp, err := attestor.Attest(context.Background(), req)
 
-		require.NoError(t, err) 
+		require.NoError(t, err)
 		require.NotNil(t, resp)
 		assert.Contains(t, resp.SelectorValues, "debug_clean=false")
 		assert.Contains(t, resp.SelectorValues, "tracer_pid=9999")
@@ -136,11 +131,11 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 		attestor := &JVMAttestor{
 			procFS:    tmpDir,
 			config:    &config.Config{BlockOnAttachSocket: false},
-			hashCache: NewHashCache(),
-			checkers: []Checker{
-				NewAntiDebugChecker(),
-				NewAntiTamperChecker(false),
-				NewJarHashChecker(brokenRegistry),
+			hashCache: cache.NewHashCache(),
+			pipeline: []checkers.Checker{
+				checkers.NewAntiDebugChecker(),
+				checkers.NewAntiTamperChecker(false),
+				checkers.NewJarHashChecker(brokenRegistry),
 			},
 		}
 

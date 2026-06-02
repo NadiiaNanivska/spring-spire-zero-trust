@@ -1,4 +1,4 @@
-package internal
+package cache
 
 import (
 	"crypto/sha256"
@@ -8,6 +8,8 @@ import (
 	"os"
 	"sync"
 	"syscall"
+
+	"golang.org/x/sync/singleflight"
 )
 
 type cacheKey struct {
@@ -19,6 +21,7 @@ type HashCache struct {
 	mu          sync.RWMutex
 	store       map[cacheKey]string
 	stringStore map[string]string
+	sfGroup     singleflight.Group
 }
 
 func NewHashCache() *HashCache {
@@ -68,13 +71,22 @@ func (hc *HashCache) GetOrCompute(inode uint64, mtime int64, computeFn func() (s
 		return hash, nil
 	}
 
-	hash, err := computeFn()
+	sfKey := fmt.Sprintf("%d:%d", inode, mtime)
+	v, err, _ := hc.sfGroup.Do(sfKey, func() (interface{}, error) {
+		if hash, err := hc.Get(inode, mtime); err == nil {
+			return hash, nil
+		}
+		hash, err := computeFn()
+		if err != nil {
+			return "", err
+		}
+		hc.Set(inode, mtime, hash)
+		return hash, nil
+	})
 	if err != nil {
 		return "", err
 	}
-
-	hc.Set(inode, mtime, hash)
-	return hash, nil
+	return v.(string), nil
 }
 
 func (hc *HashCache) GetOrComputeByPath(filePath string) (string, error) {
@@ -88,7 +100,7 @@ func (hc *HashCache) GetOrComputeByPath(filePath string) (string, error) {
 		return "", fmt.Errorf("cannot retrieve syscall.Stat_t for %s", filePath)
 	}
 
-	return hc.GetOrCompute(diskStat.Ino, diskInfo.ModTime().Unix(), func() (string, error) {
+	return hc.GetOrCompute(diskStat.Ino, diskInfo.ModTime().UnixNano(), func() (string, error) {
 		file, err := os.Open(filePath)
 		if err != nil {
 			return "", err

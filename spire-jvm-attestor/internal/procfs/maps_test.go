@@ -1,4 +1,4 @@
-package internal
+package procfs
 
 import (
 	"os"
@@ -21,18 +21,18 @@ func TestParseJarPathsFromMaps_SingleJar(t *testing.T) {
 7fff00000000-7fff10000000 r--p 00000000 00:00 0 [stack]
 `)
 
-	entries, err := parseJarPathsFromMaps(procRoot)
+	entries, err := ParseJarPathsFromMaps(procRoot)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if len(entries) != 1 {
 		t.Fatalf("expected 1 entry, got %d: %+v", len(entries), entries)
 	}
-	if entries[0].path != "/app/service.jar" {
-		t.Errorf("expected /app/service.jar, got %s", entries[0].path)
+	if entries[0].Path != "/app/service.jar" {
+		t.Errorf("expected /app/service.jar, got %s", entries[0].Path)
 	}
-	if entries[0].inode != 1234567 {
-		t.Errorf("expected inode 1234567, got %d", entries[0].inode)
+	if entries[0].Inode != 1234567 {
+		t.Errorf("expected inode 1234567, got %d", entries[0].Inode)
 	}
 }
 
@@ -43,7 +43,7 @@ func TestParseJarPathsFromMaps_DeduplicatesJar(t *testing.T) {
 7f3a20000000-7f3a30000000 rw-p 02000000 fd:01 999 /app/fat.jar
 `)
 
-	entries, err := parseJarPathsFromMaps(procRoot)
+	entries, err := ParseJarPathsFromMaps(procRoot)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -57,7 +57,7 @@ func TestParseJarPathsFromMaps_NoJars(t *testing.T) {
 7fff00000000-7fff10000000 r--p 00000000 00:00 0 [stack]
 `)
 
-	entries, err := parseJarPathsFromMaps(procRoot)
+	entries, err := ParseJarPathsFromMaps(procRoot)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -73,18 +73,18 @@ func TestExtractJarsFromCmdline_SpringBoot(t *testing.T) {
 		t.Fatalf("write cmdline: %v", err)
 	}
 
-	entries, err := extractJarsFromCmdline(dir)
+	entries, err := ExtractJarsFromCmdline(dir)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if len(entries) != 1 {
 		t.Fatalf("expected 1 entry, got %d", len(entries))
 	}
-	if entries[0].path != "/app/application.jar" {
-		t.Errorf("expected /app/application.jar, got %s", entries[0].path)
+	if entries[0].Path != "/app/application.jar" {
+		t.Errorf("expected /app/application.jar, got %s", entries[0].Path)
 	}
-	if entries[0].inode != 0 {
-		t.Errorf("cmdline fallback should set inode=0, got %d", entries[0].inode)
+	if entries[0].Inode != 0 {
+		t.Errorf("cmdline fallback should set Inode=0, got %d", entries[0].Inode)
 	}
 }
 
@@ -95,7 +95,7 @@ func TestExtractJarsFromCmdline_NoJar(t *testing.T) {
 		t.Fatalf("write cmdline: %v", err)
 	}
 
-	entries, err := extractJarsFromCmdline(dir)
+	entries, err := ExtractJarsFromCmdline(dir)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

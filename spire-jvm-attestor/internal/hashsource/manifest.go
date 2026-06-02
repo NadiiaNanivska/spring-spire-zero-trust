@@ -8,8 +8,6 @@ import (
 	"sync"
 )
 
-// manifestSchema чітко повторює структуру, яку генерує скрипт generate-manifest.sh.
-// Версія парситься як int, тому помилка unmarshal number into string зникає.
 type manifestSchema struct {
 	Version int               `json:"version"`
 	Jars    map[string]string `json:"jars"`
@@ -43,8 +41,7 @@ func (l *LocalManifestSource) GetExpectedHash(ctx context.Context, jarPath strin
 
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	
-	// Double-checked locking
+
 	if l.isLoaded {
 		hash, exists := l.cache[jarPath]
 		if !exists {
@@ -63,7 +60,6 @@ func (l *LocalManifestSource) GetExpectedHash(ctx context.Context, jarPath strin
 		return "", fmt.Errorf("failed to parse manifest json: %w", err)
 	}
 
-	// Зберігаємо безпосередньо внутрішню мапу хешів
 	l.cache = schema.Jars
 	l.isLoaded = true
 
