@@ -1,4 +1,4 @@
-package internal
+package checkers
 
 import (
 	"fmt"
@@ -37,7 +37,7 @@ func (c *AntiDebugChecker) Check(ctx *AttestationContext) ([]string, error) {
 
 		tracerPid, err := strconv.Atoi(parts[1])
 		if err != nil {
-			break
+			return nil, fmt.Errorf("cannot parse TracerPid %q: %w", parts[1], err)
 		}
 
 		if tracerPid > 0 {
