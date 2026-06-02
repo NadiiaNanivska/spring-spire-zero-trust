@@ -1,4 +1,4 @@
-package internal
+package checkers
 
 import (
 	"crypto/sha256"
@@ -11,6 +11,7 @@ import (
 	"syscall"
 
 	"github.com/yourorg/spire-jvm-attestor/internal/hashsource"
+	"github.com/yourorg/spire-jvm-attestor/internal/procfs"
 )
 
 type JarHashChecker struct {
@@ -34,13 +35,13 @@ func (c *JarHashChecker) Name() string {
 }
 
 func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
-	jarEntries, err := parseJarPathsFromMaps(ctx.ProcRoot)
+	jarEntries, err := procfs.ParseJarPathsFromMaps(ctx.ProcRoot)
 	if err != nil {
 		return nil, fmt.Errorf("maps parse error: %w", err)
 	}
 
 	if len(jarEntries) == 0 {
-		jarEntries, err = extractJarsFromCmdline(ctx.ProcRoot)
+		jarEntries, err = procfs.ExtractJarsFromCmdline(ctx.ProcRoot)
 		if err != nil {
 			return nil, fmt.Errorf("jar cmdline fallback error: %w", err)
 		}
@@ -53,7 +54,7 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 	globalInodeConsistent := true
 
 	for _, entry := range jarEntries {
-		nsPath := filepath.Join(ctx.ProcRoot, "root", entry.path)
+		nsPath := filepath.Join(ctx.ProcRoot, "root", entry.Path)
 
 		diskInfo, err := os.Stat(nsPath)
 		if err != nil {
@@ -67,8 +68,8 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 
 		var actualHash string
 
-		if entry.inode == 0 {
-			sbKey := fmt.Sprintf("%s:%d:%d", entry.path, diskInfo.ModTime().Unix(), diskInfo.Size())
+		if entry.Inode == 0 {
+			sbKey := fmt.Sprintf("%s:%d:%d", entry.Path, diskInfo.ModTime().UnixNano(), diskInfo.Size())
 
 			if cachedHash, found := ctx.HashCache.GetSpringBoot(sbKey); found {
 				actualHash = cachedHash
@@ -81,10 +82,10 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 				ctx.HashCache.SetSpringBoot(sbKey, actualHash)
 			}
 
-		} else if diskStat.Ino != entry.inode {
+		} else if diskStat.Ino != entry.Inode {
 			globalInodeConsistent = false
 
-			if cachedHash, err := ctx.HashCache.Get(diskStat.Ino, diskInfo.ModTime().Unix()); err == nil && cachedHash != "" {
+			if cachedHash, err := ctx.HashCache.Get(diskStat.Ino, diskInfo.ModTime().UnixNano()); err == nil && cachedHash != "" {
 				actualHash = cachedHash
 			} else {
 				computedHash, err := c.calculateFileSHA256(nsPath)
@@ -92,11 +93,11 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 					return nil, fmt.Errorf("forced hash computation failed for overlayfs path %s: %w", nsPath, err)
 				}
 				actualHash = computedHash
-				ctx.HashCache.Set(diskStat.Ino, diskInfo.ModTime().Unix(), actualHash)
+				ctx.HashCache.Set(diskStat.Ino, diskInfo.ModTime().UnixNano(), actualHash)
 			}
 
 		} else {
-			hash, err := ctx.HashCache.GetOrCompute(entry.inode, diskInfo.ModTime().Unix(), func() (string, error) {
+			hash, err := ctx.HashCache.GetOrCompute(entry.Inode, diskInfo.ModTime().UnixNano(), func() (string, error) {
 				return c.calculateFileSHA256(nsPath)
 			})
 			if err != nil {
@@ -105,19 +106,18 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 			actualHash = hash
 		}
 
-		expected, err := c.hashSource.GetExpectedHash(ctx.Context, entry.path)
+		expected, err := c.hashSource.GetExpectedHash(ctx.Context, entry.Path)
 		if err != nil {
-			return nil, fmt.Errorf("integrity configuration error for %s: %w", entry.path, err)
+			return nil, fmt.Errorf("integrity configuration error for %s: %w", entry.Path, err)
 		}
 
 		if actualHash != expected {
-			return nil, fmt.Errorf("jar crypto integrity mismatch for %s: computed=%s expected=%s", entry.path, actualHash, expected)
+			return nil, fmt.Errorf("jar crypto integrity mismatch for %s: computed=%s expected=%s", entry.Path, actualHash, expected)
 		}
 
 		allSelectors = append(allSelectors, SelectorJarSha256Prefix+actualHash)
 	}
 
-	// Додаємо інфраструктурні селектори верифікації
 	allSelectors = append(allSelectors, SelectorMapsVerified)
 	if globalInodeConsistent {
 		allSelectors = append(allSelectors, SelectorInodeConsistentTrue)

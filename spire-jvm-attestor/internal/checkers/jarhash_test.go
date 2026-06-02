@@ -1,4 +1,4 @@
-package internal
+package checkers
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/yourorg/spire-jvm-attestor/internal/cache"
 )
 
 // MockHashSource реалізує інтерфейс HashSource для тестування
@@ -66,7 +67,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 	}
 
 	checker := NewJarHashChecker(mockSource)
-	hashCache := NewHashCache()
+	hashCache := cache.NewHashCache()
 
 	t.Run("Success: Multi-JAR verification (Fix Bug 8)", func(t *testing.T) {
 		ctx := &AttestationContext{
@@ -96,7 +97,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 			Context:   context.Background(),
 			PID:       1234,
 			ProcRoot:  procRoot,
-			HashCache: NewHashCache(), // чистий кеш
+			HashCache: cache.NewHashCache(), // чистий кеш
 		}
 
 		// Для Spring Boot inode в карті пам'яті буде 0
@@ -134,7 +135,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 			Context:   context.Background(),
 			PID:       1234,
 			ProcRoot:  procRoot,
-			HashCache: NewHashCache(),
+			HashCache: cache.NewHashCache(),
 		}
 
 		// Підміняємо файл шкідливим контентом
