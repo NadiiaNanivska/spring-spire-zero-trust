@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"syscall"
 	"testing"
 
 	workloadattestorv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/plugin/agent/workloadattestor/v1"
@@ -51,8 +50,8 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 
 	stat, err := os.Stat(jarPath)
 	require.NoError(t, err)
-	sysStat := stat.Sys().(*syscall.Stat_t)
-	actualInode := sysStat.Ino
+	actualInode, err := cache.GetInode(stat)
+	require.NoError(t, err)
 
 	fakeRegistry := &fakeHashSource{
 		hashes: map[string]string{

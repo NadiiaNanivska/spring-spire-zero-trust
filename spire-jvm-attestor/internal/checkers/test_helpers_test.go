@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"syscall"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/yourorg/spire-jvm-attestor/internal/cache"
 )
 
 func containsSelector(selectors []string, target string) bool {
@@ -27,8 +27,8 @@ func computeRawSHA256(data []byte) string {
 }
 
 func getInode(fi os.FileInfo) uint64 {
-	stat, _ := fi.Sys().(*syscall.Stat_t)
-	return stat.Ino
+	ino, _ := cache.GetInode(fi)
+	return ino
 }
 
 func createFakeMapsFile(t *testing.T, procRoot string, ino1 uint64, path1 string, ino2 uint64, path2 string) {

@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
-	"syscall"
 
+	"github.com/yourorg/spire-jvm-attestor/internal/cache"
 	"github.com/yourorg/spire-jvm-attestor/internal/hashsource"
 	"github.com/yourorg/spire-jvm-attestor/internal/procfs"
 )
@@ -61,9 +61,9 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 			return nil, fmt.Errorf("cannot stat jar at %s: %w", nsPath, err)
 		}
 
-		diskStat, ok := diskInfo.Sys().(*syscall.Stat_t)
-		if !ok {
-			return nil, fmt.Errorf("cannot retrieve syscall.Stat_t for %s", nsPath)
+		diskInode, err := cache.GetInode(diskInfo)
+		if err != nil {
+			return nil, fmt.Errorf("cannot retrieve inode for %s: %w", nsPath, err)
 		}
 
 		var actualHash string
@@ -82,10 +82,10 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 				ctx.HashCache.SetSpringBoot(sbKey, actualHash)
 			}
 
-		} else if diskStat.Ino != entry.Inode {
+		} else if diskInode != entry.Inode {
 			globalInodeConsistent = false
 
-			if cachedHash, err := ctx.HashCache.Get(diskStat.Ino, diskInfo.ModTime().UnixNano()); err == nil && cachedHash != "" {
+			if cachedHash, err := ctx.HashCache.Get(diskInode, diskInfo.ModTime().UnixNano()); err == nil && cachedHash != "" {
 				actualHash = cachedHash
 			} else {
 				computedHash, err := c.calculateFileSHA256(nsPath)
@@ -93,7 +93,7 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 					return nil, fmt.Errorf("forced hash computation failed for overlayfs path %s: %w", nsPath, err)
 				}
 				actualHash = computedHash
-				ctx.HashCache.Set(diskStat.Ino, diskInfo.ModTime().UnixNano(), actualHash)
+				ctx.HashCache.Set(diskInode, diskInfo.ModTime().UnixNano(), actualHash)
 			}
 
 		} else {
