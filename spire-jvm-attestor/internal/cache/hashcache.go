@@ -7,7 +7,6 @@ import (
 	"io"
 	"os"
 	"sync"
-	"syscall"
 
 	"golang.org/x/sync/singleflight"
 )
@@ -95,12 +94,12 @@ func (hc *HashCache) GetOrComputeByPath(filePath string) (string, error) {
 		return "", err
 	}
 
-	diskStat, ok := diskInfo.Sys().(*syscall.Stat_t)
-	if !ok {
-		return "", fmt.Errorf("cannot retrieve syscall.Stat_t for %s", filePath)
+	inode, err := GetInode(diskInfo)
+	if err != nil {
+		return "", fmt.Errorf("cannot retrieve inode for %s: %w", filePath, err)
 	}
 
-	return hc.GetOrCompute(diskStat.Ino, diskInfo.ModTime().UnixNano(), func() (string, error) {
+	return hc.GetOrCompute(inode, diskInfo.ModTime().UnixNano(), func() (string, error) {
 		file, err := os.Open(filePath)
 		if err != nil {
 			return "", err
