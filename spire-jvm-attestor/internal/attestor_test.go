@@ -82,7 +82,7 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 		assert.Contains(t, resp.SelectorValues, "debug_clean=true")
 		assert.Contains(t, resp.SelectorValues, "agent_flags_clean=true")
 		assert.Contains(t, resp.SelectorValues, "attach_socket_exposed=false")
-		assert.Contains(t, resp.SelectorValues, "jar_sha256:"+expectedHash)
+		assert.Contains(t, resp.SelectorValues, "jar_sha256="+expectedHash)
 		assert.Contains(t, resp.SelectorValues, "maps_verified=true")
 		assert.Contains(t, resp.SelectorValues, "inode_consistent=true")
 	})

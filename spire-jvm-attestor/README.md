@@ -27,7 +27,7 @@ jvm:agent_flags_clean=true|false
 jvm:attach_socket_exposed=true|false
 jvm:maps_verified=true
 jvm:inode_consistent=true|false
-jvm:jar_sha256:<hex>
+jvm:jar_sha256=<hex>
 ```
 
 ## Build
@@ -69,7 +69,7 @@ spiffe://prod.example.org/service/payments {
     "jvm:attach_socket_exposed=false",
     "jvm:maps_verified=true",
     "jvm:inode_consistent=true",
-    "jvm:jar_sha256:a3f2b1c4d5e6f7a8...",
+    "jvm:jar_sha256=a3f2b1c4d5e6f7a8...",
   ]
 }
 ```
