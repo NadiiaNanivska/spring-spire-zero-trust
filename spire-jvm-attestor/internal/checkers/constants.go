@@ -16,5 +16,5 @@ const (
 	SelectorTracerPidPrefix      = "jvm:tracer_pid="
 	SelectorSuspiciousFlagPrefix = "jvm:suspicious_flag="
 	SelectorSuspiciousEnvPrefix  = "jvm:suspicious_env="
-	SelectorJarSha256Prefix      = "jvm:jar_sha256:"
+	SelectorJarSha256Prefix      = "jvm:jar_sha256="
 )
