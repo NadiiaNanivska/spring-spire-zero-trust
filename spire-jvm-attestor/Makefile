@@ -12,7 +12,10 @@ all: build test
 build:
 	@mkdir -p $(OUTPUT_DIR)
 	$(GO) build $(GOFLAGS) -o $(OUTPUT_DIR)/$(BINARY) $(CMD_PKG)
-	@echo "Built $(OUTPUT_DIR)/$(BINARY)"
+	chmod 0755 $(OUTPUT_DIR)/$(BINARY)
+	sha256sum $(OUTPUT_DIR)/$(BINARY) > $(OUTPUT_DIR)/$(BINARY).sha256
+	@echo "Built  : $(OUTPUT_DIR)/$(BINARY)"
+	@echo "SHA256 : $$(cat $(OUTPUT_DIR)/$(BINARY).sha256)"
 
 test:
 	$(GO) test $(GOFLAGS) ./...

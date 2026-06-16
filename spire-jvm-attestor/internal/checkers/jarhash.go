@@ -34,6 +34,13 @@ func (c *JarHashChecker) Name() string {
 	return "jar-hash"
 }
 
+func (c *JarHashChecker) Close() error {
+	if closer, ok := c.hashSource.(io.Closer); ok {
+		return closer.Close()
+	}
+	return nil
+}
+
 func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 	jarEntries, err := procfs.ParseJarPathsFromMaps(ctx.ProcRoot)
 	if err != nil {
