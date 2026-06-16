@@ -33,8 +33,37 @@ jvm:jar_sha256=<hex>
 ## Build
 
 ```bash
-go build -o jvm-attestor ./cmd/jvm-attestor
+make build
 ```
+
+This produces two files in `bin/`:
+
+| File | Purpose |
+|---|---|
+| `bin/jvm-attestor` | Plugin binary (permissions: `0755`) |
+| `bin/jvm-attestor.sha256` | SHA256 checksum for `plugin_checksum` |
+
+## Deploy
+
+Copy the binary to the SPIRE agent host and set the `plugin_checksum` field in
+`agent.conf` to the value produced by `make build`:
+
+```bash
+# Print the checksum value to use in agent.conf
+cat bin/jvm-attestor.sha256
+# Example output: a3f2b1c4d5e6f7a8...  bin/jvm-attestor
+
+# Deploy the binary
+install -m 0755 bin/jvm-attestor /opt/spire/plugins/jvm-attestor
+```
+
+```hcl
+# agent.conf — use the hex digest from bin/jvm-attestor.sha256
+plugin_checksum = "sha256:<hex digest>"
+```
+
+The binary must be owned by root and have permissions `0755` (or `0700`) so the
+SPIRE agent can execute it but untrusted users cannot replace it.
 
 ## Configuration
 

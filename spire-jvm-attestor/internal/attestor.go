@@ -2,10 +2,13 @@ package internal
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"strings"
 	"sync"
 
+	"github.com/hashicorp/go-hclog"
 	workloadattestorv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/plugin/agent/workloadattestor/v1"
 	configv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/service/common/config/v1"
 	"github.com/yourorg/spire-jvm-attestor/config"
@@ -27,6 +30,18 @@ type JVMAttestor struct {
 	procFS    string
 	pipeline  []checkers.Checker
 	hashCache *cache.HashCache
+	logger    hclog.Logger
+}
+
+func (p *JVMAttestor) SetLogger(logger hclog.Logger) {
+	p.logger = logger
+}
+
+func (p *JVMAttestor) safeLogger() hclog.Logger {
+	if p.logger != nil {
+		return p.logger
+	}
+	return hclog.NewNullLogger()
 }
 
 func New() *JVMAttestor {
@@ -113,6 +128,7 @@ func (p *JVMAttestor) Configure(
 		return nil, status.Errorf(codes.InvalidArgument, "invalid plugin configuration: %v", err)
 	}
 
+	p.safeLogger().Info("plugin configured", "hash_source_type", resolveHashSourceType(cfg))
 	return &configv1.ConfigureResponse{}, nil
 }
 
@@ -141,10 +157,15 @@ func (p *JVMAttestor) Attest(
 	for _, checker := range pipeline {
 		selectors, err := checker.Check(attestCtx)
 		if err != nil {
-			if checker.Name() == "anti-debug" {
+			p.safeLogger().Warn("checker failed", "checker", checker.Name(), "pid", req.Pid, "error", err)
+			switch checker.Name() {
+			case "anti-debug":
 				return nil, status.Errorf(codes.Internal, "anti-debug check: %v", err)
+			case "anti-tamper":
+				return nil, status.Errorf(codes.FailedPrecondition, "%s check failed: %v", checker.Name(), err)
+			default:
+				return nil, status.Errorf(codes.PermissionDenied, "%s check failed: %v", checker.Name(), err)
 			}
-			return nil, status.Errorf(codes.PermissionDenied, "%s check failed: %v", checker.Name(), err)
 		}
 
 		allSelectors = append(allSelectors, selectors...)
@@ -155,7 +176,24 @@ func (p *JVMAttestor) Attest(
 		}
 	}
 
+	p.safeLogger().Debug("attestation complete", "pid", req.Pid, "selectors", len(allSelectors))
 	return buildResponse(allSelectors), nil
+}
+
+func (p *JVMAttestor) Close() error {
+	p.mu.RLock()
+	pipeline := p.pipeline
+	p.mu.RUnlock()
+
+	var errs []error
+	for _, checker := range pipeline {
+		if closer, ok := checker.(io.Closer); ok {
+			if err := closer.Close(); err != nil {
+				errs = append(errs, err)
+			}
+		}
+	}
+	return errors.Join(errs...)
 }
 
 func buildResponse(selectors []string) *workloadattestorv1.AttestResponse {

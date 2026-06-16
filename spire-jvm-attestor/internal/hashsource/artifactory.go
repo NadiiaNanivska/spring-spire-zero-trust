@@ -76,3 +76,8 @@ func (a *ArtifactorySource) fetchFromArtifactory(ctx context.Context, jarPath st
 
 	return artResp.Checksums.Sha256, nil
 }
+
+func (a *ArtifactorySource) Close() error {
+	a.client.CloseIdleConnections()
+	return nil
+}
