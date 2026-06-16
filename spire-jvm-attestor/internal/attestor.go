@@ -23,7 +23,7 @@ import (
 // via /proc/<PID>/*: ptrace state, dangerous flags, and JAR SHA-256.
 type JVMAttestor struct {
 	workloadattestorv1.UnsafeWorkloadAttestorServer
-	configv1.UnsafeConfigServer
+	configv1.UnimplementedConfigServer
 
 	mu        sync.RWMutex
 	config    *config.Config
