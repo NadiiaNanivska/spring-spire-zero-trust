@@ -177,6 +177,32 @@ func TestIntegration_Attest_CleanJVM(t *testing.T) {
 	assert.Contains(t, resp.SelectorValues, "maps_verified=true")
 }
 
+func TestIntegration_Attest_DebuggerAttached(t *testing.T) {
+	procRoot, manifestPath, _ := setupFakeProcFS(t)
+
+	statusPath := filepath.Join(procRoot, fmt.Sprintf("%d", integrationTestPID), "status")
+	require.NoError(t, os.WriteFile(statusPath, []byte("Name: java\nState: S (sleeping)\nTgid: 4321\nPid: 4321\nTracerPid: 9999\n"), 0644))
+
+	plugin := internal.New()
+	plugin.SetProcFSForTest(procRoot)
+	waClient, cfgClient := servePlugin(t, plugin)
+
+	ctx := context.Background()
+	_, err := cfgClient.Configure(ctx, &configv1.ConfigureRequest{
+		HclConfiguration: fmt.Sprintf("hash_manifest_path = %q", manifestPath),
+	})
+	require.NoError(t, err)
+
+	resp, err := waClient.Attest(ctx, &workloadattestorv1.AttestRequest{Pid: integrationTestPID})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	assert.Contains(t, resp.SelectorValues, "debug_clean=false")
+	assert.Contains(t, resp.SelectorValues, "tracer_pid=9999")
+	assert.NotContains(t, resp.SelectorValues, "jar_sha256=")
+	assert.NotContains(t, resp.SelectorValues, "maps_verified=true")
+}
+
 // TestIntegration_Close verifies that Close returns nil and that the plugin
 // can be closed multiple times without panicking (idempotence). The manifest
 // source holds no network resources, so both calls must be no-ops.
