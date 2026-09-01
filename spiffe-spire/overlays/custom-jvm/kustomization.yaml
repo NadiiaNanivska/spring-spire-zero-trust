@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Варіант "custom-jvm": WorkloadAttestor "jvm" (anti-debug + anti-tamper + jar-hash)
+# увімкнений поряд зі стандартними k8s/unix attestor'ами.
+# Це те саме, що застосувати базові маніфести без змін.
+resources:
+- ../../base

@@ -2,7 +2,6 @@ package checkers
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,19 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/yourorg/spire-jvm-attestor/internal/cache"
 )
-
-// MockHashSource реалізує інтерфейс HashSource для тестування
-type MockHashSource struct {
-	expectedHashes map[string]string
-}
-
-func (m *MockHashSource) GetExpectedHash(ctx context.Context, jarPath string) (string, error) {
-	hash, exists := m.expectedHashes[jarPath]
-	if !exists {
-		return "", fmt.Errorf("artifact not found in mock source: %s", jarPath)
-	}
-	return hash, nil
-}
 
 func TestJarHashChecker_Check(t *testing.T) {
 	// Створюємо тимчасову директорію під фейковий /proc
@@ -58,15 +44,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 	require.NoError(t, err)
 	ino2 := getInode(stat2)
 
-	// Налаштовуємо MockHashSource з еталонними хешами
-	mockSource := &MockHashSource{
-		expectedHashes: map[string]string{
-			"/app/service.jar":  hash1,
-			"/app/lib-core.jar": hash2,
-		},
-	}
-
-	checker := NewJarHashChecker(mockSource)
+	checker := NewJarHashChecker()
 	hashCache := cache.NewHashCache()
 
 	t.Run("Success: Multi-JAR verification (Fix Bug 8)", func(t *testing.T) {
@@ -130,7 +108,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 		assert.Contains(t, selectors, SelectorInodeConsistentFalse)
 	})
 
-	t.Run("Crypto Hard-Fail: Modified JAR file", func(t *testing.T) {
+	t.Run("Modified JAR: emits recomputed hash, no hard-fail", func(t *testing.T) {
 		ctx := &AttestationContext{
 			Context:   context.Background(),
 			PID:       1234,
@@ -138,17 +116,21 @@ func TestJarHashChecker_Check(t *testing.T) {
 			HashCache: cache.NewHashCache(),
 		}
 
-		// Підміняємо файл шкідливим контентом
-		require.NoError(t, os.WriteFile(jar1Path, []byte("MALICIOUS_BYTECODE_INJECTED"), 0644))
+		// Підміняємо файл іншим контентом.
+		modifiedContent := []byte("MALICIOUS_BYTECODE_INJECTED")
+		require.NoError(t, os.WriteFile(jar1Path, modifiedContent, 0644))
 		statMod, err := os.Stat(jar1Path)
 		require.NoError(t, err)
 
 		createFakeMapsFile(t, procRoot, getInode(statMod), jar1NsPath, 0, "")
 
-		// Має спрацювати криптографічний Hard-fail Рівня 3
+		// Плагін більше НЕ порівнює з еталоном: він рахує фактичний хеш і кладе
+		// його в селектор. Рішення "дозволено чи ні" приймає реєстраційний запис
+		// SPIRE, тому тут помилки бути не повинно.
+		modifiedHash := computeRawSHA256(modifiedContent)
 		selectors, err := checker.Check(ctx)
-		assert.Error(t, err)
-		assert.Nil(t, selectors)
-		assert.Contains(t, err.Error(), "jar crypto integrity mismatch")
+		assert.NoError(t, err)
+		assert.Contains(t, selectors, SelectorJarSha256Prefix+modifiedHash)
+		assert.NotContains(t, selectors, SelectorJarSha256Prefix+hash1)
 	})
 }

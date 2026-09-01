@@ -88,6 +88,28 @@ func TestExtractJarsFromCmdline_SpringBoot(t *testing.T) {
 	}
 }
 
+func TestExtractJarsFromCmdline_RelativeJarPath(t *testing.T) {
+	dir := t.TempDir()
+	cmdline := "java\x00-jar\x00app.jar\x00"
+	if err := os.WriteFile(filepath.Join(dir, "cmdline"), []byte(cmdline), 0o644); err != nil {
+		t.Fatalf("write cmdline: %v", err)
+	}
+	if err := os.Symlink("/app", filepath.Join(dir, "cwd")); err != nil {
+		t.Fatalf("write cwd symlink: %v", err)
+	}
+
+	entries, err := ExtractJarsFromCmdline(dir)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(entries) != 1 {
+		t.Fatalf("expected 1 entry, got %d", len(entries))
+	}
+	if entries[0].Path != "/app/app.jar" {
+		t.Errorf("expected /app/app.jar, got %s", entries[0].Path)
+	}
+}
+
 func TestExtractJarsFromCmdline_NoJar(t *testing.T) {
 	dir := t.TempDir()
 	cmdline := "java\x00-cp\x00/app/classes\x00com.example.Main\x00"
