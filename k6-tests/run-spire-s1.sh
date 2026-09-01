@@ -8,7 +8,7 @@ NC='\033[0m'
 
 # Конфігурація (зміни URL, якщо треба)
 SPIRE_URL="${SPIRE_URL:-http://localhost:8080}"
-RESULTS_DIR="test-results-spire-s1-rotation-$(date +%Y%m%d-%H%M%S)"
+RESULTS_DIR="test-results-custom-spire-s1-steady-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$RESULTS_DIR"
 
 # Функція для запуску тесту (з твого файлу)
@@ -26,7 +26,7 @@ run_test() {
         -e BASE_URL="$base_url" \
         -e AUTH_TYPE="$auth_type" \
         "scenario${scenario}"-*.js \
-        | tee "$RESULTS_DIR/scenario${scenario}-rotation-${auth_type}-output.log"
+        | tee "$RESULTS_DIR/scenario${scenario}-steady-custom-${auth_type}-output.log"
 
     local exit_code=$?
     local t_end=$(date -u +%s)
@@ -62,7 +62,7 @@ export_prometheus_data() {
 }
 
 
-echo -e "${BLUE}🚀 Starting single test: SPIRE Scenario 1 SVID rotation${NC}"
+echo -e "${BLUE}🚀 Starting single test: SPIRE Scenario 1 Steady State Custom${NC}"
 echo -e "Target: ${GREEN}$SPIRE_URL${NC}\n"
 
 START_TIME=$(date -u +%s)

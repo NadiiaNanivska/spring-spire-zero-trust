@@ -3,9 +3,22 @@ CMD_PKG    := ./cmd/jvm-attestor
 OUTPUT_DIR := bin
 
 GO         := go
-GOFLAGS    :=
+# -buildvcs=false avoids "error obtaining VCS status" when the repo is mounted
+# from a Windows drive into WSL/git-bash (git flags it as "dubious ownership").
+# Override with `make build GOFLAGS=` if you'd rather fix it via
+# `git config --global --add safe.directory <repo-path>`.
+GOFLAGS    := -buildvcs=false
 
-.PHONY: all build test test-race lint vet fmt clean
+# Docker image name (no registry needed for kind load)
+IMAGE        ?= spire-jvm-attestor:latest
+
+# Kind cluster name (must match wsldev --name flag)
+KIND_CLUSTER ?= kind
+
+.PHONY: all build test test-race lint vet fmt clean \
+        docker-build kind-load dev \
+        registry registry-patch registry-down kind-setup \
+        docker-push checksum
 
 all: build test
 
@@ -40,6 +53,69 @@ lint: vet
 manifest:
 	@test -n "$(JAR)" || (echo "Usage: make manifest JAR=/path/to/file.jar"; exit 1)
 	bash scripts/generate-manifest.sh $(JAR) $(or $(OUT),jvm-hashes.json)
+
+## registry: start a local Docker registry on port 5000 and connect it to the Kind network
+registry:
+	docker inspect kind-registry >/dev/null 2>&1 || \
+	  docker run -d --restart=always -p 5000:5000 --name kind-registry registry:2
+	docker network connect kind kind-registry 2>/dev/null || true
+	@echo "Local registry running at $(LOCAL_REGISTRY)"
+
+## registry-patch: patch containerd on existing Kind nodes to mirror localhost:5000 → kind-registry:5000
+##   Run this once after `wsldev up` if the cluster already exists.
+registry-patch:
+	@echo "Patching containerd mirror on Kind nodes..."
+	@for node in $$(kind get nodes --name $(KIND_CLUSTER)); do \
+	  echo "  -> $$node"; \
+	  docker exec $$node sh -c '\
+	    mkdir -p /etc/containerd/certs.d/localhost:5000 && \
+	    printf "[host.\"http://kind-registry:5000\"]\n  capabilities = [\"pull\",\"resolve\"]\n  skip_verify = true\n" \
+	      > /etc/containerd/certs.d/localhost:5000/hosts.toml'; \
+	  docker exec $$node kill -HUP $$(docker exec $$node pgrep -o containerd) 2>/dev/null || true; \
+	done
+	@echo "Done. Kind nodes now mirror localhost:5000 → kind-registry:5000"
+
+## kind-setup: create a fresh Kind cluster pre-configured with the local registry mirror
+kind-setup:
+	kind delete cluster --name $(KIND_CLUSTER) 2>/dev/null || true
+	kind create cluster --name $(KIND_CLUSTER) --config kind-config.yaml
+
+## registry-down: stop and remove the local registry
+registry-down:
+	docker rm -f kind-registry 2>/dev/null || true
+
+## docker-build: build image and load it into the local Docker daemon
+docker-build:
+	docker buildx build \
+	  --platform linux/amd64 \
+	  --tag $(IMAGE) \
+	  --load \
+	  .
+
+## kind-load: load the image directly into the Kind cluster (no registry needed)
+kind-load:
+	kind load docker-image $(IMAGE) --name $(KIND_CLUSTER)
+
+## dev: one-shot — build + load into Kind cluster
+dev: docker-build kind-load
+	@echo "Image $(IMAGE) loaded into Kind cluster '$(KIND_CLUSTER)'"
+
+## docker-push: build multi-arch image (amd64 + arm64) and push directly to the registry
+docker-push:
+	docker buildx inspect multiarch-builder >/dev/null 2>&1 || \
+	  docker buildx create --name multiarch-builder --driver docker-container --use
+	docker buildx build \
+	  --builder multiarch-builder \
+	  --platform linux/amd64,linux/arm64 \
+	  --tag $(IMAGE) \
+	  --push \
+	  .
+
+## checksum: print the SHA-256 of the binary inside the image (copy into agent.conf plugin_checksum)
+checksum:
+	@id=$$(docker create $(IMAGE)); \
+	 docker cp $$id:/jvm-attestor.sha256 - 2>/dev/null | tar -xO; \
+	 docker rm -f $$id >/dev/null
 
 clean:
 	rm -rf $(OUTPUT_DIR)

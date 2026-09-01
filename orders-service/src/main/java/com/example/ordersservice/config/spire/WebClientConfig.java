@@ -17,9 +17,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.resources.ConnectionProvider;
 
 import javax.net.ssl.SSLContext;
 import java.security.Security;
+import java.time.Duration;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -75,7 +77,16 @@ public class WebClientConfig {
                         ClientAuth.REQUIRE
                 );
 
-        HttpClient httpClient = HttpClient.create()
+        // Bound pooled connection lifetime below the SVID TTL so mTLS is
+        // periodically re-handshaked. A tampered/revoked peer whose SVID stops
+        // renewing then fails at the next handshake instead of riding a stale,
+        // long-lived connection whose peer cert is never re-validated.
+        ConnectionProvider connectionProvider = ConnectionProvider.builder("payments")
+                .maxIdleTime(Duration.ofSeconds(10))
+                .maxLifeTime(Duration.ofSeconds(30))
+                .build();
+
+        HttpClient httpClient = HttpClient.create(connectionProvider)
                 .secure(sslSpec -> sslSpec.sslContext(nettySslContext));
 
         return WebClient.builder()

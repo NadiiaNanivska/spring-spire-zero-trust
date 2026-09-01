@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Варіант "default": лише стандартні WorkloadAttestor'и SPIRE (k8s, unix).
+# JVM-attestor plugin (anti-debug/anti-tamper/jar-hash) вимкнений — це
+# baseline-конфігурація для порівняльних load-тестів без кастомного плагіна.
+resources:
+- ../../base
+
+patches:
+- path: agent-configmap-patch.yaml
+- path: agent-daemonset-patch.yaml

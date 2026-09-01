@@ -1,0 +1,14 @@
+# Kind cluster config with local registry mirror.
+# Used by `make kind-setup` — recreates the cluster with containerd pre-configured
+# to redirect localhost:5000 pulls to http://kind-registry:5000 (Docker DNS name).
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+  - |-
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5000"]
+          endpoint = ["http://kind-registry:5000"]
+      [plugins."io.containerd.grpc.v1.cri".registry.configs]
+        [plugins."io.containerd.grpc.v1.cri".registry.configs."kind-registry:5000".tls]
+          insecure_skip_verify = true

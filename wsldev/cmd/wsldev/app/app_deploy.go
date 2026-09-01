@@ -24,6 +24,21 @@ func appDeployCmd() *cobra.Command {
 					os.Exit(1)
 				}
 			}
+
+			// Recompute the freshly built jar hashes into
+			// spiffe-spire/base/jvm-hashes-configmap.yaml. This file is the source
+			// of truth for the expected hashes. Best-effort: the apps are already
+			// deployed, so a cluster/spire hiccup here should not fail the command.
+			if err := apps.SyncJVMHashes(args); err != nil {
+				fmt.Println("WARN: jvm hash sync:", err)
+			}
+
+			// CI/CD step: turn those expected hashes into SPIRE registration
+			// entries (jvm:jar_sha256=<hash> + integrity selectors). The plugin
+			// only computes hashes; the server enforces them via these entries.
+			if err := apps.RegisterJVMWorkloads(args); err != nil {
+				fmt.Println("WARN: jvm workload registration:", err)
+			}
 		},
 	}
 
