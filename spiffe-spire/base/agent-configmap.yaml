@@ -42,6 +42,25 @@ data:
           plugin_data {
           }
       }
+
+      # External JVM integrity attestor.
+      # plugin_cmd   — path inside the agent container (populated by the
+      #                install-jvm-attestor init-container via the jvm-plugin volume).
+      # plugin_checksum — SHA-256 of the binary; run `make checksum IMAGE=...`
+      #                   after building the image and paste the result here.
+      #
+      # The plugin only COMPUTES the jar SHA-256 and emits it as a
+      # jvm:jar_sha256=<hash> selector. It no longer compares against a reference
+      # (no manifest / Artifactory lookup on the attestation hot path). The
+      # expected hash is enforced by the SPIRE registration entry, which wsldev
+      # populates from spiffe-spire/base/jvm-hashes-configmap.yaml at deploy time.
+      WorkloadAttestor "jvm" {
+        plugin_cmd      = "/opt/spire/plugins/jvm-attestor"
+        plugin_checksum = "030a8d684a52824a11f04e61c51608375960343ea8a810a6582d4767edfe1227"
+        plugin_data {
+          block_on_attach_socket = true
+        }
+      }
     }
 
     health_checks {

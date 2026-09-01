@@ -12,6 +12,13 @@ data:
       trust_domain = "zerotrust.lab"
       data_dir = "/run/spire/data"
       log_level = "DEBUG"
+
+      # Short-lived X509-SVIDs. SPIRE does not revoke already-issued SVIDs; a
+      # tampered workload keeps its cert until it expires and the agent refuses to
+      # renew (entry no longer matches). A 1m TTL makes that denial observable within
+      # the test window for live-process attacks (anti-debug, attach-socket), and is
+      # itself a zero-trust best practice.
+      default_x509_svid_ttl = "1m"
       #AWS requires the use of RSA.  EC cryptography is not supported
       ca_key_type = "rsa-2048"
 

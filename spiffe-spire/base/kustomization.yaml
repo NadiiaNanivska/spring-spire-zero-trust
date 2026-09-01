@@ -15,4 +15,5 @@ resources:
 - server-service.yaml
 - server-statefulset.yaml
 - spire-bundle-configmap.yaml
+- jvm-hashes-configmap.yaml
 

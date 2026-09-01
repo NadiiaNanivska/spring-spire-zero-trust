@@ -51,6 +51,7 @@ func ParseJarPathsFromMaps(procRoot string) ([]MapsEntry, error) {
 
 // ExtractJarsFromCmdline is a fallback for Spring Boot fat-jars that are not memory-mapped.
 // Returns a synthetic MapsEntry with Inode=0 when "-jar <path>" is found in cmdline.
+// Relative jar paths are resolved against /proc/<PID>/cwd (e.g. "app.jar" + cwd "/app" → "/app/app.jar").
 func ExtractJarsFromCmdline(procRoot string) ([]MapsEntry, error) {
 	cmdlineRaw, err := os.ReadFile(filepath.Join(procRoot, "cmdline"))
 	if err != nil {
@@ -61,11 +62,35 @@ func ExtractJarsFromCmdline(procRoot string) ([]MapsEntry, error) {
 	for i, arg := range args {
 		if arg == "-jar" && i+1 < len(args) {
 			jarPath := args[i+1]
-			if strings.HasSuffix(jarPath, ".jar") {
-				return []MapsEntry{{Path: jarPath, Inode: 0}}, nil
+			if !strings.HasSuffix(jarPath, ".jar") {
+				continue
 			}
+
+			resolved, err := resolveJarPath(procRoot, jarPath)
+			if err != nil {
+				return nil, err
+			}
+
+			return []MapsEntry{{Path: resolved, Inode: 0}}, nil
 		}
 	}
 
 	return nil, nil
+}
+
+func resolveJarPath(procRoot, jarPath string) (string, error) {
+	if filepath.IsAbs(jarPath) {
+		return filepath.Clean(jarPath), nil
+	}
+
+	cwd, err := os.Readlink(filepath.Join(procRoot, "cwd"))
+	if err != nil {
+		return "", fmt.Errorf("cannot read cwd for relative jar path %q: %w", jarPath, err)
+	}
+
+	if idx := strings.Index(cwd, " (deleted)"); idx >= 0 {
+		cwd = cwd[:idx]
+	}
+
+	return filepath.Clean(filepath.Join(cwd, jarPath)), nil
 }

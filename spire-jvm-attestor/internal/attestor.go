@@ -7,6 +7,7 @@ import (
 	"io"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/hashicorp/go-hclog"
 	workloadattestorv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/plugin/agent/workloadattestor/v1"
@@ -14,7 +15,6 @@ import (
 	"github.com/yourorg/spire-jvm-attestor/config"
 	"github.com/yourorg/spire-jvm-attestor/internal/cache"
 	"github.com/yourorg/spire-jvm-attestor/internal/checkers"
-	"github.com/yourorg/spire-jvm-attestor/internal/hashsource"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -58,56 +58,17 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 		hashCache: cache.NewHashCache(),
 	}
 	if cfg != nil {
-		if err := p.buildPipeline(cfg); err != nil {
-			panic(fmt.Sprintf("invalid test config: %v", err))
-		}
+		p.buildPipeline(cfg)
 	}
 	return p
 }
 
-type hashSourceFactory func(cfg *config.Config) hashsource.HashSource
-
-var hashSourceRegistry = map[string]hashSourceFactory{
-	"artifactory": func(cfg *config.Config) hashsource.HashSource {
-		return hashsource.NewArtifactorySource(cfg.ArtifactoryURL, cfg.ArtifactoryAPIKey)
-	},
-	"manifest": func(cfg *config.Config) hashsource.HashSource {
-		return hashsource.NewLocalManifestSource(cfg.HashManifestPath)
-	},
-}
-
-func resolveHashSourceType(cfg *config.Config) string {
-	if cfg.HashSourceType != "" {
-		return cfg.HashSourceType
-	}
-	if cfg.ArtifactoryURL != "" && cfg.ArtifactoryAPIKey != "" {
-		return "artifactory"
-	}
-	return "manifest"
-}
-
-func (p *JVMAttestor) buildPipeline(cfg *config.Config) error {
-	sourceType := resolveHashSourceType(cfg)
-
-	factory, ok := hashSourceRegistry[sourceType]
-	if !ok {
-		return fmt.Errorf("unknown hash_source_type %q; valid values: %v", sourceType, registryKeys(hashSourceRegistry))
-	}
-
+func (p *JVMAttestor) buildPipeline(cfg *config.Config) {
 	p.pipeline = []checkers.Checker{
 		checkers.NewAntiDebugChecker(),
 		checkers.NewAntiTamperChecker(cfg.BlockOnAttachSocket),
-		checkers.NewJarHashChecker(factory(cfg)),
+		checkers.NewJarHashChecker(),
 	}
-	return nil
-}
-
-func registryKeys(m map[string]hashSourceFactory) []string {
-	keys := make([]string, 0, len(m))
-	for k := range m {
-		keys = append(keys, k)
-	}
-	return keys
 }
 
 func (p *JVMAttestor) Configure(
@@ -121,14 +82,10 @@ func (p *JVMAttestor) Configure(
 
 	p.mu.Lock()
 	p.config = cfg
-	err = p.buildPipeline(cfg)
+	p.buildPipeline(cfg)
 	p.mu.Unlock()
 
-	if err != nil {
-		return nil, status.Errorf(codes.InvalidArgument, "invalid plugin configuration: %v", err)
-	}
-
-	p.safeLogger().Info("plugin configured", "hash_source_type", resolveHashSourceType(cfg))
+	p.safeLogger().Info("plugin configured", "block_on_attach_socket", cfg.BlockOnAttachSocket)
 	return &configv1.ConfigureResponse{}, nil
 }
 
@@ -145,19 +102,45 @@ func (p *JVMAttestor) Attest(
 		return nil, status.Error(codes.FailedPrecondition, "plugin not configured; call Configure first")
 	}
 
+	attestStart := time.Now()
+	log := p.safeLogger()
+	log.Debug("jvm attestation started",
+		"pid", req.Pid,
+		"started_at", attestStart.Format(time.RFC3339Nano),
+	)
+
 	attestCtx := &checkers.AttestationContext{
 		Context:   ctx,
 		PID:       req.Pid,
 		ProcRoot:  fmt.Sprintf("%s/%d", p.procFS, req.Pid),
 		HashCache: p.hashCache,
+		Logger:    log,
 	}
 
 	var allSelectors []string
+	checkerDurations := make(map[string]time.Duration, len(pipeline))
 
 	for _, checker := range pipeline {
+		checkStart := time.Now()
 		selectors, err := checker.Check(attestCtx)
+		checkerDurations[checker.Name()] = time.Since(checkStart)
 		if err != nil {
-			p.safeLogger().Warn("checker failed", "checker", checker.Name(), "pid", req.Pid, "error", err)
+			// ErrNotJVM means the process has no JAR files — it is simply not a JVM
+			// workload. Return empty selectors so that other attestors (k8s, unix)
+			// can still issue SVIDs for this process.
+			if errors.Is(err, checkers.ErrNotJVM) {
+				log.Debug("not a JVM process, skipping attestation",
+					"pid", req.Pid,
+					"duration_us", time.Since(attestStart).Microseconds(),
+				)
+				return &workloadattestorv1.AttestResponse{}, nil
+			}
+			log.Warn("checker failed",
+				"checker", checker.Name(),
+				"pid", req.Pid,
+				"duration_us", checkerDurations[checker.Name()].Microseconds(),
+				"error", err,
+			)
 			switch checker.Name() {
 			case "anti-debug":
 				return nil, status.Errorf(codes.Internal, "anti-debug check: %v", err)
@@ -176,7 +159,14 @@ func (p *JVMAttestor) Attest(
 		}
 	}
 
-	p.safeLogger().Debug("attestation complete", "pid", req.Pid, "selectors", len(allSelectors))
+	log.Info("jvm attestation timing",
+		"pid", req.Pid,
+		"total_us", time.Since(attestStart).Microseconds(),
+		"anti_debug_us", checkerDurations["anti-debug"].Microseconds(),
+		"anti_tamper_us", checkerDurations["anti-tamper"].Microseconds(),
+		"jar_hash_us", checkerDurations["jar-hash"].Microseconds(),
+		"selectors", len(allSelectors),
+	)
 	return buildResponse(allSelectors), nil
 }
 

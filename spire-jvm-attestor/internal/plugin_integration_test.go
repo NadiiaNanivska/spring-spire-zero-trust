@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -25,12 +24,11 @@ import (
 const integrationTestPID = 9001
 
 // setupFakeProcFS creates a temporary /proc-like directory tree for a fake JVM
-// process and a corresponding hash manifest. It returns the proc root, the path
-// to the manifest file, and the expected SHA-256 of the fake JAR.
+// process. It returns the proc root and the expected SHA-256 of the fake JAR.
 //
 // The maps file uses inode=0 so the checker takes the Spring Boot fat-jar path,
 // which avoids platform-specific inode behaviour in cross-platform CI.
-func setupFakeProcFS(t *testing.T) (procRoot, manifestPath, jarHash string) {
+func setupFakeProcFS(t *testing.T) (procRoot, jarHash string) {
 	t.Helper()
 
 	tmpDir, err := os.MkdirTemp("", "jvm-integration-*")
@@ -68,24 +66,7 @@ func setupFakeProcFS(t *testing.T) (procRoot, manifestPath, jarHash string) {
 	sum := sha256.Sum256(jarContent)
 	jarHash = hex.EncodeToString(sum[:])
 
-	type manifestSchema struct {
-		Version int               `json:"version"`
-		Jars    map[string]string `json:"jars"`
-	}
-	raw, err := json.Marshal(manifestSchema{
-		Version: 1,
-		Jars:    map[string]string{"/app/payments-service.jar": jarHash},
-	})
-	require.NoError(t, err)
-
-	mf, err := os.CreateTemp("", "jvm-manifest-*.json")
-	require.NoError(t, err)
-	t.Cleanup(func() { _ = os.Remove(mf.Name()) })
-	_, err = mf.Write(raw)
-	require.NoError(t, err)
-	require.NoError(t, mf.Close())
-
-	return tmpDir, mf.Name(), jarHash
+	return tmpDir, jarHash
 }
 
 // servePlugin loads the plugin via plugintest (real gRPC transport) and returns
@@ -136,25 +117,12 @@ func TestIntegration_Configure_InvalidHCL(t *testing.T) {
 	assert.Equal(t, codes.InvalidArgument, status.Code(err))
 }
 
-// TestIntegration_Configure_UnknownSourceType verifies that an unknown
-// hash_source_type value causes Configure to return codes.InvalidArgument.
-func TestIntegration_Configure_UnknownSourceType(t *testing.T) {
-	plugin := internal.New()
-	_, cfgClient := servePlugin(t, plugin)
-
-	ctx := context.Background()
-	_, err := cfgClient.Configure(ctx, &configv1.ConfigureRequest{
-		HclConfiguration: `hash_source_type = "ftp"`,
-	})
-	require.Error(t, err)
-	assert.Equal(t, codes.InvalidArgument, status.Code(err))
-}
-
 // TestIntegration_Attest_CleanJVM is the end-to-end happy-path test: it
-// configures the plugin with a local manifest, then calls Attest over gRPC
-// and asserts that the expected selectors are present in the response.
+// configures the plugin, then calls Attest over gRPC and asserts that the
+// expected selectors — including the computed jar_sha256 — are present. There is
+// no reference manifest: the plugin only publishes the hash it computed.
 func TestIntegration_Attest_CleanJVM(t *testing.T) {
-	procRoot, manifestPath, expectedHash := setupFakeProcFS(t)
+	procRoot, expectedHash := setupFakeProcFS(t)
 
 	plugin := internal.New()
 	plugin.SetProcFSForTest(procRoot)
@@ -162,7 +130,7 @@ func TestIntegration_Attest_CleanJVM(t *testing.T) {
 
 	ctx := context.Background()
 	_, err := cfgClient.Configure(ctx, &configv1.ConfigureRequest{
-		HclConfiguration: fmt.Sprintf("hash_manifest_path = %q", manifestPath),
+		HclConfiguration: `block_on_attach_socket = false`,
 	})
 	require.NoError(t, err)
 
@@ -204,17 +172,14 @@ func TestIntegration_Attest_DebuggerAttached(t *testing.T) {
 }
 
 // TestIntegration_Close verifies that Close returns nil and that the plugin
-// can be closed multiple times without panicking (idempotence). The manifest
-// source holds no network resources, so both calls must be no-ops.
+// can be closed multiple times without panicking (idempotence).
 func TestIntegration_Close(t *testing.T) {
-	_, manifestPath, _ := setupFakeProcFS(t)
-
 	plugin := internal.New()
 	_, cfgClient := servePlugin(t, plugin)
 
 	ctx := context.Background()
 	_, err := cfgClient.Configure(ctx, &configv1.ConfigureRequest{
-		HclConfiguration: fmt.Sprintf("hash_manifest_path = %q", manifestPath),
+		HclConfiguration: `block_on_attach_socket = false`,
 	})
 	require.NoError(t, err)
 

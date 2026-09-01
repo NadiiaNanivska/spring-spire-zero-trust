@@ -24,6 +24,17 @@ spec:
           image: busybox:1.36
           imagePullPolicy: IfNotPresent
           command: ['sh', '-c', "until nc -z spire-server 8081; do echo waiting for spire-server; sleep 2; done"]
+
+        # Copies the jvm-attestor binary from the plugin image into the
+        # shared jvm-plugin emptyDir volume so the SPIRE agent can exec it.
+        # Image is loaded directly into Kind via `make kind-load` — no registry needed.
+        - name: install-jvm-attestor
+          image: spire-jvm-attestor:latest
+          imagePullPolicy: Never
+          command: ['cp', '/jvm-attestor', '/opt/spire/plugins/jvm-attestor']
+          volumeMounts:
+            - name: jvm-plugin
+              mountPath: /opt/spire/plugins
       containers:
         - name: spire-agent
           ports:
@@ -49,6 +60,9 @@ spec:
               readOnly: false
             - name: spire-token
               mountPath: /var/run/secrets/tokens
+            - name: jvm-plugin
+              mountPath: /opt/spire/plugins
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /live
@@ -81,3 +95,6 @@ spec:
                 path: spire-agent
                 expirationSeconds: 7200
                 audience: spire-server
+        # Shared emptyDir populated by the install-jvm-attestor init-container
+        - name: jvm-plugin
+          emptyDir: {}

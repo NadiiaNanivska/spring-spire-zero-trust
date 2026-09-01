@@ -17,18 +17,6 @@ import (
 	"github.com/yourorg/spire-jvm-attestor/internal/checkers"
 )
 
-type fakeHashSource struct {
-	hashes map[string]string
-}
-
-func (f *fakeHashSource) GetExpectedHash(ctx context.Context, jarPath string) (string, error) {
-	h, ok := f.hashes[jarPath]
-	if !ok {
-		return "", fmt.Errorf("artifact not found in fake registry: %s", jarPath)
-	}
-	return h, nil
-}
-
 func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 	tmpDir, err := os.MkdirTemp("", "attestor-pipeline-test-*")
 	require.NoError(t, err)
@@ -53,12 +41,6 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 	actualInode, err := cache.GetInode(stat)
 	require.NoError(t, err)
 
-	fakeRegistry := &fakeHashSource{
-		hashes: map[string]string{
-			"/app/payments-service.jar": expectedHash,
-		},
-	}
-
 	t.Run("Success: Full clean pipeline attestation", func(t *testing.T) {
 		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
 
@@ -69,7 +51,7 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 			pipeline: []checkers.Checker{
 				checkers.NewAntiDebugChecker(),
 				checkers.NewAntiTamperChecker(false),
-				checkers.NewJarHashChecker(fakeRegistry),
+				checkers.NewJarHashChecker(),
 			},
 		}
 
@@ -100,7 +82,7 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 			pipeline: []checkers.Checker{
 				checkers.NewAntiDebugChecker(),
 				checkers.NewAntiTamperChecker(false),
-				checkers.NewJarHashChecker(fakeRegistry),
+				checkers.NewJarHashChecker(),
 			},
 		}
 
@@ -118,15 +100,12 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 		}
 	})
 
-	t.Run("Hard-Fail: Block issuance if Level 3 Crypto Integrity fails", func(t *testing.T) {
+	t.Run("Modified JAR: still issues selectors (policy lives in the entry)", func(t *testing.T) {
 		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
 
-		brokenRegistry := &fakeHashSource{
-			hashes: map[string]string{
-				"/app/payments-service.jar": "MALICIOUS_COMPROMISED_HASH_VAL",
-			},
-		}
-
+		// Whatever the on-disk bytes are, the plugin computes their hash and
+		// publishes it. It never blocks on a reference mismatch — that decision
+		// belongs to the SPIRE registration entry.
 		attestor := &JVMAttestor{
 			procFS:    tmpDir,
 			config:    &config.Config{BlockOnAttachSocket: false},
@@ -134,15 +113,15 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 			pipeline: []checkers.Checker{
 				checkers.NewAntiDebugChecker(),
 				checkers.NewAntiTamperChecker(false),
-				checkers.NewJarHashChecker(brokenRegistry),
+				checkers.NewJarHashChecker(),
 			},
 		}
 
 		req := &workloadattestorv1.AttestRequest{Pid: int32(pid)}
 		resp, err := attestor.Attest(context.Background(), req)
 
-		assert.Error(t, err)
-		assert.Nil(t, resp)
-		assert.Contains(t, err.Error(), "jar-hash check failed")
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		assert.Contains(t, resp.SelectorValues, "jar_sha256="+expectedHash)
 	})
 }

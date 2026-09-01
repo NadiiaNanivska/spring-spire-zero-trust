@@ -1,0 +1,29 @@
+# Strategic merge patch: видаляє init-контейнер, що встановлює jvm-attestor
+# бінарник, і пов'язані volumes/volumeMounts. `$patch: delete` матчиться по
+# merge-key (name) елемента списку, тож порядок елементів не важливий.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: spire-agent
+  namespace: spire
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: install-jvm-attestor
+          $patch: delete
+      volumes:
+        - name: jvm-plugin
+          $patch: delete
+        - name: jvm-hashes
+          $patch: delete
+      containers:
+        - name: spire-agent
+          # NOTE: VolumeMount's Kubernetes merge key is `mountPath`, not
+          # `name` (unlike volumes/containers/initContainers) — the delete
+          # marker must match on mountPath or it silently wipes the whole list.
+          volumeMounts:
+            - mountPath: /opt/spire/plugins
+              $patch: delete
+            - mountPath: /etc/spire/jvm-hashes
+              $patch: delete
