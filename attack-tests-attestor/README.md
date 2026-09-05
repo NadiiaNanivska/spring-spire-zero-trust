@@ -7,8 +7,8 @@ Live functional tests for SPIRE `jvm` WorkloadAttestor plugin (`spire-jvm-attest
 Prove on a live deployment that the plugin:
 
 1. **Blocks SVID issuance** for attacks it is designed to detect (all branches of 3 defense levels).
-2. **Holds** against user-space `/proc` spoofing and symlink tricks.
-3. **Fails safe** on non-canonical launch: a classpath launch without `-jar` yields no jvm selectors (`ErrNotJVM`) and is denied an SVID rather than silently bypassing integrity.
+2. **Holds** against user-space `/proc` spoofing and symlink tricks: jars are read through a `/proc` handle bound to the inode, not by resolving their pathname.
+3. **Detects extra code**: a jar the deployment never approved changes `jvm:jar_set_sha256`, so the workload no longer matches its registration entry — a per-jar hash alone would not catch this, since SPIRE matches on a selector *subset*. Discovery **unions** `maps` and the fd table rather than stopping at the first non-empty source, so a process cannot hide its descriptor table by mapping an approved jar into its own address space (`bypass-mmap-shadow.sh`).
 4. **Survives** stress / error inputs without crashing the SPIRE agent.
 
 ## Prerequisites
@@ -46,8 +46,9 @@ Partial run:
 | `attack-tamper-env.sh` | 2 | All 4 dangerous env vars | `suspicious_env`, pod Running, SVID denied |
 | `attack-attach-socket.sh` | 2 | `.java_pid` Attach socket | `FailedPrecondition`, SVID denied |
 | `attack-jar-unknown.sh` | 3 | Tampered / unapproved jar hash (not in allow-list) | computed `jar_sha256` matches no entry ⇒ SVID denied |
-| `attack-cp-classpath.sh` | B | Classpath launch (no `-jar`) + extra jar on classpath | jar not discovered ⇒ `ErrNotJVM` ⇒ no jvm selectors ⇒ **SVID denied (fail-safe)** |
-| `bypass-symlink.sh` | B | Symlink jar path | **PASS** — hashes real content |
+| `attack-cp-classpath.sh` | B | Classpath launch (no `-jar`) with an attacker jar ahead of the app jar | both jars discovered via `fd`; approved `jar_sha256` still present but `jar_set_sha256` no longer matches ⇒ **SVID denied** |
+| `bypass-symlink.sh` | B | Jar pathname redirected to an attacker decoy (`ln -s decoy.jar payments-service.jar`) | `jar_source=fd`, published hash still equals the pinned one, decoy hash never appears ⇒ SVID kept |
+| `bypass-mmap-shadow.sh` | B | Extra classpath jar **plus** a `FileChannel.map` of the approved jar, to make `maps` answer first and hide the fd table | `jar_source=maps+fd` (sources unioned), extra jar still counted, `jar_set_sha256` no longer matches ⇒ **SVID denied** |
 | `dos-large-jar.sh` | D | Large jar SHA-256 stress | Agent survives, latency logged |
 
 ## Methodology
@@ -80,7 +81,7 @@ the fresh JVM as it boots.
 
 1. **Agent logs** — `collect-attack-logs.sh` greps for JVM selectors and errors.
 2. **Functional mTLS** — probe `orders -> payments` via in-cluster curl (`orders_create_from_pod`).
-3. **SPIRE entries** — entries are created by `wsldev` (`wsldev spire register-jvm`, also run automatically by `wsldev app deploy`) and require `jvm:debug_clean=true`, `jvm:agent_flags_clean=true`, `jvm:maps_verified=true`, and `jvm:jar_sha256=<hash>` (the pinned allow-list value). The plugin only *computes* the hash; the entry *enforces* it.
+3. **SPIRE entries** — entries are created by `wsldev` (`wsldev spire register-jvm`, also run automatically by `wsldev app deploy`) and require `jvm:debug_clean=true`, `jvm:agent_flags_clean=true`, `jvm:maps_verified=true`, `jvm:hash_via_kernel_handle=true`, `jvm:jar_sha256=<hash>` and `jvm:jar_set_sha256=<digest>`. The plugin only *computes* these values; the entry *enforces* them. The set digest is the one that actually pins the workload — see `jarSetDigest` in `wsldev/internal/apps/jvm_register.go`.
 
 ### Result statuses
 
@@ -119,7 +120,10 @@ results/run-<timestamp>/
 ```
 Level 1 anti-debug     -> /proc/<pid>/status TracerPid
 Level 2 anti-tamper    -> /proc/cmdline flags, /proc/environ, Attach socket
-Level 3 jar-hash       -> /proc/maps + SHA-256 published as jvm:jar_sha256 selector
+Level 3 jar-hash       -> jar discovery unions /proc/<pid>/maps and /proc/<pid>/fd,
+                          falling back to (unverified) cmdline only when the kernel
+                          reports nothing; SHA-256 read through the /proc handle
+                          and published as jvm:jar_sha256 + jvm:jar_set_sha256
                           (expected value enforced by the SPIRE registration entry)
 ```
 

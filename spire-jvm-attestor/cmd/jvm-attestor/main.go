@@ -13,7 +13,6 @@
 //	    plugin_checksum = "sha256:<hex>"
 //
 //	    plugin_data {
-//	      hash_manifest_path     = "/etc/spire/jvm-hashes.json"
 //	      block_on_attach_socket = true
 //	    }
 //	  }
