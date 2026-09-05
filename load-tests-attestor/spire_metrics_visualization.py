@@ -159,6 +159,95 @@ def plot_clean_time_series(df: pd.DataFrame, plots_dir: str) -> None:
             plt.close(fig)
 
 
+def plot_distributions(df: pd.DataFrame, plots_dir: str) -> None:
+    """Plot per-scenario distributions for default vs custom-jvm overlays."""
+    for scenario in sorted(df["scenario"].unique()):
+        sc_dir = os.path.join(plots_dir, f"scenario-{scenario}", "distributions")
+        os.makedirs(sc_dir, exist_ok=True)
+        df_scen = df[df["scenario"] == scenario]
+
+        for metric in TIME_SERIES_METRICS:
+            df_metric = df_scen[df_scen["metric"] == metric]
+            if df_metric.empty:
+                continue
+
+            order = [
+                overlay
+                for overlay in ("default", "custom-jvm")
+                if overlay in df_metric["overlay"].unique()
+            ]
+            if not order:
+                continue
+
+            violin_fig, violin_ax = plt.subplots(figsize=(8, 5))
+            sns.violinplot(
+                data=df_metric,
+                x="overlay",
+                y="value",
+                hue="overlay",
+                order=order,
+                palette=OVERLAY_PALETTE,
+                inner="quartile",
+                cut=0,
+                dodge=False,
+                legend=False,
+                ax=violin_ax,
+            )
+            sns.stripplot(
+                data=df_metric,
+                x="overlay",
+                y="value",
+                order=order,
+                color="black",
+                alpha=0.3,
+                size=2,
+                jitter=0.2,
+                ax=violin_ax,
+            )
+            violin_ax.set_title(f"Scenario {scenario.upper()} - {metric} (violin)")
+            violin_ax.set_xlabel("Overlay")
+            violin_ax.set_ylabel(metric)
+            violin_fig.tight_layout()
+            violin_fig.savefig(
+                os.path.join(sc_dir, f"{metric}-violin.png"),
+                dpi=150,
+            )
+            plt.close(violin_fig)
+
+            box_fig, box_ax = plt.subplots(figsize=(8, 5))
+            sns.boxplot(
+                data=df_metric,
+                x="overlay",
+                y="value",
+                hue="overlay",
+                order=order,
+                palette=OVERLAY_PALETTE,
+                dodge=False,
+                legend=False,
+                ax=box_ax,
+            )
+            sns.stripplot(
+                data=df_metric,
+                x="overlay",
+                y="value",
+                order=order,
+                color="black",
+                alpha=0.3,
+                size=2,
+                jitter=0.2,
+                ax=box_ax,
+            )
+            box_ax.set_title(f"Scenario {scenario.upper()} - {metric} (boxplot)")
+            box_ax.set_xlabel("Overlay")
+            box_ax.set_ylabel(metric)
+            box_fig.tight_layout()
+            box_fig.savefig(
+                os.path.join(sc_dir, f"{metric}-boxplot.png"),
+                dpi=150,
+            )
+            plt.close(box_fig)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Clean time-series plots (clean lines only, no CI bands).",
@@ -242,6 +331,8 @@ def main() -> int:
     print(f"Generating clean time-series plots (no bands) -> {plots_dir}...")
     
     plot_clean_time_series(df_collapsed, plots_dir)
+    print(f"Generating distribution plots -> {plots_dir}...")
+    plot_distributions(df_collapsed, plots_dir)
 
     print(f"Done. Cleaned CSV: {clean_csv}")
     print(f"Plots: {plots_dir}")
