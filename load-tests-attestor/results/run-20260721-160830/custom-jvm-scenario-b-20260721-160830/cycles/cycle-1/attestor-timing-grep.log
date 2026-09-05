@@ -1,0 +1,2 @@
+time="2026-07-21T16:32:35Z" level=info msg="jvm attestation timing" anti_debug_us=80 anti_tamper_us=281 external=true jar_hash_us=38832 pid=33496 plugin_name=jvm plugin_type=WorkloadAttestor selectors=6 subsystem_name=jvm.jvm-attestor timestamp="2026-07-21T16:32:35.125Z" total_us=39270
+time="2026-07-21T16:32:38Z" level=info msg="jvm attestation timing" anti_debug_us=48 anti_tamper_us=43 external=true jar_hash_us=52253 pid=33265 plugin_name=jvm plugin_type=WorkloadAttestor selectors=6 subsystem_name=jvm.jvm-attestor timestamp="2026-07-21T16:32:38.559Z" total_us=52392

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-service
+  namespace: spire
+  labels:
+    app: payments-service
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: payments-service
+  template:
+    metadata:
+      labels:
+        app: payments-service
+    spec:
+      serviceAccountName: payments-sa
+      containers:
+        - name: payments-service
+          image: payments-service:1.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - mkdir -p /tmp/agent
+            - echo 'public class Noop { public static void premain(String a) {} }' > /tmp/agent/Noop.java
+            - javac /tmp/agent/Noop.java
+            - printf 'Premain-Class: Noop\n' > /tmp/agent/MANIFEST.MF
+            - jar cmf /tmp/agent/MANIFEST.MF /tmp/benign-agent.jar -C /tmp/agent Noop.class
+            - exec java -javaagent:/tmp/benign-agent.jar -jar payments-service.jar
+          env:
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: /run/spire/sockets/agent.sock
+            - name: SPRING_PROFILES_ACTIVE
+              value: "spire"
+            - name: SERVER_PORT
+              value: "8081"
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+              readOnly: true
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

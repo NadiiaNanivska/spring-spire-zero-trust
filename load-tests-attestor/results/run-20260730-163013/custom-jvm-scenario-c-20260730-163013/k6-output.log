@@ -1,0 +1,2254 @@
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: /scripts/steady-load.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 200 max VUs, 10m30s max duration (incl. graceful stop):
+              * steady: 100.00 iterations/s for 10m0s (maxVUs: 50-200, gracefulStop: 30s)
+
+
+running (00m01.0s), 075/075 VUs, 0 complete and 0 interrupted iterations
+steady   [   0% ] 075/075 VUs  00m01.0s/10m0s  100.00 iters/s
+
+running (00m02.0s), 004/104 VUs, 141 complete and 0 interrupted iterations
+steady   [   0% ] 004/104 VUs  00m02.0s/10m0s  100.00 iters/s
+
+running (00m03.0s), 004/104 VUs, 241 complete and 0 interrupted iterations
+steady   [   0% ] 004/104 VUs  00m03.0s/10m0s  100.00 iters/s
+
+running (00m04.0s), 004/104 VUs, 341 complete and 0 interrupted iterations
+steady   [   1% ] 004/104 VUs  00m04.0s/10m0s  100.00 iters/s
+
+running (00m05.0s), 004/104 VUs, 441 complete and 0 interrupted iterations
+steady   [   1% ] 004/104 VUs  00m05.0s/10m0s  100.00 iters/s
+
+running (00m06.0s), 004/104 VUs, 541 complete and 0 interrupted iterations
+steady   [   1% ] 004/104 VUs  00m06.0s/10m0s  100.00 iters/s
+
+running (00m07.0s), 004/104 VUs, 641 complete and 0 interrupted iterations
+steady   [   1% ] 004/104 VUs  00m07.0s/10m0s  100.00 iters/s
+
+running (00m08.0s), 003/104 VUs, 742 complete and 0 interrupted iterations
+steady   [   1% ] 003/104 VUs  00m08.0s/10m0s  100.00 iters/s
+
+running (00m09.0s), 003/104 VUs, 842 complete and 0 interrupted iterations
+steady   [   1% ] 003/104 VUs  00m09.0s/10m0s  100.00 iters/s
+
+running (00m10.0s), 004/104 VUs, 941 complete and 0 interrupted iterations
+steady   [   2% ] 004/104 VUs  00m10.0s/10m0s  100.00 iters/s
+
+running (00m11.0s), 003/104 VUs, 1042 complete and 0 interrupted iterations
+steady   [   2% ] 003/104 VUs  00m11.0s/10m0s  100.00 iters/s
+
+running (00m12.0s), 003/104 VUs, 1142 complete and 0 interrupted iterations
+steady   [   2% ] 003/104 VUs  00m12.0s/10m0s  100.00 iters/s
+
+running (00m13.0s), 004/104 VUs, 1241 complete and 0 interrupted iterations
+steady   [   2% ] 004/104 VUs  00m13.0s/10m0s  100.00 iters/s
+
+running (00m14.0s), 003/104 VUs, 1342 complete and 0 interrupted iterations
+steady   [   2% ] 003/104 VUs  00m14.0s/10m0s  100.00 iters/s
+
+running (00m15.0s), 004/104 VUs, 1441 complete and 0 interrupted iterations
+steady   [   2% ] 004/104 VUs  00m15.0s/10m0s  100.00 iters/s
+
+running (00m16.0s), 003/104 VUs, 1542 complete and 0 interrupted iterations
+steady   [   3% ] 003/104 VUs  00m16.0s/10m0s  100.00 iters/s
+
+running (00m17.0s), 003/104 VUs, 1642 complete and 0 interrupted iterations
+steady   [   3% ] 003/104 VUs  00m17.0s/10m0s  100.00 iters/s
+
+running (00m18.0s), 003/104 VUs, 1742 complete and 0 interrupted iterations
+steady   [   3% ] 003/104 VUs  00m18.0s/10m0s  100.00 iters/s
+
+running (00m19.0s), 003/104 VUs, 1842 complete and 0 interrupted iterations
+steady   [   3% ] 003/104 VUs  00m19.0s/10m0s  100.00 iters/s
+
+running (00m20.0s), 003/104 VUs, 1942 complete and 0 interrupted iterations
+steady   [   3% ] 003/104 VUs  00m20.0s/10m0s  100.00 iters/s
+
+running (00m21.0s), 003/104 VUs, 2042 complete and 0 interrupted iterations
+steady   [   3% ] 003/104 VUs  00m21.0s/10m0s  100.00 iters/s
+
+running (00m22.0s), 003/104 VUs, 2142 complete and 0 interrupted iterations
+steady   [   4% ] 003/104 VUs  00m22.0s/10m0s  100.00 iters/s
+
+running (00m23.0s), 003/104 VUs, 2242 complete and 0 interrupted iterations
+steady   [   4% ] 003/104 VUs  00m23.0s/10m0s  100.00 iters/s
+
+running (00m24.0s), 003/104 VUs, 2342 complete and 0 interrupted iterations
+steady   [   4% ] 003/104 VUs  00m24.0s/10m0s  100.00 iters/s
+
+running (00m25.0s), 003/104 VUs, 2442 complete and 0 interrupted iterations
+steady   [   4% ] 003/104 VUs  00m25.0s/10m0s  100.00 iters/s
+
+running (00m26.0s), 003/104 VUs, 2542 complete and 0 interrupted iterations
+steady   [   4% ] 003/104 VUs  00m26.0s/10m0s  100.00 iters/s
+
+running (00m27.0s), 003/104 VUs, 2642 complete and 0 interrupted iterations
+steady   [   4% ] 003/104 VUs  00m27.0s/10m0s  100.00 iters/s
+
+running (00m28.0s), 003/104 VUs, 2742 complete and 0 interrupted iterations
+steady   [   5% ] 003/104 VUs  00m28.0s/10m0s  100.00 iters/s
+
+running (00m29.0s), 003/104 VUs, 2842 complete and 0 interrupted iterations
+steady   [   5% ] 003/104 VUs  00m29.0s/10m0s  100.00 iters/s
+
+running (00m30.0s), 003/104 VUs, 2942 complete and 0 interrupted iterations
+steady   [   5% ] 003/104 VUs  00m30.0s/10m0s  100.00 iters/s
+
+running (00m31.0s), 003/104 VUs, 3042 complete and 0 interrupted iterations
+steady   [   5% ] 003/104 VUs  00m31.0s/10m0s  100.00 iters/s
+
+running (00m32.0s), 003/104 VUs, 3142 complete and 0 interrupted iterations
+steady   [   5% ] 003/104 VUs  00m32.0s/10m0s  100.00 iters/s
+
+running (00m33.0s), 003/104 VUs, 3242 complete and 0 interrupted iterations
+steady   [   5% ] 003/104 VUs  00m33.0s/10m0s  100.00 iters/s
+
+running (00m34.0s), 003/104 VUs, 3342 complete and 0 interrupted iterations
+steady   [   6% ] 003/104 VUs  00m34.0s/10m0s  100.00 iters/s
+
+running (00m35.0s), 003/104 VUs, 3442 complete and 0 interrupted iterations
+steady   [   6% ] 003/104 VUs  00m35.0s/10m0s  100.00 iters/s
+
+running (00m36.0s), 003/104 VUs, 3542 complete and 0 interrupted iterations
+steady   [   6% ] 003/104 VUs  00m36.0s/10m0s  100.00 iters/s
+
+running (00m37.0s), 003/104 VUs, 3642 complete and 0 interrupted iterations
+steady   [   6% ] 003/104 VUs  00m37.0s/10m0s  100.00 iters/s
+
+running (00m38.0s), 003/104 VUs, 3742 complete and 0 interrupted iterations
+steady   [   6% ] 003/104 VUs  00m38.0s/10m0s  100.00 iters/s
+
+running (00m39.0s), 003/104 VUs, 3842 complete and 0 interrupted iterations
+steady   [   6% ] 003/104 VUs  00m39.0s/10m0s  100.00 iters/s
+
+running (00m40.0s), 003/104 VUs, 3942 complete and 0 interrupted iterations
+steady   [   7% ] 003/104 VUs  00m40.0s/10m0s  100.00 iters/s
+
+running (00m41.0s), 003/104 VUs, 4042 complete and 0 interrupted iterations
+steady   [   7% ] 003/104 VUs  00m41.0s/10m0s  100.00 iters/s
+
+running (00m42.0s), 003/104 VUs, 4142 complete and 0 interrupted iterations
+steady   [   7% ] 003/104 VUs  00m42.0s/10m0s  100.00 iters/s
+
+running (00m43.0s), 003/104 VUs, 4242 complete and 0 interrupted iterations
+steady   [   7% ] 003/104 VUs  00m43.0s/10m0s  100.00 iters/s
+
+running (00m44.0s), 003/104 VUs, 4342 complete and 0 interrupted iterations
+steady   [   7% ] 003/104 VUs  00m44.0s/10m0s  100.00 iters/s
+
+running (00m45.0s), 003/104 VUs, 4442 complete and 0 interrupted iterations
+steady   [   7% ] 003/104 VUs  00m45.0s/10m0s  100.00 iters/s
+
+running (00m46.0s), 003/104 VUs, 4542 complete and 0 interrupted iterations
+steady   [   8% ] 003/104 VUs  00m46.0s/10m0s  100.00 iters/s
+
+running (00m47.0s), 003/104 VUs, 4642 complete and 0 interrupted iterations
+steady   [   8% ] 003/104 VUs  00m47.0s/10m0s  100.00 iters/s
+
+running (00m48.0s), 003/104 VUs, 4742 complete and 0 interrupted iterations
+steady   [   8% ] 003/104 VUs  00m48.0s/10m0s  100.00 iters/s
+
+running (00m49.0s), 003/104 VUs, 4842 complete and 0 interrupted iterations
+steady   [   8% ] 003/104 VUs  00m49.0s/10m0s  100.00 iters/s
+
+running (00m50.0s), 003/104 VUs, 4942 complete and 0 interrupted iterations
+steady   [   8% ] 003/104 VUs  00m50.0s/10m0s  100.00 iters/s
+
+running (00m51.0s), 003/104 VUs, 5042 complete and 0 interrupted iterations
+steady   [   8% ] 003/104 VUs  00m51.0s/10m0s  100.00 iters/s
+
+running (00m52.0s), 004/104 VUs, 5142 complete and 0 interrupted iterations
+steady   [   9% ] 004/104 VUs  00m52.0s/10m0s  100.00 iters/s
+
+running (00m53.0s), 003/104 VUs, 5242 complete and 0 interrupted iterations
+steady   [   9% ] 003/104 VUs  00m53.0s/10m0s  100.00 iters/s
+
+running (00m54.0s), 003/104 VUs, 5342 complete and 0 interrupted iterations
+steady   [   9% ] 003/104 VUs  00m54.0s/10m0s  100.00 iters/s
+
+running (00m55.0s), 003/104 VUs, 5442 complete and 0 interrupted iterations
+steady   [   9% ] 003/104 VUs  00m55.0s/10m0s  100.00 iters/s
+
+running (00m56.0s), 003/104 VUs, 5542 complete and 0 interrupted iterations
+steady   [   9% ] 003/104 VUs  00m56.0s/10m0s  100.00 iters/s
+
+running (00m57.0s), 003/104 VUs, 5642 complete and 0 interrupted iterations
+steady   [   9% ] 003/104 VUs  00m57.0s/10m0s  100.00 iters/s
+
+running (00m58.0s), 003/104 VUs, 5742 complete and 0 interrupted iterations
+steady   [  10% ] 003/104 VUs  00m58.0s/10m0s  100.00 iters/s
+
+running (00m59.0s), 003/104 VUs, 5842 complete and 0 interrupted iterations
+steady   [  10% ] 003/104 VUs  00m59.0s/10m0s  100.00 iters/s
+
+running (01m00.0s), 003/104 VUs, 5942 complete and 0 interrupted iterations
+steady   [  10% ] 003/104 VUs  01m00.0s/10m0s  100.00 iters/s
+
+running (01m01.0s), 003/104 VUs, 6042 complete and 0 interrupted iterations
+steady   [  10% ] 003/104 VUs  01m01.0s/10m0s  100.00 iters/s
+
+running (01m02.0s), 003/104 VUs, 6142 complete and 0 interrupted iterations
+steady   [  10% ] 003/104 VUs  01m02.0s/10m0s  100.00 iters/s
+
+running (01m03.0s), 003/104 VUs, 6242 complete and 0 interrupted iterations
+steady   [  10% ] 003/104 VUs  01m03.0s/10m0s  100.00 iters/s
+
+running (01m04.0s), 003/104 VUs, 6342 complete and 0 interrupted iterations
+steady   [  11% ] 003/104 VUs  01m04.0s/10m0s  100.00 iters/s
+
+running (01m05.0s), 003/104 VUs, 6442 complete and 0 interrupted iterations
+steady   [  11% ] 003/104 VUs  01m05.0s/10m0s  100.00 iters/s
+
+running (01m06.0s), 003/104 VUs, 6542 complete and 0 interrupted iterations
+steady   [  11% ] 003/104 VUs  01m06.0s/10m0s  100.00 iters/s
+
+running (01m07.0s), 003/104 VUs, 6642 complete and 0 interrupted iterations
+steady   [  11% ] 003/104 VUs  01m07.0s/10m0s  100.00 iters/s
+
+running (01m08.0s), 003/104 VUs, 6742 complete and 0 interrupted iterations
+steady   [  11% ] 003/104 VUs  01m08.0s/10m0s  100.00 iters/s
+
+running (01m09.0s), 003/104 VUs, 6842 complete and 0 interrupted iterations
+steady   [  11% ] 003/104 VUs  01m09.0s/10m0s  100.00 iters/s
+
+running (01m10.0s), 003/104 VUs, 6942 complete and 0 interrupted iterations
+steady   [  12% ] 003/104 VUs  01m10.0s/10m0s  100.00 iters/s
+
+running (01m11.0s), 003/104 VUs, 7042 complete and 0 interrupted iterations
+steady   [  12% ] 003/104 VUs  01m11.0s/10m0s  100.00 iters/s
+
+running (01m12.0s), 003/104 VUs, 7142 complete and 0 interrupted iterations
+steady   [  12% ] 003/104 VUs  01m12.0s/10m0s  100.00 iters/s
+
+running (01m13.0s), 003/104 VUs, 7242 complete and 0 interrupted iterations
+steady   [  12% ] 003/104 VUs  01m13.0s/10m0s  100.00 iters/s
+
+running (01m14.0s), 003/104 VUs, 7342 complete and 0 interrupted iterations
+steady   [  12% ] 003/104 VUs  01m14.0s/10m0s  100.00 iters/s
+
+running (01m15.0s), 003/104 VUs, 7442 complete and 0 interrupted iterations
+steady   [  12% ] 003/104 VUs  01m15.0s/10m0s  100.00 iters/s
+
+running (01m16.0s), 003/104 VUs, 7542 complete and 0 interrupted iterations
+steady   [  13% ] 003/104 VUs  01m16.0s/10m0s  100.00 iters/s
+
+running (01m17.0s), 003/104 VUs, 7642 complete and 0 interrupted iterations
+steady   [  13% ] 003/104 VUs  01m17.0s/10m0s  100.00 iters/s
+
+running (01m18.0s), 003/104 VUs, 7742 complete and 0 interrupted iterations
+steady   [  13% ] 003/104 VUs  01m18.0s/10m0s  100.00 iters/s
+
+running (01m19.0s), 003/104 VUs, 7842 complete and 0 interrupted iterations
+steady   [  13% ] 003/104 VUs  01m19.0s/10m0s  100.00 iters/s
+
+running (01m20.0s), 003/104 VUs, 7942 complete and 0 interrupted iterations
+steady   [  13% ] 003/104 VUs  01m20.0s/10m0s  100.00 iters/s
+
+running (01m21.0s), 003/104 VUs, 8042 complete and 0 interrupted iterations
+steady   [  13% ] 003/104 VUs  01m21.0s/10m0s  100.00 iters/s
+
+running (01m22.0s), 003/104 VUs, 8142 complete and 0 interrupted iterations
+steady   [  14% ] 003/104 VUs  01m22.0s/10m0s  100.00 iters/s
+
+running (01m23.0s), 003/104 VUs, 8242 complete and 0 interrupted iterations
+steady   [  14% ] 003/104 VUs  01m23.0s/10m0s  100.00 iters/s
+
+running (01m24.0s), 003/104 VUs, 8342 complete and 0 interrupted iterations
+steady   [  14% ] 003/104 VUs  01m24.0s/10m0s  100.00 iters/s
+
+running (01m25.0s), 003/104 VUs, 8442 complete and 0 interrupted iterations
+steady   [  14% ] 003/104 VUs  01m25.0s/10m0s  100.00 iters/s
+
+running (01m26.0s), 003/104 VUs, 8542 complete and 0 interrupted iterations
+steady   [  14% ] 003/104 VUs  01m26.0s/10m0s  100.00 iters/s
+
+running (01m27.0s), 003/104 VUs, 8642 complete and 0 interrupted iterations
+steady   [  14% ] 003/104 VUs  01m27.0s/10m0s  100.00 iters/s
+
+running (01m28.0s), 003/104 VUs, 8742 complete and 0 interrupted iterations
+steady   [  15% ] 003/104 VUs  01m28.0s/10m0s  100.00 iters/s
+
+running (01m29.0s), 003/104 VUs, 8842 complete and 0 interrupted iterations
+steady   [  15% ] 003/104 VUs  01m29.0s/10m0s  100.00 iters/s
+
+running (01m30.0s), 003/104 VUs, 8942 complete and 0 interrupted iterations
+steady   [  15% ] 003/104 VUs  01m30.0s/10m0s  100.00 iters/s
+
+running (01m31.0s), 001/104 VUs, 9044 complete and 0 interrupted iterations
+steady   [  15% ] 001/104 VUs  01m31.0s/10m0s  100.00 iters/s
+
+running (01m32.0s), 001/104 VUs, 9144 complete and 0 interrupted iterations
+steady   [  15% ] 001/104 VUs  01m32.0s/10m0s  100.00 iters/s
+
+running (01m33.0s), 001/104 VUs, 9244 complete and 0 interrupted iterations
+steady   [  15% ] 001/104 VUs  01m33.0s/10m0s  100.00 iters/s
+
+running (01m34.0s), 001/104 VUs, 9344 complete and 0 interrupted iterations
+steady   [  16% ] 001/104 VUs  01m34.0s/10m0s  100.00 iters/s
+
+running (01m35.0s), 088/104 VUs, 9357 complete and 0 interrupted iterations
+steady   [  16% ] 088/104 VUs  01m35.0s/10m0s  100.00 iters/s
+
+running (01m36.0s), 004/104 VUs, 9541 complete and 0 interrupted iterations
+steady   [  16% ] 004/104 VUs  01m36.0s/10m0s  100.00 iters/s
+
+running (01m37.0s), 004/104 VUs, 9641 complete and 0 interrupted iterations
+steady   [  16% ] 004/104 VUs  01m37.0s/10m0s  100.00 iters/s
+
+running (01m38.0s), 004/104 VUs, 9741 complete and 0 interrupted iterations
+steady   [  16% ] 004/104 VUs  01m38.0s/10m0s  100.00 iters/s
+
+running (01m39.0s), 003/104 VUs, 9842 complete and 0 interrupted iterations
+steady   [  16% ] 003/104 VUs  01m39.0s/10m0s  100.00 iters/s
+
+running (01m40.0s), 003/104 VUs, 9942 complete and 0 interrupted iterations
+steady   [  17% ] 003/104 VUs  01m40.0s/10m0s  100.00 iters/s
+
+running (01m41.0s), 004/104 VUs, 10041 complete and 0 interrupted iterations
+steady   [  17% ] 004/104 VUs  01m41.0s/10m0s  100.00 iters/s
+
+running (01m42.0s), 003/104 VUs, 10142 complete and 0 interrupted iterations
+steady   [  17% ] 003/104 VUs  01m42.0s/10m0s  100.00 iters/s
+
+running (01m43.0s), 003/104 VUs, 10242 complete and 0 interrupted iterations
+steady   [  17% ] 003/104 VUs  01m43.0s/10m0s  100.00 iters/s
+
+running (01m44.0s), 003/104 VUs, 10342 complete and 0 interrupted iterations
+steady   [  17% ] 003/104 VUs  01m44.0s/10m0s  100.00 iters/s
+
+running (01m45.0s), 003/104 VUs, 10442 complete and 0 interrupted iterations
+steady   [  17% ] 003/104 VUs  01m45.0s/10m0s  100.00 iters/s
+
+running (01m46.0s), 003/104 VUs, 10542 complete and 0 interrupted iterations
+steady   [  18% ] 003/104 VUs  01m46.0s/10m0s  100.00 iters/s
+
+running (01m47.0s), 003/104 VUs, 10642 complete and 0 interrupted iterations
+steady   [  18% ] 003/104 VUs  01m47.0s/10m0s  100.00 iters/s
+
+running (01m48.0s), 003/104 VUs, 10742 complete and 0 interrupted iterations
+steady   [  18% ] 003/104 VUs  01m48.0s/10m0s  100.00 iters/s
+
+running (01m49.0s), 003/104 VUs, 10842 complete and 0 interrupted iterations
+steady   [  18% ] 003/104 VUs  01m49.0s/10m0s  100.00 iters/s
+
+running (01m50.0s), 003/104 VUs, 10942 complete and 0 interrupted iterations
+steady   [  18% ] 003/104 VUs  01m50.0s/10m0s  100.00 iters/s
+
+running (01m51.0s), 003/104 VUs, 11042 complete and 0 interrupted iterations
+steady   [  18% ] 003/104 VUs  01m51.0s/10m0s  100.00 iters/s
+
+running (01m52.0s), 003/104 VUs, 11142 complete and 0 interrupted iterations
+steady   [  19% ] 003/104 VUs  01m52.0s/10m0s  100.00 iters/s
+
+running (01m53.0s), 003/104 VUs, 11242 complete and 0 interrupted iterations
+steady   [  19% ] 003/104 VUs  01m53.0s/10m0s  100.00 iters/s
+
+running (01m54.0s), 003/104 VUs, 11342 complete and 0 interrupted iterations
+steady   [  19% ] 003/104 VUs  01m54.0s/10m0s  100.00 iters/s
+
+running (01m55.0s), 003/104 VUs, 11442 complete and 0 interrupted iterations
+steady   [  19% ] 003/104 VUs  01m55.0s/10m0s  100.00 iters/s
+
+running (01m56.0s), 003/104 VUs, 11542 complete and 0 interrupted iterations
+steady   [  19% ] 003/104 VUs  01m56.0s/10m0s  100.00 iters/s
+
+running (01m57.0s), 003/104 VUs, 11642 complete and 0 interrupted iterations
+steady   [  19% ] 003/104 VUs  01m57.0s/10m0s  100.00 iters/s
+
+running (01m58.0s), 003/104 VUs, 11742 complete and 0 interrupted iterations
+steady   [  20% ] 003/104 VUs  01m58.0s/10m0s  100.00 iters/s
+
+running (01m59.0s), 003/104 VUs, 11842 complete and 0 interrupted iterations
+steady   [  20% ] 003/104 VUs  01m59.0s/10m0s  100.00 iters/s
+
+running (02m00.0s), 003/104 VUs, 11942 complete and 0 interrupted iterations
+steady   [  20% ] 003/104 VUs  02m00.0s/10m0s  100.00 iters/s
+
+running (02m01.0s), 003/104 VUs, 12042 complete and 0 interrupted iterations
+steady   [  20% ] 003/104 VUs  02m01.0s/10m0s  100.00 iters/s
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": EOF"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": EOF"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": EOF"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": read tcp 10.244.0.187:46534->10.96.216.252:8080: read: connection reset by peer"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": read tcp 10.244.0.187:46548->10.96.216.252:8080: read: connection reset by peer"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:14Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+
+running (02m02.0s), 001/104 VUs, 12144 complete and 0 interrupted iterations
+steady   [  20% ] 001/104 VUs  02m02.0s/10m0s  100.00 iters/s
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:15Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+
+running (02m03.0s), 001/104 VUs, 12244 complete and 0 interrupted iterations
+steady   [  20% ] 001/104 VUs  02m03.0s/10m0s  100.00 iters/s
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:16Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+
+running (02m04.0s), 001/104 VUs, 12344 complete and 0 interrupted iterations
+steady   [  21% ] 001/104 VUs  02m04.0s/10m0s  100.00 iters/s
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:17Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+
+running (02m05.0s), 001/104 VUs, 12444 complete and 0 interrupted iterations
+steady   [  21% ] 001/104 VUs  02m05.0s/10m0s  100.00 iters/s
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:18Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+
+running (02m06.0s), 001/104 VUs, 12544 complete and 0 interrupted iterations
+steady   [  21% ] 001/104 VUs  02m06.0s/10m0s  100.00 iters/s
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+time="2026-07-30T17:03:19Z" level=warning msg="Request Failed" error="Post \"http://orders-service.spire.svc.cluster.local:8080/api/orders/create\": dial tcp 10.96.216.252:8080: connect: connection refused"
+
+running (02m07.0s), 087/104 VUs, 12558 complete and 0 interrupted iterations
+steady   [  21% ] 087/104 VUs  02m07.0s/10m0s  100.00 iters/s
+
+running (02m08.0s), 004/137 VUs, 12708 complete and 0 interrupted iterations
+steady   [  21% ] 004/137 VUs  02m08.0s/10m0s  100.00 iters/s
+
+running (02m09.0s), 004/137 VUs, 12808 complete and 0 interrupted iterations
+steady   [  21% ] 004/137 VUs  02m09.0s/10m0s  100.00 iters/s
+
+running (02m10.0s), 004/137 VUs, 12908 complete and 0 interrupted iterations
+steady   [  22% ] 004/137 VUs  02m10.0s/10m0s  100.00 iters/s
+
+running (02m11.0s), 004/137 VUs, 13008 complete and 0 interrupted iterations
+steady   [  22% ] 004/137 VUs  02m11.0s/10m0s  100.00 iters/s
+
+running (02m12.0s), 003/137 VUs, 13109 complete and 0 interrupted iterations
+steady   [  22% ] 003/137 VUs  02m12.0s/10m0s  100.00 iters/s
+
+running (02m13.0s), 003/137 VUs, 13209 complete and 0 interrupted iterations
+steady   [  22% ] 003/137 VUs  02m13.0s/10m0s  100.00 iters/s
+
+running (02m14.0s), 004/137 VUs, 13308 complete and 0 interrupted iterations
+steady   [  22% ] 004/137 VUs  02m14.0s/10m0s  100.00 iters/s
+
+running (02m15.0s), 003/137 VUs, 13409 complete and 0 interrupted iterations
+steady   [  22% ] 003/137 VUs  02m15.0s/10m0s  100.00 iters/s
+
+running (02m16.0s), 003/137 VUs, 13509 complete and 0 interrupted iterations
+steady   [  23% ] 003/137 VUs  02m16.0s/10m0s  100.00 iters/s
+
+running (02m17.0s), 003/137 VUs, 13609 complete and 0 interrupted iterations
+steady   [  23% ] 003/137 VUs  02m17.0s/10m0s  100.00 iters/s
+
+running (02m18.0s), 003/137 VUs, 13709 complete and 0 interrupted iterations
+steady   [  23% ] 003/137 VUs  02m18.0s/10m0s  100.00 iters/s
+
+running (02m19.0s), 003/137 VUs, 13809 complete and 0 interrupted iterations
+steady   [  23% ] 003/137 VUs  02m19.0s/10m0s  100.00 iters/s
+
+running (02m20.0s), 003/137 VUs, 13909 complete and 0 interrupted iterations
+steady   [  23% ] 003/137 VUs  02m20.0s/10m0s  100.00 iters/s
+
+running (02m21.0s), 003/137 VUs, 14009 complete and 0 interrupted iterations
+steady   [  23% ] 003/137 VUs  02m21.0s/10m0s  100.00 iters/s
+
+running (02m22.0s), 003/137 VUs, 14109 complete and 0 interrupted iterations
+steady   [  24% ] 003/137 VUs  02m22.0s/10m0s  100.00 iters/s
+
+running (02m23.0s), 003/137 VUs, 14209 complete and 0 interrupted iterations
+steady   [  24% ] 003/137 VUs  02m23.0s/10m0s  100.00 iters/s
+
+running (02m24.0s), 003/137 VUs, 14309 complete and 0 interrupted iterations
+steady   [  24% ] 003/137 VUs  02m24.0s/10m0s  100.00 iters/s
+
+running (02m25.0s), 003/137 VUs, 14409 complete and 0 interrupted iterations
+steady   [  24% ] 003/137 VUs  02m25.0s/10m0s  100.00 iters/s
+
+running (02m26.0s), 003/137 VUs, 14509 complete and 0 interrupted iterations
+steady   [  24% ] 003/137 VUs  02m26.0s/10m0s  100.00 iters/s
+
+running (02m27.0s), 003/137 VUs, 14609 complete and 0 interrupted iterations
+steady   [  24% ] 003/137 VUs  02m27.0s/10m0s  100.00 iters/s
+
+running (02m28.0s), 003/137 VUs, 14709 complete and 0 interrupted iterations
+steady   [  25% ] 003/137 VUs  02m28.0s/10m0s  100.00 iters/s
+
+running (02m29.0s), 003/137 VUs, 14809 complete and 0 interrupted iterations
+steady   [  25% ] 003/137 VUs  02m29.0s/10m0s  100.00 iters/s
+
+running (02m30.0s), 003/137 VUs, 14909 complete and 0 interrupted iterations
+steady   [  25% ] 003/137 VUs  02m30.0s/10m0s  100.00 iters/s
+
+running (02m31.0s), 003/137 VUs, 15009 complete and 0 interrupted iterations
+steady   [  25% ] 003/137 VUs  02m31.0s/10m0s  100.00 iters/s
+
+running (02m32.0s), 003/137 VUs, 15109 complete and 0 interrupted iterations
+steady   [  25% ] 003/137 VUs  02m32.0s/10m0s  100.00 iters/s
+
+running (02m33.0s), 003/137 VUs, 15209 complete and 0 interrupted iterations
+steady   [  25% ] 003/137 VUs  02m33.0s/10m0s  100.00 iters/s
+
+running (02m34.0s), 003/137 VUs, 15309 complete and 0 interrupted iterations
+steady   [  26% ] 003/137 VUs  02m34.0s/10m0s  100.00 iters/s
+
+running (02m35.0s), 003/137 VUs, 15409 complete and 0 interrupted iterations
+steady   [  26% ] 003/137 VUs  02m35.0s/10m0s  100.00 iters/s
+
+running (02m36.0s), 003/137 VUs, 15509 complete and 0 interrupted iterations
+steady   [  26% ] 003/137 VUs  02m36.0s/10m0s  100.00 iters/s
+
+running (02m37.0s), 003/137 VUs, 15609 complete and 0 interrupted iterations
+steady   [  26% ] 003/137 VUs  02m37.0s/10m0s  100.00 iters/s
+
+running (02m38.0s), 003/137 VUs, 15709 complete and 0 interrupted iterations
+steady   [  26% ] 003/137 VUs  02m38.0s/10m0s  100.00 iters/s
+
+running (02m39.0s), 003/137 VUs, 15809 complete and 0 interrupted iterations
+steady   [  26% ] 003/137 VUs  02m39.0s/10m0s  100.00 iters/s
+
+running (02m40.0s), 003/137 VUs, 15909 complete and 0 interrupted iterations
+steady   [  27% ] 003/137 VUs  02m40.0s/10m0s  100.00 iters/s
+
+running (02m41.0s), 003/137 VUs, 16009 complete and 0 interrupted iterations
+steady   [  27% ] 003/137 VUs  02m41.0s/10m0s  100.00 iters/s
+
+running (02m42.0s), 003/137 VUs, 16109 complete and 0 interrupted iterations
+steady   [  27% ] 003/137 VUs  02m42.0s/10m0s  100.00 iters/s
+
+running (02m43.0s), 003/137 VUs, 16209 complete and 0 interrupted iterations
+steady   [  27% ] 003/137 VUs  02m43.0s/10m0s  100.00 iters/s
+
+running (02m44.0s), 004/137 VUs, 16308 complete and 0 interrupted iterations
+steady   [  27% ] 004/137 VUs  02m44.0s/10m0s  100.00 iters/s
+
+running (02m45.0s), 003/137 VUs, 16409 complete and 0 interrupted iterations
+steady   [  27% ] 003/137 VUs  02m45.0s/10m0s  100.00 iters/s
+
+running (02m46.0s), 003/137 VUs, 16509 complete and 0 interrupted iterations
+steady   [  28% ] 003/137 VUs  02m46.0s/10m0s  100.00 iters/s
+
+running (02m47.0s), 003/137 VUs, 16609 complete and 0 interrupted iterations
+steady   [  28% ] 003/137 VUs  02m47.0s/10m0s  100.00 iters/s
+
+running (02m48.0s), 003/137 VUs, 16709 complete and 0 interrupted iterations
+steady   [  28% ] 003/137 VUs  02m48.0s/10m0s  100.00 iters/s
+
+running (02m49.0s), 003/137 VUs, 16809 complete and 0 interrupted iterations
+steady   [  28% ] 003/137 VUs  02m49.0s/10m0s  100.00 iters/s
+
+running (02m50.0s), 003/137 VUs, 16909 complete and 0 interrupted iterations
+steady   [  28% ] 003/137 VUs  02m50.0s/10m0s  100.00 iters/s
+
+running (02m51.0s), 003/137 VUs, 17009 complete and 0 interrupted iterations
+steady   [  28% ] 003/137 VUs  02m51.0s/10m0s  100.00 iters/s
+
+running (02m52.0s), 003/137 VUs, 17109 complete and 0 interrupted iterations
+steady   [  29% ] 003/137 VUs  02m52.0s/10m0s  100.00 iters/s
+
+running (02m53.0s), 003/137 VUs, 17209 complete and 0 interrupted iterations
+steady   [  29% ] 003/137 VUs  02m53.0s/10m0s  100.00 iters/s
+
+running (02m54.0s), 003/137 VUs, 17309 complete and 0 interrupted iterations
+steady   [  29% ] 003/137 VUs  02m54.0s/10m0s  100.00 iters/s
+
+running (02m55.0s), 003/137 VUs, 17409 complete and 0 interrupted iterations
+steady   [  29% ] 003/137 VUs  02m55.0s/10m0s  100.00 iters/s
+
+running (02m56.0s), 003/137 VUs, 17509 complete and 0 interrupted iterations
+steady   [  29% ] 003/137 VUs  02m56.0s/10m0s  100.00 iters/s
+
+running (02m57.0s), 003/137 VUs, 17609 complete and 0 interrupted iterations
+steady   [  29% ] 003/137 VUs  02m57.0s/10m0s  100.00 iters/s
+
+running (02m58.0s), 003/137 VUs, 17709 complete and 0 interrupted iterations
+steady   [  30% ] 003/137 VUs  02m58.0s/10m0s  100.00 iters/s
+
+running (02m59.0s), 003/137 VUs, 17809 complete and 0 interrupted iterations
+steady   [  30% ] 003/137 VUs  02m59.0s/10m0s  100.00 iters/s
+
+running (03m00.0s), 003/137 VUs, 17909 complete and 0 interrupted iterations
+steady   [  30% ] 003/137 VUs  03m00.0s/10m0s  100.00 iters/s
+
+running (03m01.0s), 003/137 VUs, 18009 complete and 0 interrupted iterations
+steady   [  30% ] 003/137 VUs  03m01.0s/10m0s  100.00 iters/s
+
+running (03m02.0s), 003/137 VUs, 18109 complete and 0 interrupted iterations
+steady   [  30% ] 003/137 VUs  03m02.0s/10m0s  100.00 iters/s
+
+running (03m03.0s), 003/137 VUs, 18209 complete and 0 interrupted iterations
+steady   [  30% ] 003/137 VUs  03m03.0s/10m0s  100.00 iters/s
+
+running (03m04.0s), 003/137 VUs, 18309 complete and 0 interrupted iterations
+steady   [  31% ] 003/137 VUs  03m04.0s/10m0s  100.00 iters/s
+
+running (03m05.0s), 003/137 VUs, 18409 complete and 0 interrupted iterations
+steady   [  31% ] 003/137 VUs  03m05.0s/10m0s  100.00 iters/s
+
+running (03m06.0s), 003/137 VUs, 18509 complete and 0 interrupted iterations
+steady   [  31% ] 003/137 VUs  03m06.0s/10m0s  100.00 iters/s
+
+running (03m07.0s), 003/137 VUs, 18609 complete and 0 interrupted iterations
+steady   [  31% ] 003/137 VUs  03m07.0s/10m0s  100.00 iters/s
+
+running (03m08.0s), 003/137 VUs, 18709 complete and 0 interrupted iterations
+steady   [  31% ] 003/137 VUs  03m08.0s/10m0s  100.00 iters/s
+
+running (03m09.0s), 003/137 VUs, 18809 complete and 0 interrupted iterations
+steady   [  31% ] 003/137 VUs  03m09.0s/10m0s  100.00 iters/s
+
+running (03m10.0s), 003/137 VUs, 18909 complete and 0 interrupted iterations
+steady   [  32% ] 003/137 VUs  03m10.0s/10m0s  100.00 iters/s
+
+running (03m11.0s), 003/137 VUs, 19009 complete and 0 interrupted iterations
+steady   [  32% ] 003/137 VUs  03m11.0s/10m0s  100.00 iters/s
+
+running (03m12.0s), 003/137 VUs, 19109 complete and 0 interrupted iterations
+steady   [  32% ] 003/137 VUs  03m12.0s/10m0s  100.00 iters/s
+
+running (03m13.0s), 003/137 VUs, 19209 complete and 0 interrupted iterations
+steady   [  32% ] 003/137 VUs  03m13.0s/10m0s  100.00 iters/s
+
+running (03m14.0s), 003/137 VUs, 19309 complete and 0 interrupted iterations
+steady   [  32% ] 003/137 VUs  03m14.0s/10m0s  100.00 iters/s
+
+running (03m15.0s), 003/137 VUs, 19409 complete and 0 interrupted iterations
+steady   [  32% ] 003/137 VUs  03m15.0s/10m0s  100.00 iters/s
+
+running (03m16.0s), 003/137 VUs, 19509 complete and 0 interrupted iterations
+steady   [  33% ] 003/137 VUs  03m16.0s/10m0s  100.00 iters/s
+
+running (03m17.0s), 003/137 VUs, 19609 complete and 0 interrupted iterations
+steady   [  33% ] 003/137 VUs  03m17.0s/10m0s  100.00 iters/s
+
+running (03m18.0s), 003/137 VUs, 19709 complete and 0 interrupted iterations
+steady   [  33% ] 003/137 VUs  03m18.0s/10m0s  100.00 iters/s
+
+running (03m19.0s), 003/137 VUs, 19809 complete and 0 interrupted iterations
+steady   [  33% ] 003/137 VUs  03m19.0s/10m0s  100.00 iters/s
+
+running (03m20.0s), 003/137 VUs, 19909 complete and 0 interrupted iterations
+steady   [  33% ] 003/137 VUs  03m20.0s/10m0s  100.00 iters/s
+
+running (03m21.0s), 003/137 VUs, 20009 complete and 0 interrupted iterations
+steady   [  33% ] 003/137 VUs  03m21.0s/10m0s  100.00 iters/s
+
+running (03m22.0s), 003/137 VUs, 20109 complete and 0 interrupted iterations
+steady   [  34% ] 003/137 VUs  03m22.0s/10m0s  100.00 iters/s
+
+running (03m23.0s), 003/137 VUs, 20209 complete and 0 interrupted iterations
+steady   [  34% ] 003/137 VUs  03m23.0s/10m0s  100.00 iters/s
+
+running (03m24.0s), 003/137 VUs, 20309 complete and 0 interrupted iterations
+steady   [  34% ] 003/137 VUs  03m24.0s/10m0s  100.00 iters/s
+
+running (03m25.0s), 003/137 VUs, 20409 complete and 0 interrupted iterations
+steady   [  34% ] 003/137 VUs  03m25.0s/10m0s  100.00 iters/s
+
+running (03m26.0s), 003/137 VUs, 20509 complete and 0 interrupted iterations
+steady   [  34% ] 003/137 VUs  03m26.0s/10m0s  100.00 iters/s
+
+running (03m27.0s), 003/137 VUs, 20609 complete and 0 interrupted iterations
+steady   [  34% ] 003/137 VUs  03m27.0s/10m0s  100.00 iters/s
+
+running (03m28.0s), 003/137 VUs, 20709 complete and 0 interrupted iterations
+steady   [  35% ] 003/137 VUs  03m28.0s/10m0s  100.00 iters/s
+
+running (03m29.0s), 003/137 VUs, 20809 complete and 0 interrupted iterations
+steady   [  35% ] 003/137 VUs  03m29.0s/10m0s  100.00 iters/s
+
+running (03m30.0s), 003/137 VUs, 20909 complete and 0 interrupted iterations
+steady   [  35% ] 003/137 VUs  03m30.0s/10m0s  100.00 iters/s
+
+running (03m31.0s), 003/137 VUs, 21009 complete and 0 interrupted iterations
+steady   [  35% ] 003/137 VUs  03m31.0s/10m0s  100.00 iters/s
+
+running (03m32.0s), 003/137 VUs, 21109 complete and 0 interrupted iterations
+steady   [  35% ] 003/137 VUs  03m32.0s/10m0s  100.00 iters/s
+
+running (03m33.0s), 003/137 VUs, 21209 complete and 0 interrupted iterations
+steady   [  35% ] 003/137 VUs  03m33.0s/10m0s  100.00 iters/s
+
+running (03m34.0s), 003/137 VUs, 21309 complete and 0 interrupted iterations
+steady   [  36% ] 003/137 VUs  03m34.0s/10m0s  100.00 iters/s
+
+running (03m35.0s), 003/137 VUs, 21409 complete and 0 interrupted iterations
+steady   [  36% ] 003/137 VUs  03m35.0s/10m0s  100.00 iters/s
+
+running (03m36.0s), 003/137 VUs, 21509 complete and 0 interrupted iterations
+steady   [  36% ] 003/137 VUs  03m36.0s/10m0s  100.00 iters/s
+
+running (03m37.0s), 003/137 VUs, 21609 complete and 0 interrupted iterations
+steady   [  36% ] 003/137 VUs  03m37.0s/10m0s  100.00 iters/s
+
+running (03m38.0s), 003/137 VUs, 21709 complete and 0 interrupted iterations
+steady   [  36% ] 003/137 VUs  03m38.0s/10m0s  100.00 iters/s
+
+running (03m39.0s), 003/137 VUs, 21809 complete and 0 interrupted iterations
+steady   [  36% ] 003/137 VUs  03m39.0s/10m0s  100.00 iters/s
+
+running (03m40.0s), 003/137 VUs, 21909 complete and 0 interrupted iterations
+steady   [  37% ] 003/137 VUs  03m40.0s/10m0s  100.00 iters/s
+
+running (03m41.0s), 003/137 VUs, 22009 complete and 0 interrupted iterations
+steady   [  37% ] 003/137 VUs  03m41.0s/10m0s  100.00 iters/s
+
+running (03m42.0s), 003/137 VUs, 22109 complete and 0 interrupted iterations
+steady   [  37% ] 003/137 VUs  03m42.0s/10m0s  100.00 iters/s
+
+running (03m43.0s), 003/137 VUs, 22209 complete and 0 interrupted iterations
+steady   [  37% ] 003/137 VUs  03m43.0s/10m0s  100.00 iters/s
+
+running (03m44.0s), 003/137 VUs, 22309 complete and 0 interrupted iterations
+steady   [  37% ] 003/137 VUs  03m44.0s/10m0s  100.00 iters/s
+
+running (03m45.0s), 003/137 VUs, 22409 complete and 0 interrupted iterations
+steady   [  37% ] 003/137 VUs  03m45.0s/10m0s  100.00 iters/s
+
+running (03m46.0s), 003/137 VUs, 22509 complete and 0 interrupted iterations
+steady   [  38% ] 003/137 VUs  03m46.0s/10m0s  100.00 iters/s
+
+running (03m47.0s), 003/137 VUs, 22609 complete and 0 interrupted iterations
+steady   [  38% ] 003/137 VUs  03m47.0s/10m0s  100.00 iters/s
+
+running (03m48.0s), 003/137 VUs, 22709 complete and 0 interrupted iterations
+steady   [  38% ] 003/137 VUs  03m48.0s/10m0s  100.00 iters/s
+
+running (03m49.0s), 003/137 VUs, 22809 complete and 0 interrupted iterations
+steady   [  38% ] 003/137 VUs  03m49.0s/10m0s  100.00 iters/s
+
+running (03m50.0s), 003/137 VUs, 22909 complete and 0 interrupted iterations
+steady   [  38% ] 003/137 VUs  03m50.0s/10m0s  100.00 iters/s
+
+running (03m51.0s), 003/137 VUs, 23009 complete and 0 interrupted iterations
+steady   [  38% ] 003/137 VUs  03m51.0s/10m0s  100.00 iters/s
+
+running (03m52.0s), 003/137 VUs, 23109 complete and 0 interrupted iterations
+steady   [  39% ] 003/137 VUs  03m52.0s/10m0s  100.00 iters/s
+
+running (03m53.0s), 003/137 VUs, 23209 complete and 0 interrupted iterations
+steady   [  39% ] 003/137 VUs  03m53.0s/10m0s  100.00 iters/s
+
+running (03m54.0s), 003/137 VUs, 23309 complete and 0 interrupted iterations
+steady   [  39% ] 003/137 VUs  03m54.0s/10m0s  100.00 iters/s
+
+running (03m55.0s), 003/137 VUs, 23409 complete and 0 interrupted iterations
+steady   [  39% ] 003/137 VUs  03m55.0s/10m0s  100.00 iters/s
+
+running (03m56.0s), 003/137 VUs, 23509 complete and 0 interrupted iterations
+steady   [  39% ] 003/137 VUs  03m56.0s/10m0s  100.00 iters/s
+
+running (03m57.0s), 003/137 VUs, 23609 complete and 0 interrupted iterations
+steady   [  39% ] 003/137 VUs  03m57.0s/10m0s  100.00 iters/s
+
+running (03m58.0s), 003/137 VUs, 23709 complete and 0 interrupted iterations
+steady   [  40% ] 003/137 VUs  03m58.0s/10m0s  100.00 iters/s
+
+running (03m59.0s), 003/137 VUs, 23809 complete and 0 interrupted iterations
+steady   [  40% ] 003/137 VUs  03m59.0s/10m0s  100.00 iters/s
+
+running (04m00.0s), 003/137 VUs, 23909 complete and 0 interrupted iterations
+steady   [  40% ] 003/137 VUs  04m00.0s/10m0s  100.00 iters/s
+
+running (04m01.0s), 003/137 VUs, 24009 complete and 0 interrupted iterations
+steady   [  40% ] 003/137 VUs  04m01.0s/10m0s  100.00 iters/s
+
+running (04m02.0s), 003/137 VUs, 24109 complete and 0 interrupted iterations
+steady   [  40% ] 003/137 VUs  04m02.0s/10m0s  100.00 iters/s
+
+running (04m03.0s), 003/137 VUs, 24209 complete and 0 interrupted iterations
+steady   [  40% ] 003/137 VUs  04m03.0s/10m0s  100.00 iters/s
+
+running (04m04.0s), 003/137 VUs, 24309 complete and 0 interrupted iterations
+steady   [  41% ] 003/137 VUs  04m04.0s/10m0s  100.00 iters/s
+
+running (04m05.0s), 003/137 VUs, 24409 complete and 0 interrupted iterations
+steady   [  41% ] 003/137 VUs  04m05.0s/10m0s  100.00 iters/s
+
+running (04m06.0s), 003/137 VUs, 24509 complete and 0 interrupted iterations
+steady   [  41% ] 003/137 VUs  04m06.0s/10m0s  100.00 iters/s
+
+running (04m07.0s), 003/137 VUs, 24609 complete and 0 interrupted iterations
+steady   [  41% ] 003/137 VUs  04m07.0s/10m0s  100.00 iters/s
+
+running (04m08.0s), 003/137 VUs, 24709 complete and 0 interrupted iterations
+steady   [  41% ] 003/137 VUs  04m08.0s/10m0s  100.00 iters/s
+
+running (04m09.0s), 003/137 VUs, 24809 complete and 0 interrupted iterations
+steady   [  41% ] 003/137 VUs  04m09.0s/10m0s  100.00 iters/s
+
+running (04m10.0s), 003/137 VUs, 24909 complete and 0 interrupted iterations
+steady   [  42% ] 003/137 VUs  04m10.0s/10m0s  100.00 iters/s
+
+running (04m11.0s), 003/137 VUs, 25009 complete and 0 interrupted iterations
+steady   [  42% ] 003/137 VUs  04m11.0s/10m0s  100.00 iters/s
+
+running (04m12.0s), 003/137 VUs, 25109 complete and 0 interrupted iterations
+steady   [  42% ] 003/137 VUs  04m12.0s/10m0s  100.00 iters/s
+
+running (04m13.0s), 003/137 VUs, 25209 complete and 0 interrupted iterations
+steady   [  42% ] 003/137 VUs  04m13.0s/10m0s  100.00 iters/s
+
+running (04m14.0s), 003/137 VUs, 25309 complete and 0 interrupted iterations
+steady   [  42% ] 003/137 VUs  04m14.0s/10m0s  100.00 iters/s
+
+running (04m15.0s), 003/137 VUs, 25409 complete and 0 interrupted iterations
+steady   [  42% ] 003/137 VUs  04m15.0s/10m0s  100.00 iters/s
+
+running (04m16.0s), 003/137 VUs, 25509 complete and 0 interrupted iterations
+steady   [  43% ] 003/137 VUs  04m16.0s/10m0s  100.00 iters/s
+
+running (04m17.0s), 003/137 VUs, 25609 complete and 0 interrupted iterations
+steady   [  43% ] 003/137 VUs  04m17.0s/10m0s  100.00 iters/s
+
+running (04m18.0s), 003/137 VUs, 25709 complete and 0 interrupted iterations
+steady   [  43% ] 003/137 VUs  04m18.0s/10m0s  100.00 iters/s
+
+running (04m19.0s), 003/137 VUs, 25809 complete and 0 interrupted iterations
+steady   [  43% ] 003/137 VUs  04m19.0s/10m0s  100.00 iters/s
+
+running (04m20.0s), 003/137 VUs, 25909 complete and 0 interrupted iterations
+steady   [  43% ] 003/137 VUs  04m20.0s/10m0s  100.00 iters/s
+
+running (04m21.0s), 003/137 VUs, 26009 complete and 0 interrupted iterations
+steady   [  43% ] 003/137 VUs  04m21.0s/10m0s  100.00 iters/s
+
+running (04m22.0s), 003/137 VUs, 26109 complete and 0 interrupted iterations
+steady   [  44% ] 003/137 VUs  04m22.0s/10m0s  100.00 iters/s
+
+running (04m23.0s), 003/137 VUs, 26209 complete and 0 interrupted iterations
+steady   [  44% ] 003/137 VUs  04m23.0s/10m0s  100.00 iters/s
+
+running (04m24.0s), 003/137 VUs, 26309 complete and 0 interrupted iterations
+steady   [  44% ] 003/137 VUs  04m24.0s/10m0s  100.00 iters/s
+
+running (04m25.0s), 003/137 VUs, 26409 complete and 0 interrupted iterations
+steady   [  44% ] 003/137 VUs  04m25.0s/10m0s  100.00 iters/s
+
+running (04m26.0s), 003/137 VUs, 26509 complete and 0 interrupted iterations
+steady   [  44% ] 003/137 VUs  04m26.0s/10m0s  100.00 iters/s
+
+running (04m27.0s), 003/137 VUs, 26609 complete and 0 interrupted iterations
+steady   [  44% ] 003/137 VUs  04m27.0s/10m0s  100.00 iters/s
+
+running (04m28.0s), 003/137 VUs, 26709 complete and 0 interrupted iterations
+steady   [  45% ] 003/137 VUs  04m28.0s/10m0s  100.00 iters/s
+
+running (04m29.0s), 003/137 VUs, 26809 complete and 0 interrupted iterations
+steady   [  45% ] 003/137 VUs  04m29.0s/10m0s  100.00 iters/s
+
+running (04m30.0s), 003/137 VUs, 26909 complete and 0 interrupted iterations
+steady   [  45% ] 003/137 VUs  04m30.0s/10m0s  100.00 iters/s
+
+running (04m31.0s), 003/137 VUs, 27009 complete and 0 interrupted iterations
+steady   [  45% ] 003/137 VUs  04m31.0s/10m0s  100.00 iters/s
+
+running (04m32.0s), 003/137 VUs, 27109 complete and 0 interrupted iterations
+steady   [  45% ] 003/137 VUs  04m32.0s/10m0s  100.00 iters/s
+
+running (04m33.0s), 003/137 VUs, 27209 complete and 0 interrupted iterations
+steady   [  45% ] 003/137 VUs  04m33.0s/10m0s  100.00 iters/s
+
+running (04m34.0s), 003/137 VUs, 27309 complete and 0 interrupted iterations
+steady   [  46% ] 003/137 VUs  04m34.0s/10m0s  100.00 iters/s
+
+running (04m35.0s), 003/137 VUs, 27409 complete and 0 interrupted iterations
+steady   [  46% ] 003/137 VUs  04m35.0s/10m0s  100.00 iters/s
+
+running (04m36.0s), 003/137 VUs, 27509 complete and 0 interrupted iterations
+steady   [  46% ] 003/137 VUs  04m36.0s/10m0s  100.00 iters/s
+
+running (04m37.0s), 003/137 VUs, 27609 complete and 0 interrupted iterations
+steady   [  46% ] 003/137 VUs  04m37.0s/10m0s  100.00 iters/s
+
+running (04m38.0s), 003/137 VUs, 27709 complete and 0 interrupted iterations
+steady   [  46% ] 003/137 VUs  04m38.0s/10m0s  100.00 iters/s
+
+running (04m39.0s), 003/137 VUs, 27809 complete and 0 interrupted iterations
+steady   [  46% ] 003/137 VUs  04m39.0s/10m0s  100.00 iters/s
+
+running (04m40.0s), 003/137 VUs, 27909 complete and 0 interrupted iterations
+steady   [  47% ] 003/137 VUs  04m40.0s/10m0s  100.00 iters/s
+
+running (04m41.0s), 003/137 VUs, 28009 complete and 0 interrupted iterations
+steady   [  47% ] 003/137 VUs  04m41.0s/10m0s  100.00 iters/s
+
+running (04m42.0s), 003/137 VUs, 28109 complete and 0 interrupted iterations
+steady   [  47% ] 003/137 VUs  04m42.0s/10m0s  100.00 iters/s
+
+running (04m43.0s), 003/137 VUs, 28209 complete and 0 interrupted iterations
+steady   [  47% ] 003/137 VUs  04m43.0s/10m0s  100.00 iters/s
+
+running (04m44.0s), 003/137 VUs, 28309 complete and 0 interrupted iterations
+steady   [  47% ] 003/137 VUs  04m44.0s/10m0s  100.00 iters/s
+
+running (04m45.0s), 003/137 VUs, 28409 complete and 0 interrupted iterations
+steady   [  47% ] 003/137 VUs  04m45.0s/10m0s  100.00 iters/s
+
+running (04m46.0s), 003/137 VUs, 28509 complete and 0 interrupted iterations
+steady   [  48% ] 003/137 VUs  04m46.0s/10m0s  100.00 iters/s
+
+running (04m47.0s), 003/137 VUs, 28609 complete and 0 interrupted iterations
+steady   [  48% ] 003/137 VUs  04m47.0s/10m0s  100.00 iters/s
+
+running (04m48.0s), 003/137 VUs, 28709 complete and 0 interrupted iterations
+steady   [  48% ] 003/137 VUs  04m48.0s/10m0s  100.00 iters/s
+
+running (04m49.0s), 003/137 VUs, 28809 complete and 0 interrupted iterations
+steady   [  48% ] 003/137 VUs  04m49.0s/10m0s  100.00 iters/s
+
+running (04m50.0s), 003/137 VUs, 28909 complete and 0 interrupted iterations
+steady   [  48% ] 003/137 VUs  04m50.0s/10m0s  100.00 iters/s
+
+running (04m51.0s), 003/137 VUs, 29009 complete and 0 interrupted iterations
+steady   [  48% ] 003/137 VUs  04m51.0s/10m0s  100.00 iters/s
+
+running (04m52.0s), 003/137 VUs, 29109 complete and 0 interrupted iterations
+steady   [  49% ] 003/137 VUs  04m52.0s/10m0s  100.00 iters/s
+
+running (04m53.0s), 003/137 VUs, 29209 complete and 0 interrupted iterations
+steady   [  49% ] 003/137 VUs  04m53.0s/10m0s  100.00 iters/s
+
+running (04m54.0s), 003/137 VUs, 29309 complete and 0 interrupted iterations
+steady   [  49% ] 003/137 VUs  04m54.0s/10m0s  100.00 iters/s
+
+running (04m55.0s), 003/137 VUs, 29409 complete and 0 interrupted iterations
+steady   [  49% ] 003/137 VUs  04m55.0s/10m0s  100.00 iters/s
+
+running (04m56.0s), 003/137 VUs, 29509 complete and 0 interrupted iterations
+steady   [  49% ] 003/137 VUs  04m56.0s/10m0s  100.00 iters/s
+
+running (04m57.0s), 003/137 VUs, 29609 complete and 0 interrupted iterations
+steady   [  49% ] 003/137 VUs  04m57.0s/10m0s  100.00 iters/s
+
+running (04m58.0s), 003/137 VUs, 29709 complete and 0 interrupted iterations
+steady   [  50% ] 003/137 VUs  04m58.0s/10m0s  100.00 iters/s
+
+running (04m59.0s), 003/137 VUs, 29809 complete and 0 interrupted iterations
+steady   [  50% ] 003/137 VUs  04m59.0s/10m0s  100.00 iters/s
+
+running (05m00.0s), 003/137 VUs, 29909 complete and 0 interrupted iterations
+steady   [  50% ] 003/137 VUs  05m00.0s/10m0s  100.00 iters/s
+
+running (05m01.0s), 003/137 VUs, 30009 complete and 0 interrupted iterations
+steady   [  50% ] 003/137 VUs  05m01.0s/10m0s  100.00 iters/s
+
+running (05m02.0s), 003/137 VUs, 30109 complete and 0 interrupted iterations
+steady   [  50% ] 003/137 VUs  05m02.0s/10m0s  100.00 iters/s
+
+running (05m03.0s), 003/137 VUs, 30209 complete and 0 interrupted iterations
+steady   [  50% ] 003/137 VUs  05m03.0s/10m0s  100.00 iters/s
+
+running (05m04.0s), 003/137 VUs, 30309 complete and 0 interrupted iterations
+steady   [  51% ] 003/137 VUs  05m04.0s/10m0s  100.00 iters/s
+
+running (05m05.0s), 003/137 VUs, 30409 complete and 0 interrupted iterations
+steady   [  51% ] 003/137 VUs  05m05.0s/10m0s  100.00 iters/s
+
+running (05m06.0s), 003/137 VUs, 30509 complete and 0 interrupted iterations
+steady   [  51% ] 003/137 VUs  05m06.0s/10m0s  100.00 iters/s
+
+running (05m07.0s), 003/137 VUs, 30609 complete and 0 interrupted iterations
+steady   [  51% ] 003/137 VUs  05m07.0s/10m0s  100.00 iters/s
+
+running (05m08.0s), 003/137 VUs, 30709 complete and 0 interrupted iterations
+steady   [  51% ] 003/137 VUs  05m08.0s/10m0s  100.00 iters/s
+
+running (05m09.0s), 003/137 VUs, 30809 complete and 0 interrupted iterations
+steady   [  51% ] 003/137 VUs  05m09.0s/10m0s  100.00 iters/s
+
+running (05m10.0s), 003/137 VUs, 30909 complete and 0 interrupted iterations
+steady   [  52% ] 003/137 VUs  05m10.0s/10m0s  100.00 iters/s
+
+running (05m11.0s), 003/137 VUs, 31009 complete and 0 interrupted iterations
+steady   [  52% ] 003/137 VUs  05m11.0s/10m0s  100.00 iters/s
+
+running (05m12.0s), 003/137 VUs, 31109 complete and 0 interrupted iterations
+steady   [  52% ] 003/137 VUs  05m12.0s/10m0s  100.00 iters/s
+
+running (05m13.0s), 003/137 VUs, 31209 complete and 0 interrupted iterations
+steady   [  52% ] 003/137 VUs  05m13.0s/10m0s  100.00 iters/s
+
+running (05m14.0s), 003/137 VUs, 31309 complete and 0 interrupted iterations
+steady   [  52% ] 003/137 VUs  05m14.0s/10m0s  100.00 iters/s
+
+running (05m15.0s), 003/137 VUs, 31409 complete and 0 interrupted iterations
+steady   [  52% ] 003/137 VUs  05m15.0s/10m0s  100.00 iters/s
+
+running (05m16.0s), 003/137 VUs, 31509 complete and 0 interrupted iterations
+steady   [  53% ] 003/137 VUs  05m16.0s/10m0s  100.00 iters/s
+
+running (05m17.0s), 003/137 VUs, 31609 complete and 0 interrupted iterations
+steady   [  53% ] 003/137 VUs  05m17.0s/10m0s  100.00 iters/s
+
+running (05m18.0s), 003/137 VUs, 31709 complete and 0 interrupted iterations
+steady   [  53% ] 003/137 VUs  05m18.0s/10m0s  100.00 iters/s
+
+running (05m19.0s), 003/137 VUs, 31809 complete and 0 interrupted iterations
+steady   [  53% ] 003/137 VUs  05m19.0s/10m0s  100.00 iters/s
+
+running (05m20.0s), 003/137 VUs, 31909 complete and 0 interrupted iterations
+steady   [  53% ] 003/137 VUs  05m20.0s/10m0s  100.00 iters/s
+
+running (05m21.0s), 003/137 VUs, 32009 complete and 0 interrupted iterations
+steady   [  53% ] 003/137 VUs  05m21.0s/10m0s  100.00 iters/s
+
+running (05m22.0s), 003/137 VUs, 32109 complete and 0 interrupted iterations
+steady   [  54% ] 003/137 VUs  05m22.0s/10m0s  100.00 iters/s
+
+running (05m23.0s), 003/137 VUs, 32209 complete and 0 interrupted iterations
+steady   [  54% ] 003/137 VUs  05m23.0s/10m0s  100.00 iters/s
+
+running (05m24.0s), 003/137 VUs, 32309 complete and 0 interrupted iterations
+steady   [  54% ] 003/137 VUs  05m24.0s/10m0s  100.00 iters/s
+
+running (05m25.0s), 003/137 VUs, 32409 complete and 0 interrupted iterations
+steady   [  54% ] 003/137 VUs  05m25.0s/10m0s  100.00 iters/s
+
+running (05m26.0s), 003/137 VUs, 32509 complete and 0 interrupted iterations
+steady   [  54% ] 003/137 VUs  05m26.0s/10m0s  100.00 iters/s
+
+running (05m27.0s), 003/137 VUs, 32609 complete and 0 interrupted iterations
+steady   [  54% ] 003/137 VUs  05m27.0s/10m0s  100.00 iters/s
+
+running (05m28.0s), 003/137 VUs, 32709 complete and 0 interrupted iterations
+steady   [  55% ] 003/137 VUs  05m28.0s/10m0s  100.00 iters/s
+
+running (05m29.0s), 003/137 VUs, 32809 complete and 0 interrupted iterations
+steady   [  55% ] 003/137 VUs  05m29.0s/10m0s  100.00 iters/s
+
+running (05m30.0s), 003/137 VUs, 32909 complete and 0 interrupted iterations
+steady   [  55% ] 003/137 VUs  05m30.0s/10m0s  100.00 iters/s
+
+running (05m31.0s), 003/137 VUs, 33009 complete and 0 interrupted iterations
+steady   [  55% ] 003/137 VUs  05m31.0s/10m0s  100.00 iters/s
+
+running (05m32.0s), 003/137 VUs, 33109 complete and 0 interrupted iterations
+steady   [  55% ] 003/137 VUs  05m32.0s/10m0s  100.00 iters/s
+
+running (05m33.0s), 003/137 VUs, 33209 complete and 0 interrupted iterations
+steady   [  55% ] 003/137 VUs  05m33.0s/10m0s  100.00 iters/s
+
+running (05m34.0s), 003/137 VUs, 33309 complete and 0 interrupted iterations
+steady   [  56% ] 003/137 VUs  05m34.0s/10m0s  100.00 iters/s
+
+running (05m35.0s), 003/137 VUs, 33409 complete and 0 interrupted iterations
+steady   [  56% ] 003/137 VUs  05m35.0s/10m0s  100.00 iters/s
+
+running (05m36.0s), 003/137 VUs, 33509 complete and 0 interrupted iterations
+steady   [  56% ] 003/137 VUs  05m36.0s/10m0s  100.00 iters/s
+
+running (05m37.0s), 003/137 VUs, 33609 complete and 0 interrupted iterations
+steady   [  56% ] 003/137 VUs  05m37.0s/10m0s  100.00 iters/s
+
+running (05m38.0s), 003/137 VUs, 33709 complete and 0 interrupted iterations
+steady   [  56% ] 003/137 VUs  05m38.0s/10m0s  100.00 iters/s
+
+running (05m39.0s), 003/137 VUs, 33809 complete and 0 interrupted iterations
+steady   [  56% ] 003/137 VUs  05m39.0s/10m0s  100.00 iters/s
+
+running (05m40.0s), 003/137 VUs, 33909 complete and 0 interrupted iterations
+steady   [  57% ] 003/137 VUs  05m40.0s/10m0s  100.00 iters/s
+
+running (05m41.0s), 003/137 VUs, 34009 complete and 0 interrupted iterations
+steady   [  57% ] 003/137 VUs  05m41.0s/10m0s  100.00 iters/s
+
+running (05m42.0s), 003/137 VUs, 34109 complete and 0 interrupted iterations
+steady   [  57% ] 003/137 VUs  05m42.0s/10m0s  100.00 iters/s
+
+running (05m43.0s), 003/137 VUs, 34209 complete and 0 interrupted iterations
+steady   [  57% ] 003/137 VUs  05m43.0s/10m0s  100.00 iters/s
+
+running (05m44.0s), 003/137 VUs, 34309 complete and 0 interrupted iterations
+steady   [  57% ] 003/137 VUs  05m44.0s/10m0s  100.00 iters/s
+
+running (05m45.0s), 003/137 VUs, 34409 complete and 0 interrupted iterations
+steady   [  57% ] 003/137 VUs  05m45.0s/10m0s  100.00 iters/s
+
+running (05m46.0s), 003/137 VUs, 34509 complete and 0 interrupted iterations
+steady   [  58% ] 003/137 VUs  05m46.0s/10m0s  100.00 iters/s
+
+running (05m47.0s), 003/137 VUs, 34609 complete and 0 interrupted iterations
+steady   [  58% ] 003/137 VUs  05m47.0s/10m0s  100.00 iters/s
+
+running (05m48.0s), 003/137 VUs, 34709 complete and 0 interrupted iterations
+steady   [  58% ] 003/137 VUs  05m48.0s/10m0s  100.00 iters/s
+
+running (05m49.0s), 003/137 VUs, 34809 complete and 0 interrupted iterations
+steady   [  58% ] 003/137 VUs  05m49.0s/10m0s  100.00 iters/s
+
+running (05m50.0s), 003/137 VUs, 34909 complete and 0 interrupted iterations
+steady   [  58% ] 003/137 VUs  05m50.0s/10m0s  100.00 iters/s
+
+running (05m51.0s), 003/137 VUs, 35009 complete and 0 interrupted iterations
+steady   [  58% ] 003/137 VUs  05m51.0s/10m0s  100.00 iters/s
+
+running (05m52.0s), 003/137 VUs, 35109 complete and 0 interrupted iterations
+steady   [  59% ] 003/137 VUs  05m52.0s/10m0s  100.00 iters/s
+
+running (05m53.0s), 003/137 VUs, 35209 complete and 0 interrupted iterations
+steady   [  59% ] 003/137 VUs  05m53.0s/10m0s  100.00 iters/s
+
+running (05m54.0s), 003/137 VUs, 35309 complete and 0 interrupted iterations
+steady   [  59% ] 003/137 VUs  05m54.0s/10m0s  100.00 iters/s
+
+running (05m55.0s), 003/137 VUs, 35409 complete and 0 interrupted iterations
+steady   [  59% ] 003/137 VUs  05m55.0s/10m0s  100.00 iters/s
+
+running (05m56.0s), 003/137 VUs, 35509 complete and 0 interrupted iterations
+steady   [  59% ] 003/137 VUs  05m56.0s/10m0s  100.00 iters/s
+
+running (05m57.0s), 003/137 VUs, 35609 complete and 0 interrupted iterations
+steady   [  59% ] 003/137 VUs  05m57.0s/10m0s  100.00 iters/s
+
+running (05m58.0s), 003/137 VUs, 35709 complete and 0 interrupted iterations
+steady   [  60% ] 003/137 VUs  05m58.0s/10m0s  100.00 iters/s
+
+running (05m59.0s), 003/137 VUs, 35809 complete and 0 interrupted iterations
+steady   [  60% ] 003/137 VUs  05m59.0s/10m0s  100.00 iters/s
+
+running (06m00.0s), 003/137 VUs, 35909 complete and 0 interrupted iterations
+steady   [  60% ] 003/137 VUs  06m00.0s/10m0s  100.00 iters/s
+
+running (06m01.0s), 003/137 VUs, 36009 complete and 0 interrupted iterations
+steady   [  60% ] 003/137 VUs  06m01.0s/10m0s  100.00 iters/s
+
+running (06m02.0s), 003/137 VUs, 36109 complete and 0 interrupted iterations
+steady   [  60% ] 003/137 VUs  06m02.0s/10m0s  100.00 iters/s
+
+running (06m03.0s), 003/137 VUs, 36209 complete and 0 interrupted iterations
+steady   [  60% ] 003/137 VUs  06m03.0s/10m0s  100.00 iters/s
+
+running (06m04.0s), 003/137 VUs, 36309 complete and 0 interrupted iterations
+steady   [  61% ] 003/137 VUs  06m04.0s/10m0s  100.00 iters/s
+
+running (06m05.0s), 003/137 VUs, 36409 complete and 0 interrupted iterations
+steady   [  61% ] 003/137 VUs  06m05.0s/10m0s  100.00 iters/s
+
+running (06m06.0s), 003/137 VUs, 36509 complete and 0 interrupted iterations
+steady   [  61% ] 003/137 VUs  06m06.0s/10m0s  100.00 iters/s
+
+running (06m07.0s), 003/137 VUs, 36609 complete and 0 interrupted iterations
+steady   [  61% ] 003/137 VUs  06m07.0s/10m0s  100.00 iters/s
+
+running (06m08.0s), 003/137 VUs, 36709 complete and 0 interrupted iterations
+steady   [  61% ] 003/137 VUs  06m08.0s/10m0s  100.00 iters/s
+
+running (06m09.0s), 003/137 VUs, 36809 complete and 0 interrupted iterations
+steady   [  61% ] 003/137 VUs  06m09.0s/10m0s  100.00 iters/s
+
+running (06m10.0s), 003/137 VUs, 36909 complete and 0 interrupted iterations
+steady   [  62% ] 003/137 VUs  06m10.0s/10m0s  100.00 iters/s
+
+running (06m11.0s), 003/137 VUs, 37009 complete and 0 interrupted iterations
+steady   [  62% ] 003/137 VUs  06m11.0s/10m0s  100.00 iters/s
+
+running (06m12.0s), 003/137 VUs, 37109 complete and 0 interrupted iterations
+steady   [  62% ] 003/137 VUs  06m12.0s/10m0s  100.00 iters/s
+
+running (06m13.0s), 003/137 VUs, 37209 complete and 0 interrupted iterations
+steady   [  62% ] 003/137 VUs  06m13.0s/10m0s  100.00 iters/s
+
+running (06m14.0s), 003/137 VUs, 37309 complete and 0 interrupted iterations
+steady   [  62% ] 003/137 VUs  06m14.0s/10m0s  100.00 iters/s
+
+running (06m15.0s), 003/137 VUs, 37409 complete and 0 interrupted iterations
+steady   [  62% ] 003/137 VUs  06m15.0s/10m0s  100.00 iters/s
+
+running (06m16.0s), 003/137 VUs, 37509 complete and 0 interrupted iterations
+steady   [  63% ] 003/137 VUs  06m16.0s/10m0s  100.00 iters/s
+
+running (06m17.0s), 003/137 VUs, 37609 complete and 0 interrupted iterations
+steady   [  63% ] 003/137 VUs  06m17.0s/10m0s  100.00 iters/s
+
+running (06m18.0s), 003/137 VUs, 37709 complete and 0 interrupted iterations
+steady   [  63% ] 003/137 VUs  06m18.0s/10m0s  100.00 iters/s
+
+running (06m19.0s), 003/137 VUs, 37809 complete and 0 interrupted iterations
+steady   [  63% ] 003/137 VUs  06m19.0s/10m0s  100.00 iters/s
+
+running (06m20.0s), 003/137 VUs, 37909 complete and 0 interrupted iterations
+steady   [  63% ] 003/137 VUs  06m20.0s/10m0s  100.00 iters/s
+
+running (06m21.0s), 003/137 VUs, 38009 complete and 0 interrupted iterations
+steady   [  63% ] 003/137 VUs  06m21.0s/10m0s  100.00 iters/s
+
+running (06m22.0s), 003/137 VUs, 38109 complete and 0 interrupted iterations
+steady   [  64% ] 003/137 VUs  06m22.0s/10m0s  100.00 iters/s
+
+running (06m23.0s), 003/137 VUs, 38209 complete and 0 interrupted iterations
+steady   [  64% ] 003/137 VUs  06m23.0s/10m0s  100.00 iters/s
+
+running (06m24.0s), 003/137 VUs, 38309 complete and 0 interrupted iterations
+steady   [  64% ] 003/137 VUs  06m24.0s/10m0s  100.00 iters/s
+
+running (06m25.0s), 003/137 VUs, 38409 complete and 0 interrupted iterations
+steady   [  64% ] 003/137 VUs  06m25.0s/10m0s  100.00 iters/s
+
+running (06m26.0s), 003/137 VUs, 38509 complete and 0 interrupted iterations
+steady   [  64% ] 003/137 VUs  06m26.0s/10m0s  100.00 iters/s
+
+running (06m27.0s), 003/137 VUs, 38609 complete and 0 interrupted iterations
+steady   [  64% ] 003/137 VUs  06m27.0s/10m0s  100.00 iters/s
+
+running (06m28.0s), 003/137 VUs, 38709 complete and 0 interrupted iterations
+steady   [  65% ] 003/137 VUs  06m28.0s/10m0s  100.00 iters/s
+
+running (06m29.0s), 003/137 VUs, 38809 complete and 0 interrupted iterations
+steady   [  65% ] 003/137 VUs  06m29.0s/10m0s  100.00 iters/s
+
+running (06m30.0s), 003/137 VUs, 38909 complete and 0 interrupted iterations
+steady   [  65% ] 003/137 VUs  06m30.0s/10m0s  100.00 iters/s
+
+running (06m31.0s), 003/137 VUs, 39009 complete and 0 interrupted iterations
+steady   [  65% ] 003/137 VUs  06m31.0s/10m0s  100.00 iters/s
+
+running (06m32.0s), 003/137 VUs, 39109 complete and 0 interrupted iterations
+steady   [  65% ] 003/137 VUs  06m32.0s/10m0s  100.00 iters/s
+
+running (06m33.0s), 003/137 VUs, 39209 complete and 0 interrupted iterations
+steady   [  65% ] 003/137 VUs  06m33.0s/10m0s  100.00 iters/s
+
+running (06m34.0s), 003/137 VUs, 39309 complete and 0 interrupted iterations
+steady   [  66% ] 003/137 VUs  06m34.0s/10m0s  100.00 iters/s
+
+running (06m35.0s), 003/137 VUs, 39409 complete and 0 interrupted iterations
+steady   [  66% ] 003/137 VUs  06m35.0s/10m0s  100.00 iters/s
+
+running (06m36.0s), 003/137 VUs, 39509 complete and 0 interrupted iterations
+steady   [  66% ] 003/137 VUs  06m36.0s/10m0s  100.00 iters/s
+
+running (06m37.0s), 003/137 VUs, 39609 complete and 0 interrupted iterations
+steady   [  66% ] 003/137 VUs  06m37.0s/10m0s  100.00 iters/s
+
+running (06m38.0s), 003/137 VUs, 39709 complete and 0 interrupted iterations
+steady   [  66% ] 003/137 VUs  06m38.0s/10m0s  100.00 iters/s
+
+running (06m39.0s), 003/137 VUs, 39809 complete and 0 interrupted iterations
+steady   [  66% ] 003/137 VUs  06m39.0s/10m0s  100.00 iters/s
+
+running (06m40.0s), 003/137 VUs, 39909 complete and 0 interrupted iterations
+steady   [  67% ] 003/137 VUs  06m40.0s/10m0s  100.00 iters/s
+
+running (06m41.0s), 003/137 VUs, 40009 complete and 0 interrupted iterations
+steady   [  67% ] 003/137 VUs  06m41.0s/10m0s  100.00 iters/s
+
+running (06m42.0s), 003/137 VUs, 40109 complete and 0 interrupted iterations
+steady   [  67% ] 003/137 VUs  06m42.0s/10m0s  100.00 iters/s
+
+running (06m43.0s), 003/137 VUs, 40209 complete and 0 interrupted iterations
+steady   [  67% ] 003/137 VUs  06m43.0s/10m0s  100.00 iters/s
+
+running (06m44.0s), 003/137 VUs, 40309 complete and 0 interrupted iterations
+steady   [  67% ] 003/137 VUs  06m44.0s/10m0s  100.00 iters/s
+
+running (06m45.0s), 003/137 VUs, 40409 complete and 0 interrupted iterations
+steady   [  67% ] 003/137 VUs  06m45.0s/10m0s  100.00 iters/s
+
+running (06m46.0s), 003/137 VUs, 40509 complete and 0 interrupted iterations
+steady   [  68% ] 003/137 VUs  06m46.0s/10m0s  100.00 iters/s
+
+running (06m47.0s), 003/137 VUs, 40609 complete and 0 interrupted iterations
+steady   [  68% ] 003/137 VUs  06m47.0s/10m0s  100.00 iters/s
+
+running (06m48.0s), 003/137 VUs, 40709 complete and 0 interrupted iterations
+steady   [  68% ] 003/137 VUs  06m48.0s/10m0s  100.00 iters/s
+
+running (06m49.0s), 003/137 VUs, 40809 complete and 0 interrupted iterations
+steady   [  68% ] 003/137 VUs  06m49.0s/10m0s  100.00 iters/s
+
+running (06m50.0s), 003/137 VUs, 40909 complete and 0 interrupted iterations
+steady   [  68% ] 003/137 VUs  06m50.0s/10m0s  100.00 iters/s
+
+running (06m51.0s), 003/137 VUs, 41009 complete and 0 interrupted iterations
+steady   [  68% ] 003/137 VUs  06m51.0s/10m0s  100.00 iters/s
+
+running (06m52.0s), 003/137 VUs, 41109 complete and 0 interrupted iterations
+steady   [  69% ] 003/137 VUs  06m52.0s/10m0s  100.00 iters/s
+
+running (06m53.0s), 003/137 VUs, 41209 complete and 0 interrupted iterations
+steady   [  69% ] 003/137 VUs  06m53.0s/10m0s  100.00 iters/s
+
+running (06m54.0s), 003/137 VUs, 41309 complete and 0 interrupted iterations
+steady   [  69% ] 003/137 VUs  06m54.0s/10m0s  100.00 iters/s
+
+running (06m55.0s), 003/137 VUs, 41409 complete and 0 interrupted iterations
+steady   [  69% ] 003/137 VUs  06m55.0s/10m0s  100.00 iters/s
+
+running (06m56.0s), 003/137 VUs, 41509 complete and 0 interrupted iterations
+steady   [  69% ] 003/137 VUs  06m56.0s/10m0s  100.00 iters/s
+
+running (06m57.0s), 003/137 VUs, 41609 complete and 0 interrupted iterations
+steady   [  69% ] 003/137 VUs  06m57.0s/10m0s  100.00 iters/s
+
+running (06m58.0s), 003/137 VUs, 41709 complete and 0 interrupted iterations
+steady   [  70% ] 003/137 VUs  06m58.0s/10m0s  100.00 iters/s
+
+running (06m59.0s), 003/137 VUs, 41809 complete and 0 interrupted iterations
+steady   [  70% ] 003/137 VUs  06m59.0s/10m0s  100.00 iters/s
+
+running (07m00.0s), 003/137 VUs, 41909 complete and 0 interrupted iterations
+steady   [  70% ] 003/137 VUs  07m00.0s/10m0s  100.00 iters/s
+
+running (07m01.0s), 003/137 VUs, 42009 complete and 0 interrupted iterations
+steady   [  70% ] 003/137 VUs  07m01.0s/10m0s  100.00 iters/s
+
+running (07m02.0s), 003/137 VUs, 42109 complete and 0 interrupted iterations
+steady   [  70% ] 003/137 VUs  07m02.0s/10m0s  100.00 iters/s
+
+running (07m03.0s), 003/137 VUs, 42209 complete and 0 interrupted iterations
+steady   [  70% ] 003/137 VUs  07m03.0s/10m0s  100.00 iters/s
+
+running (07m04.0s), 003/137 VUs, 42309 complete and 0 interrupted iterations
+steady   [  71% ] 003/137 VUs  07m04.0s/10m0s  100.00 iters/s
+
+running (07m05.0s), 003/137 VUs, 42409 complete and 0 interrupted iterations
+steady   [  71% ] 003/137 VUs  07m05.0s/10m0s  100.00 iters/s
+
+running (07m06.0s), 003/137 VUs, 42509 complete and 0 interrupted iterations
+steady   [  71% ] 003/137 VUs  07m06.0s/10m0s  100.00 iters/s
+
+running (07m07.0s), 003/137 VUs, 42609 complete and 0 interrupted iterations
+steady   [  71% ] 003/137 VUs  07m07.0s/10m0s  100.00 iters/s
+
+running (07m08.0s), 003/137 VUs, 42709 complete and 0 interrupted iterations
+steady   [  71% ] 003/137 VUs  07m08.0s/10m0s  100.00 iters/s
+
+running (07m09.0s), 003/137 VUs, 42809 complete and 0 interrupted iterations
+steady   [  71% ] 003/137 VUs  07m09.0s/10m0s  100.00 iters/s
+
+running (07m10.0s), 003/137 VUs, 42909 complete and 0 interrupted iterations
+steady   [  72% ] 003/137 VUs  07m10.0s/10m0s  100.00 iters/s
+
+running (07m11.0s), 003/137 VUs, 43009 complete and 0 interrupted iterations
+steady   [  72% ] 003/137 VUs  07m11.0s/10m0s  100.00 iters/s
+
+running (07m12.0s), 003/137 VUs, 43109 complete and 0 interrupted iterations
+steady   [  72% ] 003/137 VUs  07m12.0s/10m0s  100.00 iters/s
+
+running (07m13.0s), 003/137 VUs, 43209 complete and 0 interrupted iterations
+steady   [  72% ] 003/137 VUs  07m13.0s/10m0s  100.00 iters/s
+
+running (07m14.0s), 003/137 VUs, 43309 complete and 0 interrupted iterations
+steady   [  72% ] 003/137 VUs  07m14.0s/10m0s  100.00 iters/s
+
+running (07m15.0s), 003/137 VUs, 43409 complete and 0 interrupted iterations
+steady   [  72% ] 003/137 VUs  07m15.0s/10m0s  100.00 iters/s
+
+running (07m16.0s), 003/137 VUs, 43509 complete and 0 interrupted iterations
+steady   [  73% ] 003/137 VUs  07m16.0s/10m0s  100.00 iters/s
+
+running (07m17.0s), 003/137 VUs, 43609 complete and 0 interrupted iterations
+steady   [  73% ] 003/137 VUs  07m17.0s/10m0s  100.00 iters/s
+
+running (07m18.0s), 003/137 VUs, 43709 complete and 0 interrupted iterations
+steady   [  73% ] 003/137 VUs  07m18.0s/10m0s  100.00 iters/s
+
+running (07m19.0s), 003/137 VUs, 43809 complete and 0 interrupted iterations
+steady   [  73% ] 003/137 VUs  07m19.0s/10m0s  100.00 iters/s
+
+running (07m20.0s), 003/137 VUs, 43909 complete and 0 interrupted iterations
+steady   [  73% ] 003/137 VUs  07m20.0s/10m0s  100.00 iters/s
+
+running (07m21.0s), 003/137 VUs, 44009 complete and 0 interrupted iterations
+steady   [  73% ] 003/137 VUs  07m21.0s/10m0s  100.00 iters/s
+
+running (07m22.0s), 003/137 VUs, 44109 complete and 0 interrupted iterations
+steady   [  74% ] 003/137 VUs  07m22.0s/10m0s  100.00 iters/s
+
+running (07m23.0s), 003/137 VUs, 44209 complete and 0 interrupted iterations
+steady   [  74% ] 003/137 VUs  07m23.0s/10m0s  100.00 iters/s
+
+running (07m24.0s), 003/137 VUs, 44309 complete and 0 interrupted iterations
+steady   [  74% ] 003/137 VUs  07m24.0s/10m0s  100.00 iters/s
+
+running (07m25.0s), 003/137 VUs, 44409 complete and 0 interrupted iterations
+steady   [  74% ] 003/137 VUs  07m25.0s/10m0s  100.00 iters/s
+
+running (07m26.0s), 003/137 VUs, 44509 complete and 0 interrupted iterations
+steady   [  74% ] 003/137 VUs  07m26.0s/10m0s  100.00 iters/s
+
+running (07m27.0s), 003/137 VUs, 44609 complete and 0 interrupted iterations
+steady   [  74% ] 003/137 VUs  07m27.0s/10m0s  100.00 iters/s
+
+running (07m28.0s), 003/137 VUs, 44709 complete and 0 interrupted iterations
+steady   [  75% ] 003/137 VUs  07m28.0s/10m0s  100.00 iters/s
+
+running (07m29.0s), 003/137 VUs, 44809 complete and 0 interrupted iterations
+steady   [  75% ] 003/137 VUs  07m29.0s/10m0s  100.00 iters/s
+
+running (07m30.0s), 003/137 VUs, 44909 complete and 0 interrupted iterations
+steady   [  75% ] 003/137 VUs  07m30.0s/10m0s  100.00 iters/s
+
+running (07m31.0s), 003/137 VUs, 45009 complete and 0 interrupted iterations
+steady   [  75% ] 003/137 VUs  07m31.0s/10m0s  100.00 iters/s
+
+running (07m32.0s), 003/137 VUs, 45109 complete and 0 interrupted iterations
+steady   [  75% ] 003/137 VUs  07m32.0s/10m0s  100.00 iters/s
+
+running (07m33.0s), 003/137 VUs, 45209 complete and 0 interrupted iterations
+steady   [  75% ] 003/137 VUs  07m33.0s/10m0s  100.00 iters/s
+
+running (07m34.0s), 003/137 VUs, 45309 complete and 0 interrupted iterations
+steady   [  76% ] 003/137 VUs  07m34.0s/10m0s  100.00 iters/s
+
+running (07m35.0s), 003/137 VUs, 45409 complete and 0 interrupted iterations
+steady   [  76% ] 003/137 VUs  07m35.0s/10m0s  100.00 iters/s
+
+running (07m36.0s), 003/137 VUs, 45509 complete and 0 interrupted iterations
+steady   [  76% ] 003/137 VUs  07m36.0s/10m0s  100.00 iters/s
+
+running (07m37.0s), 003/137 VUs, 45609 complete and 0 interrupted iterations
+steady   [  76% ] 003/137 VUs  07m37.0s/10m0s  100.00 iters/s
+
+running (07m38.0s), 003/137 VUs, 45709 complete and 0 interrupted iterations
+steady   [  76% ] 003/137 VUs  07m38.0s/10m0s  100.00 iters/s
+
+running (07m39.0s), 003/137 VUs, 45809 complete and 0 interrupted iterations
+steady   [  76% ] 003/137 VUs  07m39.0s/10m0s  100.00 iters/s
+
+running (07m40.0s), 003/137 VUs, 45909 complete and 0 interrupted iterations
+steady   [  77% ] 003/137 VUs  07m40.0s/10m0s  100.00 iters/s
+
+running (07m41.0s), 003/137 VUs, 46009 complete and 0 interrupted iterations
+steady   [  77% ] 003/137 VUs  07m41.0s/10m0s  100.00 iters/s
+
+running (07m42.0s), 003/137 VUs, 46109 complete and 0 interrupted iterations
+steady   [  77% ] 003/137 VUs  07m42.0s/10m0s  100.00 iters/s
+
+running (07m43.0s), 003/137 VUs, 46209 complete and 0 interrupted iterations
+steady   [  77% ] 003/137 VUs  07m43.0s/10m0s  100.00 iters/s
+
+running (07m44.0s), 003/137 VUs, 46309 complete and 0 interrupted iterations
+steady   [  77% ] 003/137 VUs  07m44.0s/10m0s  100.00 iters/s
+
+running (07m45.0s), 003/137 VUs, 46409 complete and 0 interrupted iterations
+steady   [  77% ] 003/137 VUs  07m45.0s/10m0s  100.00 iters/s
+
+running (07m46.0s), 003/137 VUs, 46509 complete and 0 interrupted iterations
+steady   [  78% ] 003/137 VUs  07m46.0s/10m0s  100.00 iters/s
+
+running (07m47.0s), 003/137 VUs, 46609 complete and 0 interrupted iterations
+steady   [  78% ] 003/137 VUs  07m47.0s/10m0s  100.00 iters/s
+
+running (07m48.0s), 003/137 VUs, 46709 complete and 0 interrupted iterations
+steady   [  78% ] 003/137 VUs  07m48.0s/10m0s  100.00 iters/s
+
+running (07m49.0s), 003/137 VUs, 46809 complete and 0 interrupted iterations
+steady   [  78% ] 003/137 VUs  07m49.0s/10m0s  100.00 iters/s
+
+running (07m50.0s), 003/137 VUs, 46909 complete and 0 interrupted iterations
+steady   [  78% ] 003/137 VUs  07m50.0s/10m0s  100.00 iters/s
+
+running (07m51.0s), 003/137 VUs, 47009 complete and 0 interrupted iterations
+steady   [  78% ] 003/137 VUs  07m51.0s/10m0s  100.00 iters/s
+
+running (07m52.0s), 003/137 VUs, 47109 complete and 0 interrupted iterations
+steady   [  79% ] 003/137 VUs  07m52.0s/10m0s  100.00 iters/s
+
+running (07m53.0s), 003/137 VUs, 47209 complete and 0 interrupted iterations
+steady   [  79% ] 003/137 VUs  07m53.0s/10m0s  100.00 iters/s
+
+running (07m54.0s), 003/137 VUs, 47309 complete and 0 interrupted iterations
+steady   [  79% ] 003/137 VUs  07m54.0s/10m0s  100.00 iters/s
+
+running (07m55.0s), 003/137 VUs, 47409 complete and 0 interrupted iterations
+steady   [  79% ] 003/137 VUs  07m55.0s/10m0s  100.00 iters/s
+
+running (07m56.0s), 003/137 VUs, 47509 complete and 0 interrupted iterations
+steady   [  79% ] 003/137 VUs  07m56.0s/10m0s  100.00 iters/s
+
+running (07m57.0s), 003/137 VUs, 47609 complete and 0 interrupted iterations
+steady   [  79% ] 003/137 VUs  07m57.0s/10m0s  100.00 iters/s
+
+running (07m58.0s), 003/137 VUs, 47709 complete and 0 interrupted iterations
+steady   [  80% ] 003/137 VUs  07m58.0s/10m0s  100.00 iters/s
+
+running (07m59.0s), 003/137 VUs, 47809 complete and 0 interrupted iterations
+steady   [  80% ] 003/137 VUs  07m59.0s/10m0s  100.00 iters/s
+
+running (08m00.0s), 003/137 VUs, 47909 complete and 0 interrupted iterations
+steady   [  80% ] 003/137 VUs  08m00.0s/10m0s  100.00 iters/s
+
+running (08m01.0s), 003/137 VUs, 48009 complete and 0 interrupted iterations
+steady   [  80% ] 003/137 VUs  08m01.0s/10m0s  100.00 iters/s
+
+running (08m02.0s), 003/137 VUs, 48109 complete and 0 interrupted iterations
+steady   [  80% ] 003/137 VUs  08m02.0s/10m0s  100.00 iters/s
+
+running (08m03.0s), 003/137 VUs, 48209 complete and 0 interrupted iterations
+steady   [  80% ] 003/137 VUs  08m03.0s/10m0s  100.00 iters/s
+
+running (08m04.0s), 003/137 VUs, 48309 complete and 0 interrupted iterations
+steady   [  81% ] 003/137 VUs  08m04.0s/10m0s  100.00 iters/s
+
+running (08m05.0s), 003/137 VUs, 48409 complete and 0 interrupted iterations
+steady   [  81% ] 003/137 VUs  08m05.0s/10m0s  100.00 iters/s
+
+running (08m06.0s), 003/137 VUs, 48509 complete and 0 interrupted iterations
+steady   [  81% ] 003/137 VUs  08m06.0s/10m0s  100.00 iters/s
+
+running (08m07.0s), 003/137 VUs, 48609 complete and 0 interrupted iterations
+steady   [  81% ] 003/137 VUs  08m07.0s/10m0s  100.00 iters/s
+
+running (08m08.0s), 003/137 VUs, 48709 complete and 0 interrupted iterations
+steady   [  81% ] 003/137 VUs  08m08.0s/10m0s  100.00 iters/s
+
+running (08m09.0s), 003/137 VUs, 48809 complete and 0 interrupted iterations
+steady   [  81% ] 003/137 VUs  08m09.0s/10m0s  100.00 iters/s
+
+running (08m10.0s), 003/137 VUs, 48909 complete and 0 interrupted iterations
+steady   [  82% ] 003/137 VUs  08m10.0s/10m0s  100.00 iters/s
+
+running (08m11.0s), 003/137 VUs, 49009 complete and 0 interrupted iterations
+steady   [  82% ] 003/137 VUs  08m11.0s/10m0s  100.00 iters/s
+
+running (08m12.0s), 003/137 VUs, 49109 complete and 0 interrupted iterations
+steady   [  82% ] 003/137 VUs  08m12.0s/10m0s  100.00 iters/s
+
+running (08m13.0s), 003/137 VUs, 49209 complete and 0 interrupted iterations
+steady   [  82% ] 003/137 VUs  08m13.0s/10m0s  100.00 iters/s
+
+running (08m14.0s), 003/137 VUs, 49309 complete and 0 interrupted iterations
+steady   [  82% ] 003/137 VUs  08m14.0s/10m0s  100.00 iters/s
+
+running (08m15.0s), 003/137 VUs, 49409 complete and 0 interrupted iterations
+steady   [  82% ] 003/137 VUs  08m15.0s/10m0s  100.00 iters/s
+
+running (08m16.0s), 003/137 VUs, 49509 complete and 0 interrupted iterations
+steady   [  83% ] 003/137 VUs  08m16.0s/10m0s  100.00 iters/s
+
+running (08m17.0s), 003/137 VUs, 49609 complete and 0 interrupted iterations
+steady   [  83% ] 003/137 VUs  08m17.0s/10m0s  100.00 iters/s
+
+running (08m18.0s), 003/137 VUs, 49709 complete and 0 interrupted iterations
+steady   [  83% ] 003/137 VUs  08m18.0s/10m0s  100.00 iters/s
+
+running (08m19.0s), 003/137 VUs, 49809 complete and 0 interrupted iterations
+steady   [  83% ] 003/137 VUs  08m19.0s/10m0s  100.00 iters/s
+
+running (08m20.0s), 003/137 VUs, 49909 complete and 0 interrupted iterations
+steady   [  83% ] 003/137 VUs  08m20.0s/10m0s  100.00 iters/s
+
+running (08m21.0s), 003/137 VUs, 50009 complete and 0 interrupted iterations
+steady   [  83% ] 003/137 VUs  08m21.0s/10m0s  100.00 iters/s
+
+running (08m22.0s), 003/137 VUs, 50109 complete and 0 interrupted iterations
+steady   [  84% ] 003/137 VUs  08m22.0s/10m0s  100.00 iters/s
+
+running (08m23.0s), 003/137 VUs, 50209 complete and 0 interrupted iterations
+steady   [  84% ] 003/137 VUs  08m23.0s/10m0s  100.00 iters/s
+
+running (08m24.0s), 003/137 VUs, 50309 complete and 0 interrupted iterations
+steady   [  84% ] 003/137 VUs  08m24.0s/10m0s  100.00 iters/s
+
+running (08m25.0s), 003/137 VUs, 50409 complete and 0 interrupted iterations
+steady   [  84% ] 003/137 VUs  08m25.0s/10m0s  100.00 iters/s
+
+running (08m26.0s), 003/137 VUs, 50509 complete and 0 interrupted iterations
+steady   [  84% ] 003/137 VUs  08m26.0s/10m0s  100.00 iters/s
+
+running (08m27.0s), 003/137 VUs, 50609 complete and 0 interrupted iterations
+steady   [  84% ] 003/137 VUs  08m27.0s/10m0s  100.00 iters/s
+
+running (08m28.0s), 003/137 VUs, 50709 complete and 0 interrupted iterations
+steady   [  85% ] 003/137 VUs  08m28.0s/10m0s  100.00 iters/s
+
+running (08m29.0s), 003/137 VUs, 50809 complete and 0 interrupted iterations
+steady   [  85% ] 003/137 VUs  08m29.0s/10m0s  100.00 iters/s
+
+running (08m30.0s), 003/137 VUs, 50909 complete and 0 interrupted iterations
+steady   [  85% ] 003/137 VUs  08m30.0s/10m0s  100.00 iters/s
+
+running (08m31.0s), 003/137 VUs, 51009 complete and 0 interrupted iterations
+steady   [  85% ] 003/137 VUs  08m31.0s/10m0s  100.00 iters/s
+
+running (08m32.0s), 003/137 VUs, 51109 complete and 0 interrupted iterations
+steady   [  85% ] 003/137 VUs  08m32.0s/10m0s  100.00 iters/s
+
+running (08m33.0s), 003/137 VUs, 51209 complete and 0 interrupted iterations
+steady   [  85% ] 003/137 VUs  08m33.0s/10m0s  100.00 iters/s
+
+running (08m34.0s), 003/137 VUs, 51309 complete and 0 interrupted iterations
+steady   [  86% ] 003/137 VUs  08m34.0s/10m0s  100.00 iters/s
+
+running (08m35.0s), 003/137 VUs, 51409 complete and 0 interrupted iterations
+steady   [  86% ] 003/137 VUs  08m35.0s/10m0s  100.00 iters/s
+
+running (08m36.0s), 003/137 VUs, 51509 complete and 0 interrupted iterations
+steady   [  86% ] 003/137 VUs  08m36.0s/10m0s  100.00 iters/s
+
+running (08m37.0s), 003/137 VUs, 51609 complete and 0 interrupted iterations
+steady   [  86% ] 003/137 VUs  08m37.0s/10m0s  100.00 iters/s
+
+running (08m38.0s), 003/137 VUs, 51709 complete and 0 interrupted iterations
+steady   [  86% ] 003/137 VUs  08m38.0s/10m0s  100.00 iters/s
+
+running (08m39.0s), 003/137 VUs, 51809 complete and 0 interrupted iterations
+steady   [  86% ] 003/137 VUs  08m39.0s/10m0s  100.00 iters/s
+
+running (08m40.0s), 003/137 VUs, 51909 complete and 0 interrupted iterations
+steady   [  87% ] 003/137 VUs  08m40.0s/10m0s  100.00 iters/s
+
+running (08m41.0s), 003/137 VUs, 52009 complete and 0 interrupted iterations
+steady   [  87% ] 003/137 VUs  08m41.0s/10m0s  100.00 iters/s
+
+running (08m42.0s), 003/137 VUs, 52109 complete and 0 interrupted iterations
+steady   [  87% ] 003/137 VUs  08m42.0s/10m0s  100.00 iters/s
+
+running (08m43.0s), 003/137 VUs, 52209 complete and 0 interrupted iterations
+steady   [  87% ] 003/137 VUs  08m43.0s/10m0s  100.00 iters/s
+
+running (08m44.0s), 003/137 VUs, 52309 complete and 0 interrupted iterations
+steady   [  87% ] 003/137 VUs  08m44.0s/10m0s  100.00 iters/s
+
+running (08m45.0s), 003/137 VUs, 52409 complete and 0 interrupted iterations
+steady   [  87% ] 003/137 VUs  08m45.0s/10m0s  100.00 iters/s
+
+running (08m46.0s), 003/137 VUs, 52509 complete and 0 interrupted iterations
+steady   [  88% ] 003/137 VUs  08m46.0s/10m0s  100.00 iters/s
+
+running (08m47.0s), 003/137 VUs, 52609 complete and 0 interrupted iterations
+steady   [  88% ] 003/137 VUs  08m47.0s/10m0s  100.00 iters/s
+
+running (08m48.0s), 003/137 VUs, 52709 complete and 0 interrupted iterations
+steady   [  88% ] 003/137 VUs  08m48.0s/10m0s  100.00 iters/s
+
+running (08m49.0s), 003/137 VUs, 52809 complete and 0 interrupted iterations
+steady   [  88% ] 003/137 VUs  08m49.0s/10m0s  100.00 iters/s
+
+running (08m50.0s), 003/137 VUs, 52909 complete and 0 interrupted iterations
+steady   [  88% ] 003/137 VUs  08m50.0s/10m0s  100.00 iters/s
+
+running (08m51.0s), 003/137 VUs, 53009 complete and 0 interrupted iterations
+steady   [  88% ] 003/137 VUs  08m51.0s/10m0s  100.00 iters/s
+
+running (08m52.0s), 003/137 VUs, 53109 complete and 0 interrupted iterations
+steady   [  89% ] 003/137 VUs  08m52.0s/10m0s  100.00 iters/s
+
+running (08m53.0s), 003/137 VUs, 53209 complete and 0 interrupted iterations
+steady   [  89% ] 003/137 VUs  08m53.0s/10m0s  100.00 iters/s
+
+running (08m54.0s), 003/137 VUs, 53309 complete and 0 interrupted iterations
+steady   [  89% ] 003/137 VUs  08m54.0s/10m0s  100.00 iters/s
+
+running (08m55.0s), 003/137 VUs, 53409 complete and 0 interrupted iterations
+steady   [  89% ] 003/137 VUs  08m55.0s/10m0s  100.00 iters/s
+
+running (08m56.0s), 003/137 VUs, 53509 complete and 0 interrupted iterations
+steady   [  89% ] 003/137 VUs  08m56.0s/10m0s  100.00 iters/s
+
+running (08m57.0s), 003/137 VUs, 53609 complete and 0 interrupted iterations
+steady   [  89% ] 003/137 VUs  08m57.0s/10m0s  100.00 iters/s
+
+running (08m58.0s), 003/137 VUs, 53709 complete and 0 interrupted iterations
+steady   [  90% ] 003/137 VUs  08m58.0s/10m0s  100.00 iters/s
+
+running (08m59.0s), 003/137 VUs, 53809 complete and 0 interrupted iterations
+steady   [  90% ] 003/137 VUs  08m59.0s/10m0s  100.00 iters/s
+
+running (09m00.0s), 003/137 VUs, 53909 complete and 0 interrupted iterations
+steady   [  90% ] 003/137 VUs  09m00.0s/10m0s  100.00 iters/s
+
+running (09m01.0s), 003/137 VUs, 54009 complete and 0 interrupted iterations
+steady   [  90% ] 003/137 VUs  09m01.0s/10m0s  100.00 iters/s
+
+running (09m02.0s), 003/137 VUs, 54109 complete and 0 interrupted iterations
+steady   [  90% ] 003/137 VUs  09m02.0s/10m0s  100.00 iters/s
+
+running (09m03.0s), 003/137 VUs, 54209 complete and 0 interrupted iterations
+steady   [  90% ] 003/137 VUs  09m03.0s/10m0s  100.00 iters/s
+
+running (09m04.0s), 003/137 VUs, 54309 complete and 0 interrupted iterations
+steady   [  91% ] 003/137 VUs  09m04.0s/10m0s  100.00 iters/s
+
+running (09m05.0s), 003/137 VUs, 54409 complete and 0 interrupted iterations
+steady   [  91% ] 003/137 VUs  09m05.0s/10m0s  100.00 iters/s
+
+running (09m06.0s), 003/137 VUs, 54509 complete and 0 interrupted iterations
+steady   [  91% ] 003/137 VUs  09m06.0s/10m0s  100.00 iters/s
+
+running (09m07.0s), 003/137 VUs, 54609 complete and 0 interrupted iterations
+steady   [  91% ] 003/137 VUs  09m07.0s/10m0s  100.00 iters/s
+
+running (09m08.0s), 004/137 VUs, 54708 complete and 0 interrupted iterations
+steady   [  91% ] 004/137 VUs  09m08.0s/10m0s  100.00 iters/s
+
+running (09m09.0s), 003/137 VUs, 54809 complete and 0 interrupted iterations
+steady   [  91% ] 003/137 VUs  09m09.0s/10m0s  100.00 iters/s
+
+running (09m10.0s), 003/137 VUs, 54909 complete and 0 interrupted iterations
+steady   [  92% ] 003/137 VUs  09m10.0s/10m0s  100.00 iters/s
+
+running (09m11.0s), 003/137 VUs, 55009 complete and 0 interrupted iterations
+steady   [  92% ] 003/137 VUs  09m11.0s/10m0s  100.00 iters/s
+
+running (09m12.0s), 003/137 VUs, 55109 complete and 0 interrupted iterations
+steady   [  92% ] 003/137 VUs  09m12.0s/10m0s  100.00 iters/s
+
+running (09m13.0s), 003/137 VUs, 55209 complete and 0 interrupted iterations
+steady   [  92% ] 003/137 VUs  09m13.0s/10m0s  100.00 iters/s
+
+running (09m14.0s), 003/137 VUs, 55309 complete and 0 interrupted iterations
+steady   [  92% ] 003/137 VUs  09m14.0s/10m0s  100.00 iters/s
+
+running (09m15.0s), 003/137 VUs, 55409 complete and 0 interrupted iterations
+steady   [  92% ] 003/137 VUs  09m15.0s/10m0s  100.00 iters/s
+
+running (09m16.0s), 003/137 VUs, 55509 complete and 0 interrupted iterations
+steady   [  93% ] 003/137 VUs  09m16.0s/10m0s  100.00 iters/s
+
+running (09m17.0s), 003/137 VUs, 55609 complete and 0 interrupted iterations
+steady   [  93% ] 003/137 VUs  09m17.0s/10m0s  100.00 iters/s
+
+running (09m18.0s), 003/137 VUs, 55709 complete and 0 interrupted iterations
+steady   [  93% ] 003/137 VUs  09m18.0s/10m0s  100.00 iters/s
+
+running (09m19.0s), 003/137 VUs, 55809 complete and 0 interrupted iterations
+steady   [  93% ] 003/137 VUs  09m19.0s/10m0s  100.00 iters/s
+
+running (09m20.0s), 003/137 VUs, 55909 complete and 0 interrupted iterations
+steady   [  93% ] 003/137 VUs  09m20.0s/10m0s  100.00 iters/s
+
+running (09m21.0s), 003/137 VUs, 56009 complete and 0 interrupted iterations
+steady   [  93% ] 003/137 VUs  09m21.0s/10m0s  100.00 iters/s
+
+running (09m22.0s), 003/137 VUs, 56109 complete and 0 interrupted iterations
+steady   [  94% ] 003/137 VUs  09m22.0s/10m0s  100.00 iters/s
+
+running (09m23.0s), 003/137 VUs, 56209 complete and 0 interrupted iterations
+steady   [  94% ] 003/137 VUs  09m23.0s/10m0s  100.00 iters/s
+
+running (09m24.0s), 003/137 VUs, 56309 complete and 0 interrupted iterations
+steady   [  94% ] 003/137 VUs  09m24.0s/10m0s  100.00 iters/s
+
+running (09m25.0s), 003/137 VUs, 56409 complete and 0 interrupted iterations
+steady   [  94% ] 003/137 VUs  09m25.0s/10m0s  100.00 iters/s
+
+running (09m26.0s), 003/137 VUs, 56509 complete and 0 interrupted iterations
+steady   [  94% ] 003/137 VUs  09m26.0s/10m0s  100.00 iters/s
+
+running (09m27.0s), 003/137 VUs, 56609 complete and 0 interrupted iterations
+steady   [  94% ] 003/137 VUs  09m27.0s/10m0s  100.00 iters/s
+
+running (09m28.0s), 003/137 VUs, 56709 complete and 0 interrupted iterations
+steady   [  95% ] 003/137 VUs  09m28.0s/10m0s  100.00 iters/s
+
+running (09m29.0s), 003/137 VUs, 56809 complete and 0 interrupted iterations
+steady   [  95% ] 003/137 VUs  09m29.0s/10m0s  100.00 iters/s
+
+running (09m30.0s), 003/137 VUs, 56909 complete and 0 interrupted iterations
+steady   [  95% ] 003/137 VUs  09m30.0s/10m0s  100.00 iters/s
+
+running (09m31.0s), 003/137 VUs, 57009 complete and 0 interrupted iterations
+steady   [  95% ] 003/137 VUs  09m31.0s/10m0s  100.00 iters/s
+
+running (09m32.0s), 003/137 VUs, 57109 complete and 0 interrupted iterations
+steady   [  95% ] 003/137 VUs  09m32.0s/10m0s  100.00 iters/s
+
+running (09m33.0s), 003/137 VUs, 57209 complete and 0 interrupted iterations
+steady   [  95% ] 003/137 VUs  09m33.0s/10m0s  100.00 iters/s
+
+running (09m34.0s), 003/137 VUs, 57309 complete and 0 interrupted iterations
+steady   [  96% ] 003/137 VUs  09m34.0s/10m0s  100.00 iters/s
+
+running (09m35.0s), 003/137 VUs, 57409 complete and 0 interrupted iterations
+steady   [  96% ] 003/137 VUs  09m35.0s/10m0s  100.00 iters/s
+
+running (09m36.0s), 003/137 VUs, 57509 complete and 0 interrupted iterations
+steady   [  96% ] 003/137 VUs  09m36.0s/10m0s  100.00 iters/s
+
+running (09m37.0s), 003/137 VUs, 57609 complete and 0 interrupted iterations
+steady   [  96% ] 003/137 VUs  09m37.0s/10m0s  100.00 iters/s
+
+running (09m38.0s), 003/137 VUs, 57709 complete and 0 interrupted iterations
+steady   [  96% ] 003/137 VUs  09m38.0s/10m0s  100.00 iters/s
+
+running (09m39.0s), 003/137 VUs, 57809 complete and 0 interrupted iterations
+steady   [  96% ] 003/137 VUs  09m39.0s/10m0s  100.00 iters/s
+
+running (09m40.0s), 003/137 VUs, 57909 complete and 0 interrupted iterations
+steady   [  97% ] 003/137 VUs  09m40.0s/10m0s  100.00 iters/s
+
+running (09m41.0s), 003/137 VUs, 58009 complete and 0 interrupted iterations
+steady   [  97% ] 003/137 VUs  09m41.0s/10m0s  100.00 iters/s
+
+running (09m42.0s), 003/137 VUs, 58109 complete and 0 interrupted iterations
+steady   [  97% ] 003/137 VUs  09m42.0s/10m0s  100.00 iters/s
+
+running (09m43.0s), 003/137 VUs, 58209 complete and 0 interrupted iterations
+steady   [  97% ] 003/137 VUs  09m43.0s/10m0s  100.00 iters/s
+
+running (09m44.0s), 003/137 VUs, 58309 complete and 0 interrupted iterations
+steady   [  97% ] 003/137 VUs  09m44.0s/10m0s  100.00 iters/s
+
+running (09m45.0s), 003/137 VUs, 58409 complete and 0 interrupted iterations
+steady   [  97% ] 003/137 VUs  09m45.0s/10m0s  100.00 iters/s
+
+running (09m46.0s), 003/137 VUs, 58509 complete and 0 interrupted iterations
+steady   [  98% ] 003/137 VUs  09m46.0s/10m0s  100.00 iters/s
+
+running (09m47.0s), 003/137 VUs, 58609 complete and 0 interrupted iterations
+steady   [  98% ] 003/137 VUs  09m47.0s/10m0s  100.00 iters/s
+
+running (09m48.0s), 003/137 VUs, 58709 complete and 0 interrupted iterations
+steady   [  98% ] 003/137 VUs  09m48.0s/10m0s  100.00 iters/s
+
+running (09m49.0s), 003/137 VUs, 58809 complete and 0 interrupted iterations
+steady   [  98% ] 003/137 VUs  09m49.0s/10m0s  100.00 iters/s
+
+running (09m50.0s), 003/137 VUs, 58909 complete and 0 interrupted iterations
+steady   [  98% ] 003/137 VUs  09m50.0s/10m0s  100.00 iters/s
+
+running (09m51.0s), 003/137 VUs, 59009 complete and 0 interrupted iterations
+steady   [  98% ] 003/137 VUs  09m51.0s/10m0s  100.00 iters/s
+
+running (09m52.0s), 003/137 VUs, 59109 complete and 0 interrupted iterations
+steady   [  99% ] 003/137 VUs  09m52.0s/10m0s  100.00 iters/s
+
+running (09m53.0s), 003/137 VUs, 59209 complete and 0 interrupted iterations
+steady   [  99% ] 003/137 VUs  09m53.0s/10m0s  100.00 iters/s
+
+running (09m54.0s), 003/137 VUs, 59309 complete and 0 interrupted iterations
+steady   [  99% ] 003/137 VUs  09m54.0s/10m0s  100.00 iters/s
+
+running (09m55.0s), 003/137 VUs, 59409 complete and 0 interrupted iterations
+steady   [  99% ] 003/137 VUs  09m55.0s/10m0s  100.00 iters/s
+
+running (09m56.0s), 003/137 VUs, 59509 complete and 0 interrupted iterations
+steady   [  99% ] 003/137 VUs  09m56.0s/10m0s  100.00 iters/s
+
+running (09m57.0s), 003/137 VUs, 59609 complete and 0 interrupted iterations
+steady   [  99% ] 003/137 VUs  09m57.0s/10m0s  100.00 iters/s
+
+running (09m58.0s), 003/137 VUs, 59709 complete and 0 interrupted iterations
+steady   [ 100% ] 003/137 VUs  09m58.0s/10m0s  100.00 iters/s
+
+running (09m59.0s), 003/137 VUs, 59809 complete and 0 interrupted iterations
+steady   [ 100% ] 003/137 VUs  09m59.0s/10m0s  100.00 iters/s
+
+running (10m00.0s), 003/137 VUs, 59909 complete and 0 interrupted iterations
+steady   [ 100% ] 003/137 VUs  10m00.0s/10m0s  100.00 iters/s
+
+__K6_SUMMARY_BEGIN__{"state":{"testRunDurationMs":600035.192808,"isStdOutTTY":false,"isStdErrTTY":false},"metrics":{"dropped_iterations":{"contains":"default","values":{"rate":0.14665806448482488,"count":88},"type":"counter"},"http_req_connecting":{"type":"trend","contains":"time","values":{"p(95)":0,"avg":0.005455045899888168,"min":0,"med":0,"max":24.33208,"p(90)":0}},"http_req_sending":{"type":"trend","contains":"time","values":{"med":0.049946,"max":9.812339,"p(90)":0.0600408,"p(95)":0.06618819999999995,"avg":0.05099397022349013,"min":0}},"iteration_duration":{"type":"trend","contains":"time","values":{"avg":38.676668755077706,"min":10.455063,"med":34.076894,"max":1694.969952,"p(90)":35.7687118,"p(95)":36.7551878}},"data_sent":{"type":"counter","contains":"data","values":{"count":13264932,"rate":22106.923325486558}},"http_req_tls_handshaking":{"type":"trend","contains":"time","values":{"avg":0,"min":0,"med":0,"max":0,"p(90)":0,"p(95)":0}},"http_req_duration":{"type":"trend","contains":"time","values":{"med":23.296934,"max":1684.052624,"p(90)":24.9783138,"p(95)":25.90100259999999,"avg":27.926500761320153,"min":0}},"http_req_failed":{"type":"rate","contains":"default","values":{"fails":59136,"rate":0.012968804766912022,"passes":777}},"checks":{"type":"rate","contains":"default","values":{"rate":0.987031195233088,"passes":59136,"fails":777}},"iterations":{"type":"counter","contains":"default","values":{"count":59913,"rate":99.84914338044673}},"http_req_blocked":{"type":"trend","contains":"time","values":{"p(95)":0.008407399999999994,"avg":0.013450744696476632,"min":0,"med":0.005938,"max":24.416769,"p(90)":0.007254800000000003}},"data_received":{"type":"counter","contains":"data","values":{"count":12043147,"rate":20070.734424161652}},"errors":{"type":"rate","contains":"default","values":{"fails":0,"rate":1,"passes":777},"thresholds":{"rate<0.05":{"ok":false}}},"vus":{"type":"gauge","contains":"default","values":{"value":3,"min":1,"max":88}},"vus_max":{"type":"gauge","contains":"default","values":{"value":137,"min":75,"max":137}},"http_req_waiting":{"type":"trend","contains":"time","values":{"avg":27.709992431308773,"min":0,"med":23.136686,"max":1683.814126,"p(90)":24.75789,"p(95)":25.6551294}},"http_req_receiving":{"type":"trend","contains":"time","values":{"avg":0.1655143597883597,"min":0,"med":0.102793,"max":48.070352,"p(90)":0.190094,"p(95)":0.23937839999999982}},"http_reqs":{"type":"counter","contains":"default","values":{"count":59913,"rate":99.84914338044673}},"http_req_duration{expected_response:true}":{"type":"trend","contains":"time","values":{"avg":28.260256537675456,"min":21.823385,"med":23.3046015,"max":1684.052624,"p(90)":24.9930435,"p(95)":25.919081000000002}}},"root_group":{"name":"","path":"","id":"d41d8cd98f00b204e9800998ecf8427e","groups":[],"checks":[{"path":"::status 200 or 201","id":"9ece56641989e6350b44d6ae7e401915","passes":59136,"fails":777,"name":"status 200 or 201"}]},"options":{"summaryTimeUnit":"","noColor":false,"summaryTrendStats":["avg","min","med","max","p(90)","p(95)"]}}__K6_SUMMARY_END__
+
+running (10m00.0s), 000/137 VUs, 59913 complete and 0 interrupted iterations
+steady ✓ [ 100% ] 000/137 VUs  10m0s  100.00 iters/s
+time="2026-07-30T17:11:13Z" level=error msg="thresholds on metrics 'errors' have been crossed"
