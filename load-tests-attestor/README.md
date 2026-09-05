@@ -106,8 +106,9 @@ Produces under `results/aggregate-<utc-ts>/`:
 | `run_scalars.csv` | One scalar per (run, scenario, overlay, metric) — raw replicates |
 | `summary_stats.csv` | Mean, std, median, min, max, **95% t-CI** across runs (run-level) |
 | `results_tables.html` | Thesis tables, run-level t-CI (copy into Word) |
-| `pooled_stats.csv` | **Pooled** per (scenario, overlay, metric, series): n, median (p50), min, max, **Mann-Whitney U + p-value** |
-| `results_tables_pooled.html` | Thesis tables, pooled: Метрика │ Плагін │ Медіана (p50) │ Мінімальне │ Максимальне │ p-value (Mann-Whitney) |
+| `pooled_stats.csv` | **Pooled** per (scenario, overlay, metric, series): n, median (p50), p25, p75, IQR, min, max |
+| `pooled_stats_comparison.csv` | Comparison per (scenario, metric, series): default vs custom-jvm, Δmedian %, p-value, significance |
+| `results_tables_pooled.html` | Thesis tables, pooled: Метрика │ Плагін │ N │ Медіана (p50) │ IQR (p25-p75) │ Мінімальне-Максимальне │ Δmedian % │ p-value |
 | `long_all.csv` | Raw time series from all runs (column `run`) |
 | `plots_clean/` | Time-series charts with **run-to-run** 95% t-CI bands |
 | `plots_clean_box/` | **Box plots** ("ящик з вусами") of pooled samples, default vs custom-jvm, outliers shown |
@@ -119,7 +120,7 @@ Produces under `results/aggregate-<utc-ts>/`:
 1. **Run-level t-CI** (`summary_stats.csv`, `results_tables.html`, `plots_clean/`) — each
    run is collapsed to one scalar; N = number of runs; comparison via mean ± 95% t-CI.
    Reliable only at N ≥ 5; a t-CI on N = 3 is very wide.
-2. **Pooled samples + Mann-Whitney** (`pooled_stats.csv`, `results_tables_pooled.html`,
+2. **Pooled samples + Mann-Whitney** (`pooled_stats.csv`, `pooled_stats_comparison.csv`, `results_tables_pooled.html`,
    `plots_clean_box/`) — see below. Preferred for small numbers of runs.
 
 ### Pooled samples + Mann-Whitney U (preferred for small N)
@@ -134,7 +135,7 @@ Instead, **pool every raw Prometheus scrape sample from every run** into one arr
 A run with more samples automatically contributes proportionally more points, so pooling
 is self-weighting. On the pooled array we report:
 
-- **median (p50), min, max** — the honest distribution, tails included;
+- **n, median (p50), p25, p75, IQR, min, max** — the honest distribution, tails included;
 - **Mann-Whitney U** (rank-based, distribution-free) comparing `default` vs `custom-jvm`.
   It assumes neither normality nor N = 3 replicates the way a t-CI does. Implemented in
   `pooled_stats.py` with a tie-corrected normal approximation + continuity correction
@@ -146,6 +147,7 @@ Run standalone (needs only `long_all.csv`; the table step is pure stdlib):
 
 ```bash
 python3 pooled_stats.py results/aggregate-<ts>            # tables + CSV
+python3 pooled_stats.py --run-dir results/run-<ts>        # single-run mode
 python3 spire_metrics_visualization.py results/aggregate-<ts>   # t-CI plots + box plots
 ```
 

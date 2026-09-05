@@ -128,5 +128,6 @@ echo "  Stats  (t-CI)        : $AGG_OUT/summary_stats.csv"
 echo "  Plots  (t-CI bands)  : $AGG_OUT/plots_clean/"
 if [[ -f "$AGG_OUT/pooled_stats.csv" ]]; then
   echo "  Stats  (pooled M-W)  : $AGG_OUT/pooled_stats.csv"
+  echo "  Compare (pooled M-W) : $AGG_OUT/pooled_stats_comparison.csv"
   echo "  Tables (pooled M-W)  : $AGG_OUT/results_tables_pooled.html"
 fi
