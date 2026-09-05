@@ -61,7 +61,7 @@ run_flag_test() {
   log "Testing dangerous flag: $flag"
 
   write_payments_variant_manifest "$manifest" --command "$cmd_json"
-  kubectl apply -f "$manifest"
+  apply_manifest "$manifest" || return 1
   wait_deployment_settled "$PAYMENTS_DEPLOY" || true
   settle_workloads
 
@@ -75,10 +75,26 @@ run_flag_test() {
 }
 
 test_body() {
-  local flag
+  local flag failed=0
+
+  # Track failures explicitly instead of relying on errexit. run_test_wrapper calls
+  # this as `if "$@"`, which disables errexit for the whole call tree, so a failing
+  # run_flag_test would neither abort the loop nor change the result: test_body's
+  # status would be that of the LAST flag alone. A flag that was never exercised
+  # (e.g. a manifest the API server rejected) would then be reported as PASS.
   for flag in "${FLAG_TESTS[@]}"; do
-    run_flag_test "$flag"
+    if ! run_flag_test "$flag"; then
+      log "FLAG FAILED: $flag"
+      failed=$((failed + 1))
+    fi
   done
+
+  if [[ $failed -gt 0 ]]; then
+    log "ASSERT FAIL: $failed of ${#FLAG_TESTS[@]} dangerous flags were not detected or not exercised"
+    return 1
+  fi
+  record_evidence_signal "flags-detected:${#FLAG_TESTS[@]}/${#FLAG_TESTS[@]}"
+  return 0
 }
 
 if ! run_test_wrapper "level2-tamper-flags" "PASS" "$OUT_TEST" test_body; then

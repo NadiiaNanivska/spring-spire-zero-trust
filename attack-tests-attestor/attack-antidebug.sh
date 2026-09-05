@@ -84,7 +84,7 @@ spec:
           done
 EOF
 
-  kubectl apply -f "$PTRACE_MANIFEST"
+  apply_manifest "$PTRACE_MANIFEST" || return 1
   # Wait for the strace pod to be Running (image pull can be slow the first time)
   # so the watch loop is already polling /proc before the fresh payments JVM boots.
   kubectl wait --for=condition=Ready "pod/$ptrace_name" -n "$K8S_NAMESPACE" --timeout=120s 2>/dev/null || true

@@ -146,7 +146,7 @@ func TestIntegration_Attest_CleanJVM(t *testing.T) {
 }
 
 func TestIntegration_Attest_DebuggerAttached(t *testing.T) {
-	procRoot, manifestPath, _ := setupFakeProcFS(t)
+	procRoot, _ := setupFakeProcFS(t)
 
 	statusPath := filepath.Join(procRoot, fmt.Sprintf("%d", integrationTestPID), "status")
 	require.NoError(t, os.WriteFile(statusPath, []byte("Name: java\nState: S (sleeping)\nTgid: 4321\nPid: 4321\nTracerPid: 9999\n"), 0644))
@@ -157,7 +157,7 @@ func TestIntegration_Attest_DebuggerAttached(t *testing.T) {
 
 	ctx := context.Background()
 	_, err := cfgClient.Configure(ctx, &configv1.ConfigureRequest{
-		HclConfiguration: fmt.Sprintf("hash_manifest_path = %q", manifestPath),
+		HclConfiguration: `block_on_attach_socket = false`,
 	})
 	require.NoError(t, err)
 

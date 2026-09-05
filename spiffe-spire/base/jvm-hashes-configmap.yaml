@@ -12,7 +12,7 @@ data:
     {
       "version": 1,
       "jars": {
-        "/app/orders-service.jar": "69af828e0aa2cbb8f1a42016d6490a864f5581a5f487bb702bc5c345df2a6a11",
-        "/app/payments-service.jar": "5133e443fa52bcfc23de7fdbc32773fa8a0f1dc5cc1b99ccb8338752856fa688"
+        "/app/orders-service.jar": "f2caeabf89af8beba660c886bbcf10986ba2be28e35e1ed337a0c017953afeb0",
+        "/app/payments-service.jar": "a386bea4384d7b9a262cb38884994e7649a9f486fb4a6f22183165beffe3dac9"
       }
     }

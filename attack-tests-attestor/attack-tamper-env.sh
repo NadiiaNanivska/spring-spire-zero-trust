@@ -72,7 +72,7 @@ spec:
             type: DirectoryOrCreate
 EOF
 
-  kubectl apply -f "$manifest"
+  apply_manifest "$manifest" || return 1
   wait_deployment_settled "$PAYMENTS_DEPLOY" || true
   settle_workloads
 
@@ -86,10 +86,24 @@ EOF
 }
 
 test_body() {
-  local env_name
+  local env_name failed=0
+
+  # See attack-tamper-flags.sh: run_test_wrapper invokes this in an `if` condition,
+  # which disables errexit, so a failing variable must be counted rather than left
+  # to propagate — otherwise only the last one decides the result.
   for env_name in "${ENV_TESTS[@]}"; do
-    run_env_test "$env_name"
+    if ! run_env_test "$env_name"; then
+      log "ENV VAR FAILED: $env_name"
+      failed=$((failed + 1))
+    fi
   done
+
+  if [[ $failed -gt 0 ]]; then
+    log "ASSERT FAIL: $failed of ${#ENV_TESTS[@]} dangerous env vars were not detected or not exercised"
+    return 1
+  fi
+  record_evidence_signal "env-vars-detected:${#ENV_TESTS[@]}/${#ENV_TESTS[@]}"
+  return 0
 }
 
 if ! run_test_wrapper "level2-tamper-env" "PASS" "$OUT_TEST" test_body; then

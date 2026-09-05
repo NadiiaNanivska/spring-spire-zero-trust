@@ -15,10 +15,13 @@ IMAGE        ?= spire-jvm-attestor:latest
 # Kind cluster name (must match wsldev --name flag)
 KIND_CLUSTER ?= kind
 
+# Agent ConfigMap carrying the plugin_checksum the agent verifies at launch
+AGENT_CONFIGMAP ?= ../spiffe-spire/base/agent-configmap.yaml
+
 .PHONY: all build test test-race lint vet fmt clean \
         docker-build kind-load dev \
         registry registry-patch registry-down kind-setup \
-        docker-push checksum
+        docker-push checksum checksum-sync
 
 all: build test
 
@@ -96,8 +99,8 @@ docker-build:
 kind-load:
 	kind load docker-image $(IMAGE) --name $(KIND_CLUSTER)
 
-## dev: one-shot — build + load into Kind cluster
-dev: docker-build kind-load
+## dev: one-shot — build, load into Kind, and sync the checksum into agent.conf
+dev: docker-build kind-load checksum-sync
 	@echo "Image $(IMAGE) loaded into Kind cluster '$(KIND_CLUSTER)'"
 
 ## docker-push: build multi-arch image (amd64 + arm64) and push directly to the registry
@@ -111,11 +114,22 @@ docker-push:
 	  --push \
 	  .
 
-## checksum: print the SHA-256 of the binary inside the image (copy into agent.conf plugin_checksum)
+## checksum: print the SHA-256 of the binary inside the image
 checksum:
 	@id=$$(docker create $(IMAGE)); \
 	 docker cp $$id:/jvm-attestor.sha256 - 2>/dev/null | tar -xO; \
 	 docker rm -f $$id >/dev/null
+
+## checksum-sync: write that SHA-256 into the agent ConfigMap's plugin_checksum
+# A stale value here does not degrade gracefully: the agent refuses to launch the
+# plugin and then exits, so the whole node loses attestation. Never hand-copy it.
+checksum-sync:
+	@sum=$$($(MAKE) --no-print-directory checksum | tr -d '[:space:]'); \
+	 case "$$sum" in *[!0-9a-f]*|"") echo "no checksum in image $(IMAGE); run 'make docker-build' first" >&2; exit 1;; esac; \
+	 test -f "$(AGENT_CONFIGMAP)" || { echo "not found: $(AGENT_CONFIGMAP)" >&2; exit 1; }; \
+	 sed -i -E 's|(plugin_checksum[[:space:]]*=[[:space:]]*")[0-9a-f]*(")|\1'"$$sum"'\2|' "$(AGENT_CONFIGMAP)"; \
+	 grep -q "$$sum" "$(AGENT_CONFIGMAP)" || { echo "plugin_checksum not present in $(AGENT_CONFIGMAP)" >&2; exit 1; }; \
+	 echo "plugin_checksum -> $$sum"
 
 clean:
 	rm -rf $(OUTPUT_DIR)
