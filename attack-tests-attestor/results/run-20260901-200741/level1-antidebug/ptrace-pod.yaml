@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ptrace-attack-7171
+  namespace: spire
+  labels:
+    attack-test: ptrace
+spec:
+  hostPID: true
+  nodeName: kind-control-plane
+  restartPolicy: Never
+  containers:
+    - name: ptrace
+      image: nicolaka/netshoot:latest
+      securityContext:
+        privileged: true
+      command:
+        - sh
+        - -c
+        - |
+          me=$$
+          traced=
+          echo "watch-loop-started"
+          while true; do
+            target=
+            for p in /proc/[0-9]*; do
+              pid=${p#/proc/}
+              [ "$pid" = "$me" ] && continue
+              c=$(cat "$p/comm" 2>/dev/null) || continue
+              [ "$c" = java ] || continue
+              grep -qa payments-service.jar "$p/cmdline" 2>/dev/null && { target=$pid; break; }
+            done
+            if [ -n "$target" ] && [ "$target" != "$traced" ]; then
+              strace -f -p "$target" -o /dev/null 2>>/tmp/strace.err &
+              traced=$target
+              sleep 1
+              echo "attached strace-target-host-pid=$target tracerpid=$(awk '/TracerPid/{print $2}' /proc/$target/status 2>/dev/null)"
+            fi
+            sleep 1
+          done

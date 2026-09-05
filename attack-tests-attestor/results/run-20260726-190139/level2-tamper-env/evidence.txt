@@ -1,0 +1,1 @@
+attestor-log:payments-service-6b454889fd-vsn5w;mtls-deny:http-500;attestor-log:payments-service-6c4c677dfb-62h7s;mtls-deny:http-500;attestor-log:payments-service-5cd6f846b7-bcklk;mtls-deny:http-500;attestor-log:payments-service-c9c49c76d-5mbvh;mtls-deny:http-500

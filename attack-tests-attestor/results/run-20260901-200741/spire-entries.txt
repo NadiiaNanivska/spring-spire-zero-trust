@@ -1,0 +1,31 @@
+Found 2 entries
+Entry ID         : bda472c4-02a0-44bc-829d-6bbc09456664
+SPIFFE ID        : spiffe://zerotrust.lab/ns/spire/sa/orders-app
+Parent ID        : spiffe://zerotrust.lab/spire/agent/k8s_psat/minikube/870bd7a7-798d-4d70-8aee-e5c9c56f4342
+Revision         : 0
+X509-SVID TTL    : default
+JWT-SVID TTL     : default
+Selector         : jvm:agent_flags_clean=true
+Selector         : jvm:debug_clean=true
+Selector         : jvm:hash_via_kernel_handle=true
+Selector         : jvm:jar_set_sha256=b5cdd9e7fed86911e4e4e1edcbbc35d5adce9a5085ef195e5a1ee2a7b6020a3b
+Selector         : jvm:jar_sha256=19308940c82f82b9c7ed25e29ddcc7aec4ff78ee02bc9439d5c2dbf6b400f5a5
+Selector         : jvm:maps_verified=true
+Selector         : k8s:ns:spire
+Selector         : k8s:sa:orders-sa
+
+Entry ID         : 912c0237-a2d6-4e8a-8970-13f508350aaa
+SPIFFE ID        : spiffe://zerotrust.lab/ns/spire/sa/payments-app
+Parent ID        : spiffe://zerotrust.lab/spire/agent/k8s_psat/minikube/870bd7a7-798d-4d70-8aee-e5c9c56f4342
+Revision         : 0
+X509-SVID TTL    : default
+JWT-SVID TTL     : default
+Selector         : jvm:agent_flags_clean=true
+Selector         : jvm:debug_clean=true
+Selector         : jvm:hash_via_kernel_handle=true
+Selector         : jvm:jar_set_sha256=a937cd5feb1d0fbd3f58e3557313c5840c3f9fec3f3a7a72c0b6540e60a673b0
+Selector         : jvm:jar_sha256=cbd54b0bc443f78068e326c5aa0ede1659b9be62a81bcb884cb073481f3155a5
+Selector         : jvm:maps_verified=true
+Selector         : k8s:ns:spire
+Selector         : k8s:sa:payments-sa
+

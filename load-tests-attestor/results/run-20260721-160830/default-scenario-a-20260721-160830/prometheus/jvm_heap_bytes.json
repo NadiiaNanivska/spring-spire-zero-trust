@@ -1,0 +1,1 @@
+{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"service":"orders-service"},"values":[[1784650183,"60049544"]]},{"metric":{"service":"payments-service"},"values":[[1784650183,"36391888"]]}]}}

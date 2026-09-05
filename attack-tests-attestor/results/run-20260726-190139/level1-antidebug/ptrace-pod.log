@@ -1,0 +1,3 @@
+watch-loop-started
+attached strace-target-host-pid=117412 tracerpid=118979
+attached strace-target-host-pid=119123 tracerpid=119331
