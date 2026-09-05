@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-service
+  namespace: spire
+  labels:
+    app: payments-service
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: payments-service
+  template:
+    metadata:
+      labels:
+        app: payments-service
+    spec:
+      serviceAccountName: payments-sa
+      containers:
+        - name: payments-service
+          image: payments-service:1.0
+          imagePullPolicy: IfNotPresent
+          command: ["sh","-c","mkdir -p /tmp/evil-src /tmp/shadow; echo evil-marker > /tmp/evil-src/evil.txt; (jar cf /tmp/extra-evil.jar -C /tmp/evil-src . || cp /app/payments-service.jar /tmp/extra-evil.jar); echo aW1wb3J0IGphdmEuaW8uUmFuZG9tQWNjZXNzRmlsZTsKaW1wb3J0IGphdmEubmlvLk1hcHBlZEJ5dGVCdWZmZXI7CmltcG9ydCBqYXZhLm5pby5jaGFubmVscy5GaWxlQ2hhbm5lbDsKCnB1YmxpYyBjbGFzcyBNbWFwU2hhZG93IHsKICAgIHN0YXRpYyBNYXBwZWRCeXRlQnVmZmVyIGtlZXA7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgdGhyb3dzIEV4Y2VwdGlvbiB7CiAgICAgICAgUmFuZG9tQWNjZXNzRmlsZSBmID0gbmV3IFJhbmRvbUFjY2Vzc0ZpbGUoIi9hcHAvcGF5bWVudHMtc2VydmljZS5qYXIiLCAiciIpOwogICAgICAgIGtlZXAgPSBmLmdldENoYW5uZWwoKS5tYXAoRmlsZUNoYW5uZWwuTWFwTW9kZS5SRUFEX09OTFksIDAsIGYubGVuZ3RoKCkpOwogICAgICAgIG9yZy5zcHJpbmdmcmFtZXdvcmsuYm9vdC5sb2FkZXIubGF1bmNoLkphckxhdW5jaGVyLm1haW4oYXJncyk7CiAgICB9Cn0K | base64 -d > /tmp/shadow/MmapShadow.java; javac -cp /app/payments-service.jar -d /tmp/shadow /tmp/shadow/MmapShadow.java; exec java -cp /tmp/extra-evil.jar:/app/payments-service.jar:/tmp/shadow MmapShadow"]
+          env:
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: /run/spire/sockets/agent.sock
+            - name: SPRING_PROFILES_ACTIVE
+              value: "spire"
+            - name: SERVER_PORT
+              value: "8081"
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+              readOnly: true
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

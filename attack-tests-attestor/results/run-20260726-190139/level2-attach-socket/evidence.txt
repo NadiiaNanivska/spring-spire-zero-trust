@@ -1,0 +1,1 @@
+assertion failed; see logs in /mnt/c/Users/nnani/IdeaProjects/spring-spire-zero-trust/attack-tests-attestor/results/run-20260726-190139/level2-attach-socket

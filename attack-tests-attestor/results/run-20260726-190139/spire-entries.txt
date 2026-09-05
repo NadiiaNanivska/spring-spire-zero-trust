@@ -1,0 +1,27 @@
+Found 2 entries
+Entry ID         : 35aab1a9-0113-4df3-8f70-6979f9ae4a7d
+SPIFFE ID        : spiffe://zerotrust.lab/ns/spire/sa/orders-app
+Parent ID        : spiffe://zerotrust.lab/spire/agent/k8s_psat/minikube/870bd7a7-798d-4d70-8aee-e5c9c56f4342
+Revision         : 0
+X509-SVID TTL    : default
+JWT-SVID TTL     : default
+Selector         : jvm:agent_flags_clean=true
+Selector         : jvm:debug_clean=true
+Selector         : jvm:jar_sha256=5c447a4d6853eff25b7f0a1ef9ffec0450731d26a4948bbca7bc8c6997cf3d91
+Selector         : jvm:maps_verified=true
+Selector         : k8s:ns:spire
+Selector         : k8s:sa:orders-sa
+
+Entry ID         : a848332a-541b-4639-ad24-9a766453ed94
+SPIFFE ID        : spiffe://zerotrust.lab/ns/spire/sa/payments-app
+Parent ID        : spiffe://zerotrust.lab/spire/agent/k8s_psat/minikube/870bd7a7-798d-4d70-8aee-e5c9c56f4342
+Revision         : 0
+X509-SVID TTL    : default
+JWT-SVID TTL     : default
+Selector         : jvm:agent_flags_clean=true
+Selector         : jvm:debug_clean=true
+Selector         : jvm:jar_sha256=3d8150626f4107a295f665d74d8af58fc2d9f1767fdd72f166f5bdfbaacf1141
+Selector         : jvm:maps_verified=true
+Selector         : k8s:ns:spire
+Selector         : k8s:sa:payments-sa
+

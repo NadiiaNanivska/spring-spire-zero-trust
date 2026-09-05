@@ -1,0 +1,330 @@
+<table border='1' style='border-collapse: collapse; width: 100%; font-family: "Times New Roman", serif;'>
+  <tr>
+    <td colspan='7' style='padding: 5px; font-weight: bold;'>Таблиця 4.1 — Результати для Сценарію A: Масштабування з "теплим" кешем</td>
+  </tr>
+  <tr>
+    <th style='padding: 5px; text-align: center;'>Метрика</th>
+    <th style='padding: 5px; text-align: center;'>Плагін</th>
+    <th style='padding: 5px; text-align: center;'>N (ранів)</th>
+    <th style='padding: 5px; text-align: center;'>Середнє (μ)</th>
+    <th style='padding: 5px; text-align: center;'>±95% CI</th>
+    <th style='padding: 5px; text-align: center;'>Медіана</th>
+    <th style='padding: 5px; text-align: center;'>Макс</th>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>attestation_avg_ms</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>4.288</td>
+    <td style='text-align: center; padding: 5px;'>0.934</td>
+    <td style='text-align: center; padding: 5px;'>4.464</td>
+    <td style='text-align: center; padding: 5px;'>6.000</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>4.649</td>
+    <td style='text-align: center; padding: 5px;'>0.934</td>
+    <td style='text-align: center; padding: 5px;'>4.546</td>
+    <td style='text-align: center; padding: 5px;'>6.745</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>agent_cpu</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.004</td>
+    <td style='text-align: center; padding: 5px;'>0.001</td>
+    <td style='text-align: center; padding: 5px;'>0.003</td>
+    <td style='text-align: center; padding: 5px;'>0.006</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.004</td>
+    <td style='text-align: center; padding: 5px;'>0.001</td>
+    <td style='text-align: center; padding: 5px;'>0.004</td>
+    <td style='text-align: center; padding: 5px;'>0.006</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>agent_memory_mb</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>31.442</td>
+    <td style='text-align: center; padding: 5px;'>2.109</td>
+    <td style='text-align: center; padding: 5px;'>32.557</td>
+    <td style='text-align: center; padding: 5px;'>33.637</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>23.402</td>
+    <td style='text-align: center; padding: 5px;'>7.760</td>
+    <td style='text-align: center; padding: 5px;'>22.067</td>
+    <td style='text-align: center; padding: 5px;'>32.930</td>
+  </tr>
+</table><br><br>
+<table border='1' style='border-collapse: collapse; width: 100%; font-family: "Times New Roman", serif;'>
+  <tr>
+    <td colspan='7' style='padding: 5px; font-weight: bold;'>Таблиця 4.2 — Результати для Сценарію B: "Холодний" старт та перерахунок цілісності</td>
+  </tr>
+  <tr>
+    <th style='padding: 5px; text-align: center;'>Метрика</th>
+    <th style='padding: 5px; text-align: center;'>Плагін</th>
+    <th style='padding: 5px; text-align: center;'>N (ранів)</th>
+    <th style='padding: 5px; text-align: center;'>Середнє (μ)</th>
+    <th style='padding: 5px; text-align: center;'>±95% CI</th>
+    <th style='padding: 5px; text-align: center;'>Медіана</th>
+    <th style='padding: 5px; text-align: center;'>Макс</th>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>attestation_avg_ms</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>18.469</td>
+    <td style='text-align: center; padding: 5px;'>7.276</td>
+    <td style='text-align: center; padding: 5px;'>14.562</td>
+    <td style='text-align: center; padding: 5px;'>35.060</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>5</td>
+    <td style='text-align: center; padding: 5px;'>5.114</td>
+    <td style='text-align: center; padding: 5px;'>1.170</td>
+    <td style='text-align: center; padding: 5px;'>4.677</td>
+    <td style='text-align: center; padding: 5px;'>6.722</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>agent_cpu</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.005</td>
+    <td style='text-align: center; padding: 5px;'>0.000</td>
+    <td style='text-align: center; padding: 5px;'>0.005</td>
+    <td style='text-align: center; padding: 5px;'>0.006</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.004</td>
+    <td style='text-align: center; padding: 5px;'>0.001</td>
+    <td style='text-align: center; padding: 5px;'>0.003</td>
+    <td style='text-align: center; padding: 5px;'>0.006</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>agent_memory_mb</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>37.521</td>
+    <td style='text-align: center; padding: 5px;'>2.738</td>
+    <td style='text-align: center; padding: 5px;'>38.817</td>
+    <td style='text-align: center; padding: 5px;'>41.377</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>30.911</td>
+    <td style='text-align: center; padding: 5px;'>2.424</td>
+    <td style='text-align: center; padding: 5px;'>31.074</td>
+    <td style='text-align: center; padding: 5px;'>35.349</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>server_cpu</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.015</td>
+    <td style='text-align: center; padding: 5px;'>0.005</td>
+    <td style='text-align: center; padding: 5px;'>0.017</td>
+    <td style='text-align: center; padding: 5px;'>0.018</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.015</td>
+    <td style='text-align: center; padding: 5px;'>0.005</td>
+    <td style='text-align: center; padding: 5px;'>0.016</td>
+    <td style='text-align: center; padding: 5px;'>0.021</td>
+  </tr>
+</table><br><br>
+<table border='1' style='border-collapse: collapse; width: 100%; font-family: "Times New Roman", serif;'>
+  <tr>
+    <td colspan='7' style='padding: 5px; font-weight: bold;'>Таблиця 4.3 — Результати для Сценарію C: Стабільне навантаження та "шторм" переатестації</td>
+  </tr>
+  <tr>
+    <th style='padding: 5px; text-align: center;'>Метрика</th>
+    <th style='padding: 5px; text-align: center;'>Плагін</th>
+    <th style='padding: 5px; text-align: center;'>N (ранів)</th>
+    <th style='padding: 5px; text-align: center;'>Середнє (μ)</th>
+    <th style='padding: 5px; text-align: center;'>±95% CI</th>
+    <th style='padding: 5px; text-align: center;'>Медіана</th>
+    <th style='padding: 5px; text-align: center;'>Макс</th>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p95_ms [orders-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>38.768</td>
+    <td style='text-align: center; padding: 5px;'>3.069</td>
+    <td style='text-align: center; padding: 5px;'>37.959</td>
+    <td style='text-align: center; padding: 5px;'>43.613</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p95_ms [payments-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>24.688</td>
+    <td style='text-align: center; padding: 5px;'>1.160</td>
+    <td style='text-align: center; padding: 5px;'>24.804</td>
+    <td style='text-align: center; padding: 5px;'>27.018</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p95_ms [orders-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>45.948</td>
+    <td style='text-align: center; padding: 5px;'>14.694</td>
+    <td style='text-align: center; padding: 5px;'>41.758</td>
+    <td style='text-align: center; padding: 5px;'>80.921</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p95_ms [payments-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>25.749</td>
+    <td style='text-align: center; padding: 5px;'>2.436</td>
+    <td style='text-align: center; padding: 5px;'>24.801</td>
+    <td style='text-align: center; padding: 5px;'>30.647</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p99_ms [orders-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>244.913</td>
+    <td style='text-align: center; padding: 5px;'>13.177</td>
+    <td style='text-align: center; padding: 5px;'>242.328</td>
+    <td style='text-align: center; padding: 5px;'>270.381</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p99_ms [payments-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>45.316</td>
+    <td style='text-align: center; padding: 5px;'>18.509</td>
+    <td style='text-align: center; padding: 5px;'>38.252</td>
+    <td style='text-align: center; padding: 5px;'>90.600</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p99_ms [orders-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>271.716</td>
+    <td style='text-align: center; padding: 5px;'>84.145</td>
+    <td style='text-align: center; padding: 5px;'>229.540</td>
+    <td style='text-align: center; padding: 5px;'>472.276</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_req_p99_ms [payments-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>46.948</td>
+    <td style='text-align: center; padding: 5px;'>22.094</td>
+    <td style='text-align: center; padding: 5px;'>37.715</td>
+    <td style='text-align: center; padding: 5px;'>101.043</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>http_5xx_rate</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.386</td>
+    <td style='text-align: center; padding: 5px;'>0.290</td>
+    <td style='text-align: center; padding: 5px;'>0.511</td>
+    <td style='text-align: center; padding: 5px;'>0.750</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.438</td>
+    <td style='text-align: center; padding: 5px;'>0.423</td>
+    <td style='text-align: center; padding: 5px;'>0.359</td>
+    <td style='text-align: center; padding: 5px;'>1.308</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>process_cpu</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.012</td>
+    <td style='text-align: center; padding: 5px;'>0.000</td>
+    <td style='text-align: center; padding: 5px;'>0.012</td>
+    <td style='text-align: center; padding: 5px;'>0.013</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.013</td>
+    <td style='text-align: center; padding: 5px;'>0.003</td>
+    <td style='text-align: center; padding: 5px;'>0.012</td>
+    <td style='text-align: center; padding: 5px;'>0.020</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>jvm_heap_bytes [orders-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>328.876</td>
+    <td style='text-align: center; padding: 5px;'>24.324</td>
+    <td style='text-align: center; padding: 5px;'>318.792</td>
+    <td style='text-align: center; padding: 5px;'>379.198</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>jvm_heap_bytes [payments-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>307.190</td>
+    <td style='text-align: center; padding: 5px;'>55.179</td>
+    <td style='text-align: center; padding: 5px;'>272.701</td>
+    <td style='text-align: center; padding: 5px;'>389.152</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>jvm_heap_bytes [orders-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>325.171</td>
+    <td style='text-align: center; padding: 5px;'>44.980</td>
+    <td style='text-align: center; padding: 5px;'>307.483</td>
+    <td style='text-align: center; padding: 5px;'>434.157</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>jvm_heap_bytes [payments-service]</b></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>300.547</td>
+    <td style='text-align: center; padding: 5px;'>47.691</td>
+    <td style='text-align: center; padding: 5px;'>278.679</td>
+    <td style='text-align: center; padding: 5px;'>390.839</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'><b>jvm_gc_pause_rate</b></td>
+    <td style='text-align: left; padding: 5px;'>custom-jvm</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.091</td>
+    <td style='text-align: center; padding: 5px;'>0.014</td>
+    <td style='text-align: center; padding: 5px;'>0.091</td>
+    <td style='text-align: center; padding: 5px;'>0.108</td>
+  </tr>
+  <tr>
+    <td style='text-align: left; padding: 5px;'></td>
+    <td style='text-align: left; padding: 5px;'>default</td>
+    <td style='text-align: center; padding: 5px;'>7</td>
+    <td style='text-align: center; padding: 5px;'>0.096</td>
+    <td style='text-align: center; padding: 5px;'>0.023</td>
+    <td style='text-align: center; padding: 5px;'>0.097</td>
+    <td style='text-align: center; padding: 5px;'>0.129</td>
+  </tr>
+</table><br><br>

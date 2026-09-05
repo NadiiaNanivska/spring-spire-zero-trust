@@ -1,0 +1,1 @@
+agent-running;jar-hash-latency-ok:183864us;jar-hash-changed:468c2bf138bfefcf;dos-survived

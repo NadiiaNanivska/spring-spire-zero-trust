@@ -1,0 +1,1 @@
+attestor-log:payments-service-644c598dc5-cfxzf:JVM Attach API socket exposed at /proc/36570/root/tmp/.java_pid1 refusing attestation

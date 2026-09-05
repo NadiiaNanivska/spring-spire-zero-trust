@@ -1,0 +1,1 @@
+attestor-log:payments-service-9cfbc9f78-r694d:JVM Attach API socket exposed at /proc/15967/root/tmp/.java_pid1 refusing attestation;svid-denied:payments-service-9cfbc9f78-r694d
