@@ -749,9 +749,25 @@ restore_clean_deployments() {
 
 deploy_payments_variant() {
   local out_manifest=$1
-  kubectl apply -f "$out_manifest"
+  apply_manifest "$out_manifest" || return 1
   wait_deployment_ready "$PAYMENTS_DEPLOY"
   settle_workloads
+}
+
+# apply_manifest applies a generated variant manifest and fails loudly when the
+# API server rejects it.
+#
+# The caller cannot rely on errexit here: run_test_wrapper runs the test body as
+# `if "$@"`, and bash disables errexit for the whole call tree inside a condition.
+# A rejected apply would therefore be skipped silently, leaving the PREVIOUS
+# (clean) deployment live while the assertions ran against it — the scenario would
+# never be exercised, and the result would be meaningless either way.
+apply_manifest() {
+  local manifest=$1
+  if ! kubectl apply -f "$manifest"; then
+    log "ASSERT FAIL (inconclusive): API server rejected $manifest; the previous deployment is still live, so this scenario was never exercised"
+    return 1
+  fi
 }
 
 write_payments_variant_manifest() {
@@ -810,12 +826,13 @@ spec:
 HEADER
 
   if [[ -n "$command_json" ]]; then
-    {
-      echo "          command:"
-      echo "$command_json" | jq -r '.[]' | while IFS= read -r line; do
-        echo "            - $(printf '%s' "$line" | sed 's/"/\\"/g')"
-      done
-    } >>"$out"
+    # Emit argv as a JSON flow sequence, not a YAML block sequence: YAML is a
+    # superset of JSON, so jq's quoting is authoritative and no arg needs hand
+    # escaping. Writing a block sequence broke two ways at once — a multi-line
+    # arg was split into one item per physical line, and an arg containing ": "
+    # (printf 'Premain-Class: Noop\n') parsed as a nested mapping, which the API
+    # server rejects with "unrecognized type: string".
+    echo "          command: $(printf '%s' "$command_json" | jq -c '.')" >>"$out"
   fi
 
   cat >>"$out" <<'MID'

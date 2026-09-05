@@ -63,6 +63,7 @@ ALL_TESTS=(
   attack-jar-unknown.sh
   attack-cp-classpath.sh
   bypass-symlink.sh
+  bypass-mmap-shadow.sh
   dos-large-jar.sh
 )
 

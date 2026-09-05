@@ -1,8 +1,11 @@
 package apps
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"path/filepath"
+	"sort"
 
 	"wsldev/internal/spire"
 )
@@ -21,9 +24,10 @@ import (
 // Each JVM workload gets an entry requiring the full clean-attestation selector
 // set:
 //
-//	k8s:ns:<namespace>          k8s:sa:<serviceAccount>
-//	jvm:debug_clean=true        jvm:agent_flags_clean=true
-//	jvm:maps_verified=true      jvm:jar_sha256=<expected>
+//	k8s:ns:<namespace>               k8s:sa:<serviceAccount>
+//	jvm:debug_clean=true             jvm:agent_flags_clean=true
+//	jvm:maps_verified=true           jvm:hash_via_kernel_handle=true
+//	jvm:jar_sha256=<expected>        jvm:jar_set_sha256=<digest of the whole set>
 //
 // Non-JVM args are ignored. Registration is idempotent: existing entries for the
 // SPIFFE ID are deleted first, so re-deploying refreshes the pinned hash.
@@ -91,6 +95,17 @@ func JVMServiceNames() []string {
 // jvmEntrySelectors builds the required selector set for a JVM workload entry.
 // Values use the plugin's "key=value" form (e.g. jvm:jar_sha256=<hash>), which is
 // exactly what the jvm-attestor emits, so the SPIRE server can match them.
+//
+// jar_set_sha256 is what actually pins the workload. SPIRE matches an entry when
+// its selectors are a SUBSET of the workload's, so pinning only jar_sha256 leaves
+// a hole: a process that additionally opens an attacker-supplied jar still carries
+// the approved per-jar selector and would match. The set digest covers every jar
+// the process holds, so any extra one breaks the match.
+//
+// hash_via_kernel_handle=true requires that the agent read those jars through a
+// /proc handle bound to the inode rather than by resolving their pathname. That is
+// the property that makes the symlink-redirection defense enforceable instead of
+// merely observable.
 func jvmEntrySelectors(svc jvmService, hash string) []string {
 	return []string{
 		fmt.Sprintf("k8s:ns:%s", spireNamespace),
@@ -98,6 +113,29 @@ func jvmEntrySelectors(svc jvmService, hash string) []string {
 		"jvm:debug_clean=true",
 		"jvm:agent_flags_clean=true",
 		"jvm:maps_verified=true",
+		"jvm:hash_via_kernel_handle=true",
 		fmt.Sprintf("jvm:jar_sha256=%s", hash),
+		fmt.Sprintf("jvm:jar_set_sha256=%s", jarSetDigest(map[string]string{svc.manifestKey: hash})),
 	}
+}
+
+// jarSetDigest reproduces, offline, the aggregate digest the jvm-attestor computes
+// at attestation time: SHA-256 over "<path>:<sha256>\n" lines for every discovered
+// jar, ordered by path.
+//
+// This MUST stay byte-for-byte identical to the plugin's implementation in
+// spire-jvm-attestor/internal/checkers/jarhash.go — the two live in separate Go
+// modules, so the compiler cannot catch a drift; TestJarSetDigest pins the format.
+func jarSetDigest(jars map[string]string) string {
+	paths := make([]string, 0, len(jars))
+	for path := range jars {
+		paths = append(paths, path)
+	}
+	sort.Strings(paths)
+
+	digest := sha256.New()
+	for _, path := range paths {
+		fmt.Fprintf(digest, "%s:%s\n", path, jars[path])
+	}
+	return hex.EncodeToString(digest.Sum(nil))
 }
