@@ -88,7 +88,7 @@ def prometheus_values(path: Path):
 
 
 def summarize(values):
-    if not values:
+    if len(values) == 0:
         return {
             "median": np.nan,
             "q1": np.nan,
