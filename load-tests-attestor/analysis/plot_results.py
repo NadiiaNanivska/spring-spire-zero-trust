@@ -63,7 +63,7 @@ def boxplots(df, output_dir):
 
             plt.boxplot(
                 values,
-                labels=labels,
+                tick_labels=labels,
                 showmeans=True,
                 whis=[0, 100],
             )
