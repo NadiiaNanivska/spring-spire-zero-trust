@@ -645,18 +645,36 @@ def holm_adjust(p_values: list[float]) -> list[float]:
 
 def add_multiple_testing_correction(
     rows: list[dict],
+    family: str = "scenario",
 ) -> list[dict]:
     """
-    Коригує всі скалярні Wilcoxon p-значення одним сімейством тестів.
+    Коригує Wilcoxon p-значення поправкою Холма.
 
-    Це консервативний варіант для звіту. Сирі p залишаються у стовпці p.
+    family="all":      одне сімейство - усі тести звіту разом
+                        (консервативний варіант, був дефолтом раніше).
+    family="scenario":  окреме сімейство для кожного сценарію
+                        (a / b / c коригуються незалежно одне від одного).
+
+    Сирі p завжди залишаються у стовпці p, скоригована версія - у p_holm.
     """
-    p_values = [row["p"] for row in rows]
-    adjusted = holm_adjust(p_values)
+    if family == "scenario":
+        groups: dict[str, list[int]] = defaultdict(list)
+        for idx, row in enumerate(rows):
+            groups[row["scenario"]].append(idx)
+    else:
+        groups = {"all": list(range(len(rows)))}
+
+    p_adj_all: list[float] = [float("nan")] * len(rows)
+
+    for _, indices in groups.items():
+        p_values = [rows[i]["p"] for i in indices]
+        adjusted = holm_adjust(p_values)
+        for i, p_adj in zip(indices, adjusted):
+            p_adj_all[i] = p_adj
 
     out = []
 
-    for row, p_adj in zip(rows, adjusted):
+    for row, p_adj in zip(rows, p_adj_all):
         row = dict(row)
         row["p_holm"] = p_adj
         row["significant_raw"] = (
@@ -1133,6 +1151,16 @@ def main() -> int:
         default=0.05,
         help="Рівень значущості (default: 0.05).",
     )
+    parser.add_argument(
+        "--holm-family",
+        choices=["scenario", "all"],
+        default="scenario",
+        help=(
+            "Сімейство для поправки Холма: 'scenario' - окремо "
+            "для кожного сценарію (default), 'all' - один "
+            "спільний набір з усіх тестів звіту."
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -1174,7 +1202,8 @@ def main() -> int:
         )
 
         paired_rows = add_multiple_testing_correction(
-            paired_rows
+            paired_rows,
+            family=args.holm_family,
         )
 
         if args.out_dir:
