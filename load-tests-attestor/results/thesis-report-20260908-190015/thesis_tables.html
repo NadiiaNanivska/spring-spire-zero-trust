@@ -1,0 +1,791 @@
+<h2>Описова статистика (mean, 95% CI, медіана, IQR, min-max)</h2>
+<table border='1' style="border-collapse: collapse; width: 100%; font-family: 'Times New Roman', serif;">
+  <tr>
+    <td colspan='9' style='padding: 5px; font-weight: bold;'>Таблиця 4.1 — Результати для Сценарію A: Масштабування з "теплим" кешем — описова статистика</td>
+  </tr>
+  <tr>
+    <th style='padding:5px;text-align:center;'>Метрика</th>
+    <th style='padding:5px;text-align:center;'>Плагін</th>
+    <th style='padding:5px;text-align:center;'>N</th>
+    <th style='padding:5px;text-align:center;'>Середнє</th>
+    <th style='padding:5px;text-align:center;'>±95% CI</th>
+    <th style='padding:5px;text-align:center;'>Медіана</th>
+    <th style='padding:5px;text-align:center;'>IQR (Q1-Q3)</th>
+    <th style='padding:5px;text-align:center;'>Min</th>
+    <th style='padding:5px;text-align:center;'>Max</th>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Час атестації (мс)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>11.025</td>
+    <td style='padding:5px;text-align:center;'>6.012</td>
+    <td style='padding:5px;text-align:center;'>6.000</td>
+    <td style='padding:5px;text-align:center;'>4.464 – 14.607</td>
+    <td style='padding:5px;text-align:center;'>2.728</td>
+    <td style='padding:5px;text-align:center;'>34.712</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>4.497</td>
+    <td style='padding:5px;text-align:center;'>0.614</td>
+    <td style='padding:5px;text-align:center;'>4.378</td>
+    <td style='padding:5px;text-align:center;'>3.903 – 4.596</td>
+    <td style='padding:5px;text-align:center;'>3.489</td>
+    <td style='padding:5px;text-align:center;'>6.745</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>CPU агента SPIRE (ядра)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.005</td>
+    <td style='padding:5px;text-align:center;'>0.001</td>
+    <td style='padding:5px;text-align:center;'>0.004</td>
+    <td style='padding:5px;text-align:center;'>0.003 – 0.005</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.008</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.004</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.003 – 0.004</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.006</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>RAM агента SPIRE (МБ)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>35.846</td>
+    <td style='padding:5px;text-align:center;'>9.868</td>
+    <td style='padding:5px;text-align:center;'>33.026</td>
+    <td style='padding:5px;text-align:center;'>30.858 – 33.834</td>
+    <td style='padding:5px;text-align:center;'>20.577</td>
+    <td style='padding:5px;text-align:center;'>88.642</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>35.003</td>
+    <td style='padding:5px;text-align:center;'>11.316</td>
+    <td style='padding:5px;text-align:center;'>31.519</td>
+    <td style='padding:5px;text-align:center;'>22.067 – 34.234</td>
+    <td style='padding:5px;text-align:center;'>14.992</td>
+    <td style='padding:5px;text-align:center;'>70.199</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Кількість виданих SVID (успішні атестації)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>5.692</td>
+    <td style='padding:5px;text-align:center;'>1.803</td>
+    <td style='padding:5px;text-align:center;'>7.000</td>
+    <td style='padding:5px;text-align:center;'>4.000 – 7.000</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>10.000</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>5.846</td>
+    <td style='padding:5px;text-align:center;'>1.893</td>
+    <td style='padding:5px;text-align:center;'>6.000</td>
+    <td style='padding:5px;text-align:center;'>5.000 – 7.000</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>11.000</td>
+  </tr>
+</table><br><br>
+<table border='1' style="border-collapse: collapse; width: 100%; font-family: 'Times New Roman', serif;">
+  <tr>
+    <td colspan='9' style='padding: 5px; font-weight: bold;'>Таблиця 4.2 — Результати для Сценарію B: "Холодний" старт та перерахунок цілісності — описова статистика</td>
+  </tr>
+  <tr>
+    <th style='padding:5px;text-align:center;'>Метрика</th>
+    <th style='padding:5px;text-align:center;'>Плагін</th>
+    <th style='padding:5px;text-align:center;'>N</th>
+    <th style='padding:5px;text-align:center;'>Середнє</th>
+    <th style='padding:5px;text-align:center;'>±95% CI</th>
+    <th style='padding:5px;text-align:center;'>Медіана</th>
+    <th style='padding:5px;text-align:center;'>IQR (Q1-Q3)</th>
+    <th style='padding:5px;text-align:center;'>Min</th>
+    <th style='padding:5px;text-align:center;'>Max</th>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Час атестації (мс)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>16.027</td>
+    <td style='padding:5px;text-align:center;'>3.929</td>
+    <td style='padding:5px;text-align:center;'>14.497</td>
+    <td style='padding:5px;text-align:center;'>14.068 – 15.372</td>
+    <td style='padding:5px;text-align:center;'>8.027</td>
+    <td style='padding:5px;text-align:center;'>35.060</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>9</td>
+    <td style='padding:5px;text-align:center;'>5.751</td>
+    <td style='padding:5px;text-align:center;'>1.525</td>
+    <td style='padding:5px;text-align:center;'>5.145</td>
+    <td style='padding:5px;text-align:center;'>4.677 – 5.286</td>
+    <td style='padding:5px;text-align:center;'>4.353</td>
+    <td style='padding:5px;text-align:center;'>10.729</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>CPU агента SPIRE (ядра)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.005</td>
+    <td style='padding:5px;text-align:center;'>0.001</td>
+    <td style='padding:5px;text-align:center;'>0.005</td>
+    <td style='padding:5px;text-align:center;'>0.005 – 0.006</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.008</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.004</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.003 – 0.004</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.006</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>RAM агента SPIRE (МБ)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>37.698</td>
+    <td style='padding:5px;text-align:center;'>1.722</td>
+    <td style='padding:5px;text-align:center;'>38.817</td>
+    <td style='padding:5px;text-align:center;'>36.334 – 39.080</td>
+    <td style='padding:5px;text-align:center;'>32.397</td>
+    <td style='padding:5px;text-align:center;'>41.551</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>37.459</td>
+    <td style='padding:5px;text-align:center;'>9.959</td>
+    <td style='padding:5px;text-align:center;'>31.074</td>
+    <td style='padding:5px;text-align:center;'>29.725 – 32.307</td>
+    <td style='padding:5px;text-align:center;'>27.451</td>
+    <td style='padding:5px;text-align:center;'>74.390</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>CPU серверу SPIRE (ядра)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.015</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.017</td>
+    <td style='padding:5px;text-align:center;'>0.016 – 0.018</td>
+    <td style='padding:5px;text-align:center;'>0.004</td>
+    <td style='padding:5px;text-align:center;'>0.020</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.015</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.016</td>
+    <td style='padding:5px;text-align:center;'>0.015 – 0.017</td>
+    <td style='padding:5px;text-align:center;'>0.003</td>
+    <td style='padding:5px;text-align:center;'>0.021</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Кількість виданих SVID (успішні атестації)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>15.769</td>
+    <td style='padding:5px;text-align:center;'>4.174</td>
+    <td style='padding:5px;text-align:center;'>17.000</td>
+    <td style='padding:5px;text-align:center;'>16.000 – 20.000</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>23.000</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>16.615</td>
+    <td style='padding:5px;text-align:center;'>4.277</td>
+    <td style='padding:5px;text-align:center;'>18.000</td>
+    <td style='padding:5px;text-align:center;'>18.000 – 19.000</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>25.000</td>
+  </tr>
+</table><br><br>
+<table border='1' style="border-collapse: collapse; width: 100%; font-family: 'Times New Roman', serif;">
+  <tr>
+    <td colspan='9' style='padding: 5px; font-weight: bold;'>Таблиця 4.3 — Результати для Сценарію C: Стабільне навантаження та "шторм" переатестації — описова статистика</td>
+  </tr>
+  <tr>
+    <th style='padding:5px;text-align:center;'>Метрика</th>
+    <th style='padding:5px;text-align:center;'>Плагін</th>
+    <th style='padding:5px;text-align:center;'>N</th>
+    <th style='padding:5px;text-align:center;'>Середнє</th>
+    <th style='padding:5px;text-align:center;'>±95% CI</th>
+    <th style='padding:5px;text-align:center;'>Медіана</th>
+    <th style='padding:5px;text-align:center;'>IQR (Q1-Q3)</th>
+    <th style='padding:5px;text-align:center;'>Min</th>
+    <th style='padding:5px;text-align:center;'>Max</th>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>HTTP latency p95 (мс) [orders-service]</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>40.070</td>
+    <td style='padding:5px;text-align:center;'>3.644</td>
+    <td style='padding:5px;text-align:center;'>38.771</td>
+    <td style='padding:5px;text-align:center;'>36.621 – 44.386</td>
+    <td style='padding:5px;text-align:center;'>27.806</td>
+    <td style='padding:5px;text-align:center;'>49.908</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>40.556</td>
+    <td style='padding:5px;text-align:center;'>7.891</td>
+    <td style='padding:5px;text-align:center;'>36.652</td>
+    <td style='padding:5px;text-align:center;'>36.200 – 41.758</td>
+    <td style='padding:5px;text-align:center;'>28.384</td>
+    <td style='padding:5px;text-align:center;'>80.921</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>HTTP latency p95 (мс) [payments-service]</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>24.990</td>
+    <td style='padding:5px;text-align:center;'>1.063</td>
+    <td style='padding:5px;text-align:center;'>24.915</td>
+    <td style='padding:5px;text-align:center;'>23.698 – 25.115</td>
+    <td style='padding:5px;text-align:center;'>22.776</td>
+    <td style='padding:5px;text-align:center;'>29.683</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>25.121</td>
+    <td style='padding:5px;text-align:center;'>1.233</td>
+    <td style='padding:5px;text-align:center;'>24.759</td>
+    <td style='padding:5px;text-align:center;'>23.655 – 24.950</td>
+    <td style='padding:5px;text-align:center;'>23.502</td>
+    <td style='padding:5px;text-align:center;'>30.647</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>HTTP latency p99 (мс) [orders-service]</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>244.534</td>
+    <td style='padding:5px;text-align:center;'>29.291</td>
+    <td style='padding:5px;text-align:center;'>242.328</td>
+    <td style='padding:5px;text-align:center;'>231.873 – 251.429</td>
+    <td style='padding:5px;text-align:center;'>157.480</td>
+    <td style='padding:5px;text-align:center;'>378.523</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>247.753</td>
+    <td style='padding:5px;text-align:center;'>43.352</td>
+    <td style='padding:5px;text-align:center;'>229.540</td>
+    <td style='padding:5px;text-align:center;'>227.869 – 238.062</td>
+    <td style='padding:5px;text-align:center;'>175.823</td>
+    <td style='padding:5px;text-align:center;'>472.276</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>HTTP latency p99 (мс) [payments-service]</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>44.645</td>
+    <td style='padding:5px;text-align:center;'>10.445</td>
+    <td style='padding:5px;text-align:center;'>38.814</td>
+    <td style='padding:5px;text-align:center;'>36.587 – 39.617</td>
+    <td style='padding:5px;text-align:center;'>34.354</td>
+    <td style='padding:5px;text-align:center;'>90.600</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>45.341</td>
+    <td style='padding:5px;text-align:center;'>11.443</td>
+    <td style='padding:5px;text-align:center;'>37.715</td>
+    <td style='padding:5px;text-align:center;'>37.216 – 40.448</td>
+    <td style='padding:5px;text-align:center;'>36.504</td>
+    <td style='padding:5px;text-align:center;'>101.043</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Частка 5xx помилок (req/s)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.408</td>
+    <td style='padding:5px;text-align:center;'>0.248</td>
+    <td style='padding:5px;text-align:center;'>0.210</td>
+    <td style='padding:5px;text-align:center;'>0.156 – 0.619</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>1.436</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.330</td>
+    <td style='padding:5px;text-align:center;'>0.229</td>
+    <td style='padding:5px;text-align:center;'>0.133</td>
+    <td style='padding:5px;text-align:center;'>0.071 – 0.548</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>1.308</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>CPU застосунку (ядра)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.013</td>
+    <td style='padding:5px;text-align:center;'>0.002</td>
+    <td style='padding:5px;text-align:center;'>0.013</td>
+    <td style='padding:5px;text-align:center;'>0.012 – 0.013</td>
+    <td style='padding:5px;text-align:center;'>0.011</td>
+    <td style='padding:5px;text-align:center;'>0.022</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.013</td>
+    <td style='padding:5px;text-align:center;'>0.001</td>
+    <td style='padding:5px;text-align:center;'>0.012</td>
+    <td style='padding:5px;text-align:center;'>0.012 – 0.013</td>
+    <td style='padding:5px;text-align:center;'>0.012</td>
+    <td style='padding:5px;text-align:center;'>0.020</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>JVM heap (МБ) [orders-service]</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>335.618</td>
+    <td style='padding:5px;text-align:center;'>25.657</td>
+    <td style='padding:5px;text-align:center;'>318.792</td>
+    <td style='padding:5px;text-align:center;'>310.572 – 348.654</td>
+    <td style='padding:5px;text-align:center;'>290.723</td>
+    <td style='padding:5px;text-align:center;'>447.343</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>328.223</td>
+    <td style='padding:5px;text-align:center;'>31.149</td>
+    <td style='padding:5px;text-align:center;'>308.787</td>
+    <td style='padding:5px;text-align:center;'>302.802 – 319.636</td>
+    <td style='padding:5px;text-align:center;'>277.735</td>
+    <td style='padding:5px;text-align:center;'>434.157</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>JVM heap (МБ) [payments-service]</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>292.190</td>
+    <td style='padding:5px;text-align:center;'>28.476</td>
+    <td style='padding:5px;text-align:center;'>272.701</td>
+    <td style='padding:5px;text-align:center;'>264.036 – 308.392</td>
+    <td style='padding:5px;text-align:center;'>249.527</td>
+    <td style='padding:5px;text-align:center;'>389.152</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>297.089</td>
+    <td style='padding:5px;text-align:center;'>25.749</td>
+    <td style='padding:5px;text-align:center;'>278.679</td>
+    <td style='padding:5px;text-align:center;'>264.277 – 323.414</td>
+    <td style='padding:5px;text-align:center;'>252.598</td>
+    <td style='padding:5px;text-align:center;'>390.839</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Частота пауз GC</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.094</td>
+    <td style='padding:5px;text-align:center;'>0.008</td>
+    <td style='padding:5px;text-align:center;'>0.096</td>
+    <td style='padding:5px;text-align:center;'>0.084 – 0.104</td>
+    <td style='padding:5px;text-align:center;'>0.065</td>
+    <td style='padding:5px;text-align:center;'>0.114</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.098</td>
+    <td style='padding:5px;text-align:center;'>0.016</td>
+    <td style='padding:5px;text-align:center;'>0.097</td>
+    <td style='padding:5px;text-align:center;'>0.090 – 0.118</td>
+    <td style='padding:5px;text-align:center;'>0.055</td>
+    <td style='padding:5px;text-align:center;'>0.135</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Кількість виданих SVID (успішні атестації)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>33.769</td>
+    <td style='padding:5px;text-align:center;'>9.239</td>
+    <td style='padding:5px;text-align:center;'>39.000</td>
+    <td style='padding:5px;text-align:center;'>36.000 – 42.000</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>44.000</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>34.231</td>
+    <td style='padding:5px;text-align:center;'>9.258</td>
+    <td style='padding:5px;text-align:center;'>40.000</td>
+    <td style='padding:5px;text-align:center;'>39.000 – 42.000</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>43.000</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Success rate (%)</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>98.505</td>
+    <td style='padding:5px;text-align:center;'>0.292</td>
+    <td style='padding:5px;text-align:center;'>98.632</td>
+    <td style='padding:5px;text-align:center;'>98.521 – 98.723</td>
+    <td style='padding:5px;text-align:center;'>96.929</td>
+    <td style='padding:5px;text-align:center;'>98.777</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>98.549</td>
+    <td style='padding:5px;text-align:center;'>0.257</td>
+    <td style='padding:5px;text-align:center;'>98.677</td>
+    <td style='padding:5px;text-align:center;'>98.611 – 98.749</td>
+    <td style='padding:5px;text-align:center;'>97.223</td>
+    <td style='padding:5px;text-align:center;'>98.845</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'><b>Кількість HTTP помилок</b></td>
+    <td style='padding:5px;'>custom-jvm</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>59017.462</td>
+    <td style='padding:5px;text-align:center;'>190.898</td>
+    <td style='padding:5px;text-align:center;'>59104.000</td>
+    <td style='padding:5px;text-align:center;'>59036.000 – 59156.000</td>
+    <td style='padding:5px;text-align:center;'>57984.000</td>
+    <td style='padding:5px;text-align:center;'>59189.000</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'></td>
+    <td style='padding:5px;'>default</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>59046.923</td>
+    <td style='padding:5px;text-align:center;'>164.844</td>
+    <td style='padding:5px;text-align:center;'>59131.000</td>
+    <td style='padding:5px;text-align:center;'>59086.000 – 59173.000</td>
+    <td style='padding:5px;text-align:center;'>58195.000</td>
+    <td style='padding:5px;text-align:center;'>59234.000</td>
+  </tr>
+</table><br><br>
+<h2>Парний аналіз: тест Вілкоксона + розмір ефекту (custom-jvm vs default)</h2>
+<table border='1' style="border-collapse: collapse; width: 100%; font-family: 'Times New Roman', serif;">
+  <tr>
+    <td colspan='9' style='padding: 5px; font-weight: bold;'>Таблиця 4.1 — Результати для Сценарію A: Масштабування з "теплим" кешем — парний аналіз (тест Вілкоксона, custom-jvm vs default)</td>
+  </tr>
+  <tr>
+    <th style='padding:5px;text-align:center;'>Метрика</th>
+    <th style='padding:5px;text-align:center;'>N пар</th>
+    <th style='padding:5px;text-align:center;'>Медіана Δ (custom - default)</th>
+    <th style='padding:5px;text-align:center;'>IQR Δ</th>
+    <th style='padding:5px;text-align:center;'>W</th>
+    <th style='padding:5px;text-align:center;'>Z</th>
+    <th style='padding:5px;text-align:center;'>p-value</th>
+    <th style='padding:5px;text-align:center;'>r (ефект)</th>
+    <th style='padding:5px;text-align:center;'>Висновок</th>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Час атестації (мс)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.063</td>
+    <td style='padding:5px;text-align:center;'>11.331</td>
+    <td style='padding:5px;text-align:center;'>28.0</td>
+    <td style='padding:5px;text-align:center;'>-1.188</td>
+    <td style='padding:5px;text-align:center;'>0.2348</td>
+    <td style='padding:5px;text-align:center;'>-0.330</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>CPU агента SPIRE (ядра)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>0.001</td>
+    <td style='padding:5px;text-align:center;'>18.0</td>
+    <td style='padding:5px;text-align:center;'>-1.887</td>
+    <td style='padding:5px;text-align:center;'>0.0592</td>
+    <td style='padding:5px;text-align:center;'>-0.523</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>RAM агента SPIRE (МБ)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>2.008</td>
+    <td style='padding:5px;text-align:center;'>13.782</td>
+    <td style='padding:5px;text-align:center;'>32.0</td>
+    <td style='padding:5px;text-align:center;'>-0.909</td>
+    <td style='padding:5px;text-align:center;'>0.3636</td>
+    <td style='padding:5px;text-align:center;'>-0.252</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Кількість виданих SVID (успішні атестації)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>3.000</td>
+    <td style='padding:5px;text-align:center;'>21.0</td>
+    <td style='padding:5px;text-align:center;'>-0.120</td>
+    <td style='padding:5px;text-align:center;'>0.9047</td>
+    <td style='padding:5px;text-align:center;'>-0.040</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+</table><br><br>
+<table border='1' style="border-collapse: collapse; width: 100%; font-family: 'Times New Roman', serif;">
+  <tr>
+    <td colspan='9' style='padding: 5px; font-weight: bold;'>Таблиця 4.2 — Результати для Сценарію B: "Холодний" старт та перерахунок цілісності — парний аналіз (тест Вілкоксона, custom-jvm vs default)</td>
+  </tr>
+  <tr>
+    <th style='padding:5px;text-align:center;'>Метрика</th>
+    <th style='padding:5px;text-align:center;'>N пар</th>
+    <th style='padding:5px;text-align:center;'>Медіана Δ (custom - default)</th>
+    <th style='padding:5px;text-align:center;'>IQR Δ</th>
+    <th style='padding:5px;text-align:center;'>W</th>
+    <th style='padding:5px;text-align:center;'>Z</th>
+    <th style='padding:5px;text-align:center;'>p-value</th>
+    <th style='padding:5px;text-align:center;'>r (ефект)</th>
+    <th style='padding:5px;text-align:center;'>Висновок</th>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Час атестації (мс)</td>
+    <td style='padding:5px;text-align:center;'>9</td>
+    <td style='padding:5px;text-align:center;'>9.051</td>
+    <td style='padding:5px;text-align:center;'>2.201</td>
+    <td style='padding:5px;text-align:center;'>1.0</td>
+    <td style='padding:5px;text-align:center;'>-2.488</td>
+    <td style='padding:5px;text-align:center;'>0.0129</td>
+    <td style='padding:5px;text-align:center;'>-0.829</td>
+    <td style='padding:5px;text-align:center;'>significant (p&lt;0.05), custom-jvm вищий</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>CPU агента SPIRE (ядра)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.002</td>
+    <td style='padding:5px;text-align:center;'>0.001</td>
+    <td style='padding:5px;text-align:center;'>3.0</td>
+    <td style='padding:5px;text-align:center;'>-2.935</td>
+    <td style='padding:5px;text-align:center;'>0.0033</td>
+    <td style='padding:5px;text-align:center;'>-0.814</td>
+    <td style='padding:5px;text-align:center;'>significant (p&lt;0.05), custom-jvm вищий</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>RAM агента SPIRE (МБ)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>6.759</td>
+    <td style='padding:5px;text-align:center;'>3.302</td>
+    <td style='padding:5px;text-align:center;'>25.0</td>
+    <td style='padding:5px;text-align:center;'>-1.398</td>
+    <td style='padding:5px;text-align:center;'>0.1622</td>
+    <td style='padding:5px;text-align:center;'>-0.388</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>CPU серверу SPIRE (ядра)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>0.002</td>
+    <td style='padding:5px;text-align:center;'>23.0</td>
+    <td style='padding:5px;text-align:center;'>-1.537</td>
+    <td style='padding:5px;text-align:center;'>0.1242</td>
+    <td style='padding:5px;text-align:center;'>-0.426</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Кількість виданих SVID (успішні атестації)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>-1.000</td>
+    <td style='padding:5px;text-align:center;'>2.000</td>
+    <td style='padding:5px;text-align:center;'>19.5</td>
+    <td style='padding:5px;text-align:center;'>-0.770</td>
+    <td style='padding:5px;text-align:center;'>0.4413</td>
+    <td style='padding:5px;text-align:center;'>-0.243</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+</table><br><br>
+<table border='1' style="border-collapse: collapse; width: 100%; font-family: 'Times New Roman', serif;">
+  <tr>
+    <td colspan='9' style='padding: 5px; font-weight: bold;'>Таблиця 4.3 — Результати для Сценарію C: Стабільне навантаження та "шторм" переатестації — парний аналіз (тест Вілкоксона, custom-jvm vs default)</td>
+  </tr>
+  <tr>
+    <th style='padding:5px;text-align:center;'>Метрика</th>
+    <th style='padding:5px;text-align:center;'>N пар</th>
+    <th style='padding:5px;text-align:center;'>Медіана Δ (custom - default)</th>
+    <th style='padding:5px;text-align:center;'>IQR Δ</th>
+    <th style='padding:5px;text-align:center;'>W</th>
+    <th style='padding:5px;text-align:center;'>Z</th>
+    <th style='padding:5px;text-align:center;'>p-value</th>
+    <th style='padding:5px;text-align:center;'>r (ефект)</th>
+    <th style='padding:5px;text-align:center;'>Висновок</th>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>HTTP latency p95 (мс) [orders-service]</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>1.268</td>
+    <td style='padding:5px;text-align:center;'>13.040</td>
+    <td style='padding:5px;text-align:center;'>35.0</td>
+    <td style='padding:5px;text-align:center;'>-0.699</td>
+    <td style='padding:5px;text-align:center;'>0.4846</td>
+    <td style='padding:5px;text-align:center;'>-0.194</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>HTTP latency p95 (мс) [payments-service]</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>-0.035</td>
+    <td style='padding:5px;text-align:center;'>1.551</td>
+    <td style='padding:5px;text-align:center;'>40.0</td>
+    <td style='padding:5px;text-align:center;'>-0.349</td>
+    <td style='padding:5px;text-align:center;'>0.7268</td>
+    <td style='padding:5px;text-align:center;'>-0.097</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>HTTP latency p99 (мс) [orders-service]</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>6.574</td>
+    <td style='padding:5px;text-align:center;'>38.486</td>
+    <td style='padding:5px;text-align:center;'>43.0</td>
+    <td style='padding:5px;text-align:center;'>-0.140</td>
+    <td style='padding:5px;text-align:center;'>0.8888</td>
+    <td style='padding:5px;text-align:center;'>-0.039</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>HTTP latency p99 (мс) [payments-service]</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.220</td>
+    <td style='padding:5px;text-align:center;'>2.784</td>
+    <td style='padding:5px;text-align:center;'>44.0</td>
+    <td style='padding:5px;text-align:center;'>-0.070</td>
+    <td style='padding:5px;text-align:center;'>0.9443</td>
+    <td style='padding:5px;text-align:center;'>-0.019</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Частка 5xx помилок (req/s)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>0.252</td>
+    <td style='padding:5px;text-align:center;'>38.0</td>
+    <td style='padding:5px;text-align:center;'>-0.039</td>
+    <td style='padding:5px;text-align:center;'>0.9687</td>
+    <td style='padding:5px;text-align:center;'>-0.011</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>CPU застосунку (ядра)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>0.001</td>
+    <td style='padding:5px;text-align:center;'>39.0</td>
+    <td style='padding:5px;text-align:center;'>-0.419</td>
+    <td style='padding:5px;text-align:center;'>0.6750</td>
+    <td style='padding:5px;text-align:center;'>-0.116</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>JVM heap (МБ) [orders-service]</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>13.186</td>
+    <td style='padding:5px;text-align:center;'>33.565</td>
+    <td style='padding:5px;text-align:center;'>36.0</td>
+    <td style='padding:5px;text-align:center;'>-0.629</td>
+    <td style='padding:5px;text-align:center;'>0.5294</td>
+    <td style='padding:5px;text-align:center;'>-0.174</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>JVM heap (МБ) [payments-service]</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>-12.752</td>
+    <td style='padding:5px;text-align:center;'>41.359</td>
+    <td style='padding:5px;text-align:center;'>36.0</td>
+    <td style='padding:5px;text-align:center;'>-0.629</td>
+    <td style='padding:5px;text-align:center;'>0.5294</td>
+    <td style='padding:5px;text-align:center;'>-0.174</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Частота пауз GC</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.008</td>
+    <td style='padding:5px;text-align:center;'>0.038</td>
+    <td style='padding:5px;text-align:center;'>37.0</td>
+    <td style='padding:5px;text-align:center;'>-0.559</td>
+    <td style='padding:5px;text-align:center;'>0.5761</td>
+    <td style='padding:5px;text-align:center;'>-0.155</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Кількість виданих SVID (успішні атестації)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>0.000</td>
+    <td style='padding:5px;text-align:center;'>4.000</td>
+    <td style='padding:5px;text-align:center;'>29.5</td>
+    <td style='padding:5px;text-align:center;'>-0.268</td>
+    <td style='padding:5px;text-align:center;'>0.7890</td>
+    <td style='padding:5px;text-align:center;'>-0.081</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Success rate (%)</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>-0.002</td>
+    <td style='padding:5px;text-align:center;'>0.284</td>
+    <td style='padding:5px;text-align:center;'>42.0</td>
+    <td style='padding:5px;text-align:center;'>-0.210</td>
+    <td style='padding:5px;text-align:center;'>0.8339</td>
+    <td style='padding:5px;text-align:center;'>-0.058</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+  <tr>
+    <td style='padding:5px;'>Кількість HTTP помилок</td>
+    <td style='padding:5px;text-align:center;'>13</td>
+    <td style='padding:5px;text-align:center;'>-8.000</td>
+    <td style='padding:5px;text-align:center;'>171.000</td>
+    <td style='padding:5px;text-align:center;'>41.5</td>
+    <td style='padding:5px;text-align:center;'>-0.245</td>
+    <td style='padding:5px;text-align:center;'>0.8067</td>
+    <td style='padding:5px;text-align:center;'>-0.068</td>
+    <td style='padding:5px;text-align:center;'>не значуще</td>
+  </tr>
+</table><br><br>

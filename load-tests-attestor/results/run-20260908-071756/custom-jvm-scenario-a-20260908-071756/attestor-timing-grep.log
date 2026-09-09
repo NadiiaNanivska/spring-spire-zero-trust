@@ -1,0 +1,1 @@
+time="2026-09-08T07:40:14Z" level=info msg="jvm attestation timing" anti_debug_us=72 anti_tamper_us=149 external=true jar_hash_us=37577 pid=19680 plugin_name=jvm plugin_type=WorkloadAttestor selectors=9 subsystem_name=jvm.jvm-attestor timestamp="2026-09-08T07:40:14.226Z" total_us=37853
