@@ -3,7 +3,6 @@
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=lib.sh
 source "$LIB_DIR/lib.sh"
 
 OUT=${1:-${RESULTS_DIR:-$LIB_DIR/results}}
@@ -14,15 +13,6 @@ mkdir -p "$OUT_TEST"
 test_body() {
   local log_file pod pid
 
-  # Perform a REAL HotSpot attach against the already-running JVM (jcmd -> AttachListener
-  # -> live AF_UNIX socket /tmp/.java_pid<nspid>), then force re-attestation. We attach the
-  # live JVM rather than baking `touch /tmp/.java_pid1 && exec java` into the container
-  # command, which does NOT work: the JVM unlinks a stale .java_pid<own-nspid> during
-  # attach-listener init (nspid is 1, i.e. exactly that file), so it is gone before the
-  # agent attests and the pod is wrongly allowed (attach_socket_exposed=false). Opening the
-  # attach channel after the JVM has finished init makes the real socket persist, so the
-  # anti-tamper checker's /proc/<pid>/root/tmp/.java_pid* glob matches and attestation is
-  # refused.
   pod=$(workload_pod "$PAYMENTS_DEPLOY")
   [[ -n "$pod" ]] || die "payments pod not found"
   pid=$(java_pid "$pod" "$PAYMENTS_DEPLOY")

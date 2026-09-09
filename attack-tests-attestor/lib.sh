@@ -101,9 +101,6 @@ record_test_result() {
   local out=$1
   local status=$2
   local evidence=${3:-}
-  # Quote values: STATUS can be "LIMITATION (expected)" and EVIDENCE contains
-  # spaces. Without quotes, sourcing meta.env in run-all.sh tried to execute the
-  # trailing words as commands ("assertions: command not found").
   {
     echo "STATUS=\"$status\""
     echo "FINISHED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -129,17 +126,6 @@ wait_deployment_ready() {
   kubectl rollout status "deployment/$name" -n "$K8S_NAMESPACE" --timeout=300s
 }
 
-# wait_deployment_settled waits for a rollout but, unlike wait_deployment_ready, does
-# NOT abort the script (set -e) if the deployment never becomes Ready. Deny-first
-# tamper variants intentionally boot a JVM that either crashes (e.g.
-# -javaagent:/tmp/evil.jar with a missing jar) or is denied its SVID, so the fresh
-# pod may never reach Ready. Paired with strategy=Recreate the old (clean) pod is
-# already gone, so a stuck/crashing new pod IS the denial we assert on.
-#
-# Returns 0 if the pod became Ready (so it attested and a per-flag/env log line is
-# expected), 1 if it timed out (JVM likely crashed before attesting -> only the mTLS
-# denial is available). Call it inside an `if` so the non-zero return is handled and
-# does not trip set -e.
 wait_deployment_settled() {
   local name=$1
   local timeout=${2:-120s}
@@ -150,13 +136,6 @@ wait_deployment_settled() {
   return 1
 }
 
-# delete_payments_pod_and_wait deletes the current payments pod and waits for the
-# ReplicaSet replacement to appear. Deny-first: SPIRE never revokes an already-issued
-# SVID and orders pools its mTLS connection to the peer, so a still-running compromised
-# pod keeps serving valid mTLS until TTL. Killing the pod drops both the old SVID and
-# orders' pooled connection, forcing the fresh pod to re-attest (and be denied) before
-# it can serve. Use this whenever the tamper artifact lives on the SERVER side (e.g. a
-# bogus SPIRE entry) so the replacement pod is born compromised.
 delete_payments_pod_and_wait() {
   local oldpod newpod w
   oldpod=$(workload_pod "$PAYMENTS_DEPLOY")
@@ -286,12 +265,6 @@ assert_log_contains_for_pod() {
     fi
   fi
 
-  # checker failed / jvm attestation timing lines often omit pod-name; correlate by host PID.
-  # NB: do NOT write this as `grep ... | grep -qE`. Under `set -o pipefail`, grep -q exits
-  # on the first match and closes the pipe, so the upstream grep dies with SIGPIPE and the
-  # pipeline reports non-zero even though the pattern WAS found -> deterministic false
-  # ASSERT FAIL whenever there is more than one correlated line. Materialize the correlated
-  # lines first and match them via a here-string so there is no pipe to break.
   host_pid=$(host_pid_from_pod_log "$log_file" "$pod")
   if [[ -n "$host_pid" ]]; then
     local correlated
@@ -365,8 +338,6 @@ assert_log_not_contains() {
 }
 
 get_agent_parent_id() {
-  # Handle both output shapes across SPIRE versions: a flat "spiffe_id" string,
-  # or a structured "id" object with trust_domain + path.
   kubectl exec -n "$K8S_NAMESPACE" spire-server-0 -c spire-server -- \
     /opt/spire/bin/spire-server agent list -output json 2>/dev/null | \
     jq -r '.agents[0] | (.spiffe_id // ("spiffe://" + .id.trust_domain + .id.path)) // empty'
@@ -444,10 +415,6 @@ orders_create_http_code() {
 
 orders_create_from_pod() {
   local raw code
-  # --quiet suppresses kubectl's "pod deleted" / attach notices. curl writes the
-  # status behind a sentinel so we can extract exactly the 3-digit code even if any
-  # stray text leaks into the captured output (that leak previously corrupted $code
-  # and produced false PASS/FAIL in the mTLS asserts).
   raw=$(kubectl run "attack-probe-$$" \
     --rm -i --quiet --restart=Never \
     -n "$K8S_NAMESPACE" \
@@ -463,11 +430,6 @@ orders_create_from_pod() {
 }
 
 assert_mtls_ok() {
-  # mTLS readiness is eventually-consistent: right after a deploy/register or an
-  # agent restart, payments may not have its SVID yet, so orders->payments returns
-  # 500 for a few seconds. Retry the positive probe until it succeeds (or times out)
-  # instead of failing on the first too-early shot. Only the success direction
-  # retries; assert_mtls_fails stays single-shot.
   local attempts=${MTLS_OK_RETRIES:-12}
   local delay=${MTLS_OK_DELAY:-5}
   local code i
@@ -522,14 +484,6 @@ assert_mtls_ok_after_agent_restart() {
     assert_mtls_ok
 }
 
-# attestor_evidence_reason pulls the actual human-readable reason out of the first agent
-# log line (scoped to $pod, with the same host-PID fallback as assert_log_contains_for_pod)
-# that matches $pattern, so the summary shows WHY the attestor refused, e.g.
-#   attestor-log:payments-...:checker failed: JVM Attach API socket exposed at /proc/.../.java_pid1 refusing attestation
-# instead of the opaque "attestor-log:payments-...". The output is sanitized to be safe
-# both inside EVIDENCE="..." (meta.env is `source`d by run-all.sh) and inside the
-# pipe-delimited markdown table: double quotes, backticks, '$', backslashes, '|' and ';'
-# are stripped, whitespace is collapsed, and the text is truncated.
 attestor_evidence_reason() {
   local log_file=$1
   local pod=$2
@@ -550,8 +504,6 @@ attestor_evidence_reason() {
   fi
   [[ -n "$line" ]] || { printf ''; return 0; }
 
-  # Prefer the explicit error= reason (richest); otherwise combine msg= with the exact
-  # token that matched the detection pattern.
   reason=$(grep -oE 'error="[^"]*"' <<<"$line" | head -1 | sed -E 's/^error="//; s/"$//' || true)
   if [[ -z "$reason" ]]; then
     local msg token
@@ -566,7 +518,6 @@ attestor_evidence_reason() {
     fi
   fi
 
-  # \140 = backtick, \134 = backslash (octal keeps the tr set unambiguous in quotes).
   reason=$(printf '%s' "$reason" | tr -d '"$|;\140\134' | tr '\n\r\t' '   ' | sed -E 's/  +/ /g; s/^ +//; s/ +$//')
   if [[ ${#reason} -gt 160 ]]; then
     reason="${reason:0:157}..."
@@ -632,8 +583,6 @@ assert_denied_by_attestor_log_only() {
     record_evidence_signal "attestor-log:${pod}"
   fi
 
-  # Surface the endpoint-level consequence too (correlated by host PID): the agent told the
-  # Workload API caller it gets no identity. Best-effort evidence, not a hard gate.
   local host_pid
   host_pid=$(host_pid_from_pod_log "$log_file" "$pod")
   if [[ -n "$host_pid" ]]; then
@@ -674,9 +623,6 @@ assert_svid_denied() {
   assert_mtls_fails
 }
 
-# Tamper jar in the running payments pod and force re-attestation while the SPIRE
-# entry still pins the pre-tamper hash — plugin computes a new jar_sha256 that no
-# longer matches the entry.
 tamper_payments_jar_and_reattest() {
   local pod pinned
   pod=$(workload_pod "$PAYMENTS_DEPLOY")
@@ -691,7 +637,6 @@ tamper_payments_jar_and_reattest() {
 }
 
 assert_bypass_limitation() {
-  # Documented limitation: workload may still get SVID via k8s/unix only.
   local log_file=$1
   if assert_log_contains 'not a JVM process|selectors=0' "$log_file" 2>/dev/null; then
   log "LIMITATION confirmed: JVM attestor skipped (ErrNotJVM or empty selectors)"
@@ -725,11 +670,6 @@ tamper_jar_replace_same_hash() {
 
 restore_payments_deployment() {
   kubectl apply -f "$REPO_ROOT/payments-service/payment-service-deployment.yaml"
-  # `kubectl apply` of the clean manifest is a no-op for the pod when the previous test
-  # left the SAME template (e.g. jar tamper, symlink swap, or a `touch /tmp/.java_pid*`
-  # done via `kubectl exec` on the running pod). The container filesystem then keeps the
-  # tamper artifact and leaks it into the next test. Force a brand-new pod so every test
-  # starts from a pristine container.
   kubectl rollout restart "deployment/$PAYMENTS_DEPLOY" -n "$K8S_NAMESPACE"
   wait_deployment_ready "$PAYMENTS_DEPLOY"
   settle_workloads
@@ -754,14 +694,6 @@ deploy_payments_variant() {
   settle_workloads
 }
 
-# apply_manifest applies a generated variant manifest and fails loudly when the
-# API server rejects it.
-#
-# The caller cannot rely on errexit here: run_test_wrapper runs the test body as
-# `if "$@"`, and bash disables errexit for the whole call tree inside a condition.
-# A rejected apply would therefore be skipped silently, leaving the PREVIOUS
-# (clean) deployment live while the assertions ran against it — the scenario would
-# never be exercised, and the result would be meaningless either way.
 apply_manifest() {
   local manifest=$1
   if ! kubectl apply -f "$manifest"; then
@@ -773,7 +705,6 @@ apply_manifest() {
 write_payments_variant_manifest() {
   local out=$1
   shift
-  # Remaining args: KEY=VALUE env pairs and/or --command "java ..." 
   local extra_env=()
   local command_json=""
   while [[ $# -gt 0 ]]; do
@@ -792,12 +723,6 @@ write_payments_variant_manifest() {
     esac
   done
 
-  # strategy=Recreate is essential for deny-first: with the default RollingUpdate
-  # (maxUnavailable rounds to 0 at replicas=1) k8s keeps the old CLEAN pod alive
-  # until the new one is Ready. A tamper variant whose JVM crashes or is SVID-denied
-  # never becomes Ready, so the old pod would linger and keep serving valid mTLS ->
-  # false FAIL. Recreate tears the old pod down first, so the fresh (compromised) pod
-  # is the only one that can answer orders.
   cat >"$out" <<'HEADER'
 apiVersion: apps/v1
 kind: Deployment
@@ -826,12 +751,6 @@ spec:
 HEADER
 
   if [[ -n "$command_json" ]]; then
-    # Emit argv as a JSON flow sequence, not a YAML block sequence: YAML is a
-    # superset of JSON, so jq's quoting is authoritative and no arg needs hand
-    # escaping. Writing a block sequence broke two ways at once — a multi-line
-    # arg was split into one item per physical line, and an arg containing ": "
-    # (printf 'Premain-Class: Noop\n') parsed as a nested mapping, which the API
-    # server rejects with "unrecognized type: string".
     echo "          command: $(printf '%s' "$command_json" | jq -c '.')" >>"$out"
   fi
 
@@ -981,16 +900,6 @@ create_attach_socket() {
   local pid=$2
   local container=${3:-$PAYMENTS_DEPLOY}
   log "Opening a REAL JVM Attach API socket by attaching to the live JVM (nspid=$pid)"
-  # Perform a genuine HotSpot Attach handshake instead of dropping a decoy file. jcmd
-  # (shipped in the eclipse-temurin:17-alpine JDK image) writes /tmp/.attach_pid<pid>,
-  # sends SIGQUIT to the JVM, whose BREAK handler then sees the trigger file and spins up
-  # its AttachListener, creating the AF_UNIX socket /tmp/.java_pid<pid>; jcmd connects to
-  # that socket and executes the command over it. The listener + socket persist for the
-  # life of the JVM, so the attestor's /proc/<hostpid>/root/tmp/.java_pid* glob matches a
-  # real, live attach channel rather than an empty placeholder. A manual trigger
-  # (touch .attach_pid + kill -QUIT) is used only if jcmd is somehow unavailable, and a
-  # bare `touch` remains as a last-resort so the defense assertion still has something to
-  # detect.
   kubectl exec -n "$K8S_NAMESPACE" "$pod" -c "$container" -- sh -c '
     pid="'"$pid"'"
     sock="/tmp/.java_pid${pid}"
@@ -1029,19 +938,9 @@ pin_unapproved_payments_hash() {
     "spiffe://${TRUST_DOMAIN}/ns/${K8S_NAMESPACE}/sa/payments-app" \
     "payments-sa" \
     "$BOGUS_JAR_SHA256"
-  # Deny-first: the bogus entry lives on the SPIRE SERVER, so it survives pod
-  # replacement. Rather than restart_spire_agent (which leaves the old pod's
-  # still-valid SVID and orders' pooled mTLS connection intact until TTL expiry ->
-  # false FAIL), delete the payments pod. The replacement fetches its first SVID
-  # against the bogus-pinned hash: its computed jvm:jar_sha256 matches no entry, so
-  # issuance is denied from the very first fetch. Entry create/delete propagates to
-  # the agent well within the pod's teardown+reschedule window, so no agent restart
-  # is needed.
   delete_payments_pod_and_wait
 }
 
-# restore_spire_entries re-registers the correct entries (real jar hash) via wsldev
-# and forces re-attestation.
 restore_spire_entries() {
   ensure_spire_entries
   restart_spire_agent

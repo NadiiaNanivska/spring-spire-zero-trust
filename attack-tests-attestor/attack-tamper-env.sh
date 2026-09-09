@@ -3,7 +3,6 @@
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=lib.sh
 source "$LIB_DIR/lib.sh"
 
 OUT=${1:-${RESULTS_DIR:-$LIB_DIR/results}}
@@ -88,9 +87,6 @@ EOF
 test_body() {
   local env_name failed=0
 
-  # See attack-tamper-flags.sh: run_test_wrapper invokes this in an `if` condition,
-  # which disables errexit, so a failing variable must be counted rather than left
-  # to propagate — otherwise only the last one decides the result.
   for env_name in "${ENV_TESTS[@]}"; do
     if ! run_env_test "$env_name"; then
       log "ENV VAR FAILED: $env_name"

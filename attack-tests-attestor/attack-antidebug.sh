@@ -3,7 +3,6 @@
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=lib.sh
 source "$LIB_DIR/lib.sh"
 
 OUT=${1:-${RESULTS_DIR:-$LIB_DIR/results}}
@@ -34,13 +33,7 @@ run_antidebug_test() {
   # payments JVM, it runs a WATCH LOOP that continuously discovers the payments
   # JVM's host PID and (re)attaches strace whenever the target PID changes. This
   # lets it survive a pod replacement and re-trace the fresh JVM.
-  #
-  # Discovery matches on comm == "java" (via /proc/<pid>/comm), NOT on the cmdline
-  # alone. This is deliberate: the strace pod's own `sh -c "...payments-service.jar
-  # ..."` wrapper has the jar name in ITS cmdline, so a cmdline-only scan (or
-  # `pgrep -f`) could make strace attach to itself. Filtering by comm == java plus a
-  # self-PID skip guarantees we only ever target a real JVM; payments vs orders is
-  # then disambiguated by the jar name in cmdline.
+
   cat >"$PTRACE_MANIFEST" <<EOF
 apiVersion: v1
 kind: Pod
@@ -85,8 +78,6 @@ spec:
 EOF
 
   apply_manifest "$PTRACE_MANIFEST" || return 1
-  # Wait for the strace pod to be Running (image pull can be slow the first time)
-  # so the watch loop is already polling /proc before the fresh payments JVM boots.
   kubectl wait --for=condition=Ready "pod/$ptrace_name" -n "$K8S_NAMESPACE" --timeout=120s 2>/dev/null || true
   sleep 4
 
@@ -95,12 +86,10 @@ EOF
   # the new JVM during its startup (before java-spiffe fetches its first SVID), so
   # the very first attestation reports debug_clean=false and the workload is denied
   # an SVID outright — no dependency on TTL expiry, and no pre-existing mTLS
-  # connection to tear down. (Single-node kind: the replacement lands on the same
-  # node the tracer is pinned to.)
+  # connection to tear down.
   log "Deleting healthy payments pod $pod to force a traced replacement"
   kubectl delete pod "$pod" -n "$K8S_NAMESPACE" --wait=true --timeout=60s 2>/dev/null || true
 
-  # Wait for the replacement JVM to appear so it has been traced + attested.
   local newpod="" w
   for ((w = 1; w <= 30; w++)); do
     newpod=$(workload_pod "$PAYMENTS_DEPLOY")
@@ -110,8 +99,6 @@ EOF
   log "Replacement payments pod: ${newpod:-<none>}"
   sleep "$SETTLE_SEC"
 
-  # Scrape strace-pod diagnostics so a future failure tells us exactly what happened
-  # (did the loop start? which host PID(s) did it re-attach to?).
   kubectl logs "$ptrace_name" -n "$K8S_NAMESPACE" >"$OUT_TEST/ptrace-pod.log" 2>&1 || true
   log "strace-pod: $(grep -E 'watch-loop|attached|tracerpid|no-java' "$OUT_TEST/ptrace-pod.log" 2>/dev/null | tr '\n' ' ')"
 
@@ -119,7 +106,7 @@ EOF
 
   # The fresh payments pod attests asynchronously via the Workload API (no agent
   # restart needed — the new PID triggers a new attestation). Poll the agent logs
-  # until the tampered attestation shows up instead of racing a single collect.
+  # until the tampered attestation shows up.
   local i found=1
   for ((i = 1; i <= 12; i++)); do
     collect_agent_logs "$LABEL" "$OUT"
