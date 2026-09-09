@@ -1,8 +1,18 @@
 {
 	"image": "mcr.microsoft.com/devcontainers/universal:2",
 	"features": {
-		"ghcr.io/stu-bell/devcontainer-features/python:0": {},
-		"ghcr.io/devcontainers-extra/features/kind:1": {},
-		"ghcr.io/grafana/devcontainer-features/k6:1": {}
+		"ghcr.io/stu-bell/devcontainer-features/python:0": {
+			"apt_get": true,
+			"installTools": true,
+			"min_python_version": "3.15"
+		},
+		"ghcr.io/devcontainers-extra/features/kind:1": {
+			"version": "latest"
+		},
+		"ghcr.io/grafana/devcontainer-features/k6:1": {
+			"version": "latest",
+			"xk6-version": "latest",
+			"go-version": "latest"
+		}
 	}
 }
