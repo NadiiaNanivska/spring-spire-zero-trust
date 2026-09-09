@@ -1,0 +1,7 @@
+timestamp,pod,pid,total_us,anti_debug_us,anti_tamper_us,jar_hash_us,selectors
+time="2026-09-08T07:46:14Z",spire-agent,28864,41753,69,184,41443,9
+time="2026-09-08T07:46:16Z",spire-agent,28864,5803,122,4310,1293,9
+time="2026-09-08T07:46:20Z",spire-agent,28864,5434,99,187,5071,9
+time="2026-09-08T07:46:25Z",spire-agent,28645,54075,92,147,53766,9
+time="2026-09-08T07:46:28Z",spire-agent,28864,1341,117,130,1043,9
+time="2026-09-08T07:46:57Z",spire-agent,28645,1566,91,143,1146,9
