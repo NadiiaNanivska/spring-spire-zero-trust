@@ -77,11 +77,6 @@ run_flag_test() {
 test_body() {
   local flag failed=0
 
-  # Track failures explicitly instead of relying on errexit. run_test_wrapper calls
-  # this as `if "$@"`, which disables errexit for the whole call tree, so a failing
-  # run_flag_test would neither abort the loop nor change the result: test_body's
-  # status would be that of the LAST flag alone. A flag that was never exercised
-  # (e.g. a manifest the API server rejected) would then be reported as PASS.
   for flag in "${FLAG_TESTS[@]}"; do
     if ! run_flag_test "$flag"; then
       log "FLAG FAILED: $flag"

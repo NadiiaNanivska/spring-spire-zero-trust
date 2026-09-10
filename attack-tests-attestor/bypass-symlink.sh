@@ -55,8 +55,6 @@ test_body() {
   pinned_hash=$(get_payments_pinned_jar_hash)
   [[ -n "$pinned_hash" ]] || die "cannot read pinned payments jar hash from jvm-hashes ConfigMap"
 
-  # The digest wsldev pinned in the registration entry: SHA-256 over one
-  # "<path>:<sha256>\n" line per jar, ordered by path (one line for a clean workload).
   expected_set=$(printf '%s:%s\n' "$PAYMENTS_JAR" "$pinned_hash" | sha256sum | awk '{print $1}')
 
   log "Redirecting $PAYMENTS_JAR to an attacker-controlled decoy"
@@ -68,10 +66,6 @@ test_body() {
     ln -s $(basename "$DECOY_JAR") $(basename "$PAYMENTS_JAR")
   "
 
-  # Negative control. Without it the test is vacuous: an `ln -s` that silently did
-  # nothing would leave the original file at the original path, and every assertion
-  # below would pass for the wrong reason. This is exactly how the previous version
-  # of this test could report PASS while never exercising the decoy at all.
   link_target=$(payments_exec "$pod" "readlink $PAYMENTS_JAR 2>/dev/null || true" | tr -d '\r')
   if [[ "$link_target" != "$(basename "$DECOY_JAR")" ]]; then
     log "ASSERT FAIL (inconclusive): $PAYMENTS_JAR does not point at the decoy (readlink='$link_target')"
@@ -108,8 +102,6 @@ test_body() {
   assert_log_contains_for_pod "jar_set_sha256=${expected_set}" "$log_file" "$pod" || return 1
   record_evidence_signal "jar-set-digest-unchanged"
 
-  # And the mechanism behind it, so a PASS cannot come from a coincidence (e.g. the
-  # decoy never being reachable in the first place).
   assert_log_contains_for_pod 'jar_source=fd' "$log_file" "$pod" || return 1
   assert_log_contains_for_pod 'hash_via_kernel_handle=true' "$log_file" "$pod" || return 1
   assert_log_contains_for_pod 'maps_verified=true' "$log_file" "$pod" || return 1

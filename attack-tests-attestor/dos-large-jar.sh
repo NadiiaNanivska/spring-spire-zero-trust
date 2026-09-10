@@ -3,7 +3,6 @@
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=lib.sh
 source "$LIB_DIR/lib.sh"
 
 OUT=${1:-${RESULTS_DIR:-$LIB_DIR/results}}
