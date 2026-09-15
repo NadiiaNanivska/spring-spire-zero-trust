@@ -1,17 +1,14 @@
 #!/bin/bash
 
-# Кольори
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-# Конфігурація (зміни URL, якщо треба)
 SPIRE_URL="${SPIRE_URL:-http://localhost:8080}"
 RESULTS_DIR="test-results-custom-spire-s1-steady-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$RESULTS_DIR"
 
-# Функція для запуску тесту (з твого файлу)
 run_test() {
     local scenario=$1
     local auth_type=$2

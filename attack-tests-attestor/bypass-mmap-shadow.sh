@@ -1,34 +1,5 @@
 #!/usr/bin/env bash
-# Bypass D: hide the descriptor table behind a mapped jar.
-#
-# This is the sharpened version of the classpath attack. The extra jar is loaded
-# exactly as in bypass-cp-classpath, but the process ALSO maps the approved jar
-# into its own address space before launching:
-#
-#   RandomAccessFile f = new RandomAccessFile("/app/payments-service.jar","r");
-#   keep = f.getChannel().map(READ_ONLY, 0, f.length());   // now visible in maps
-#   org.springframework.boot.loader.launch.JarLauncher.main(args);
-#
-# Why that used to work. Discovery consulted its sources in turn and returned the
-# FIRST non-empty one. A Spring Boot fat-jar is read with pread(), so maps is
-# normally empty and the fd table answers. One FileChannel.map call inverts that:
-# maps now holds exactly one entry — the approved jar, at the approved path, with
-# the approved bytes and a real inode — so discovery stopped there and the extra
-# jar sitting in the fd table was never scanned. The workload then published the
-# complete clean selector set (jar_sha256, jar_set_sha256, maps_verified=true,
-# hash_via_kernel_handle=true, inode_consistent=true) while running attacker code,
-# and the SPIRE entry matched. That is a full authentication bypass, not a
-# degradation: jar_set_sha256 cannot close the extra-code hole if the extra code
-# is never discovered.
-#
-# The fix unions the kernel sources instead of short-circuiting, so the mapped jar
-# and the open one are both counted. The signature of the union working is
-# jar_source=maps+fd — that selector is what distinguishes this run from a plain
-# classpath attack, and it is the specific regression signal to assert.
-#
-# NOTE: requires a plugin build whose discovery unions maps and fd. A build that
-# takes the first non-empty source is genuinely vulnerable here and will fail this
-# test by issuing an SVID.
+# Verify that a mapped approved jar cannot hide an extra jar in the fd table.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -122,22 +93,18 @@ test_body() {
   host_pids=$(grep -F "pod-name:${pod}" "$raw_log" 2>/dev/null | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u)
   [[ -n "$host_pids" ]] || { log "ASSERT FAIL: no attestation line for pod $pod in $raw_log (did it attest?)"; return 1; }
 
-  # Proof: the regression signal. Both kernel sources contributed, so the mapped
-  # jar did not suppress the descriptor table. 
   assert_log_contains_for_pod 'jar_source=maps\+fd' "$log_file" "$pod" || return 1
   record_evidence_signal "discovery:maps+fd-unioned"
 
   assert_log_contains_for_pod "jar_sha256=${pinned_hash}" "$log_file" "$pod" || return 1
   record_evidence_signal "approved-jar-selector-still-present"
 
-  # Proof: the defense. The extra jar is in the set, so the pinned digest breaks.
   if grep -F "pod-name:${pod}" "$raw_log" | grep -qF "jar_set_sha256=${expected_set}"; then
     log "ASSERT FAIL: jar_set_sha256 still equals the clean value — the extra jar was hidden from discovery (this is the bypass)"
     return 1
   fi
   record_evidence_signal "jar-set-digest-changed"
 
-  # Proof: the Workload API actually refused an identity.
   denied=1
   for hp in $host_pids; do
     if grep -E "No identity issued.*pid=${hp}.*registered=false" "$raw_log" >/dev/null 2>&1; then

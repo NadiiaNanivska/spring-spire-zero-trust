@@ -103,9 +103,6 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 	t.Run("Modified JAR: still issues selectors (policy lives in the entry)", func(t *testing.T) {
 		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
 
-		// Whatever the on-disk bytes are, the plugin computes their hash and
-		// publishes it. It never blocks on a reference mismatch — that decision
-		// belongs to the SPIRE registration entry.
 		attestor := &JVMAttestor{
 			procFS:    tmpDir,
 			config:    &config.Config{BlockOnAttachSocket: false},

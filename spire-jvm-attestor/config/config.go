@@ -6,9 +6,8 @@ import (
 	"github.com/hashicorp/hcl"
 )
 
-// Config holds plugin configuration from the SPIRE agent.conf plugin_data block.
 type Config struct {
-	// true — fail attestation on Attach API socket; false — emit selector and continue.
+	// False emits the attach-socket selector without rejecting attestation.
 	BlockOnAttachSocket bool `hcl:"block_on_attach_socket"`
 }
 

@@ -18,9 +18,6 @@ func main() {
 		Short: "WSL DevOps Helper",
 	}
 
-	// ----------------------
-	// Docker daemon
-	// ----------------------
 	daemonCmd := &cobra.Command{
 		Use:   "daemon",
 		Short: "Управління Docker daemon у WSL",
@@ -59,9 +56,6 @@ func main() {
 	daemonCmd.AddCommand(startCmd, statusCmd)
 	rootCmd.AddCommand(daemonCmd)
 
-	// ----------------------
-	// Kubernetes Kind
-	// ----------------------
 	clusterCmd := &cobra.Command{
 		Use:   "cluster",
 		Short: "Управління Kind кластером",
@@ -134,9 +128,6 @@ func main() {
 	clusterCmd.AddCommand(createCmd, deleteCmd, resetCmd, infoCmd)
 	rootCmd.AddCommand(clusterCmd)
 
-	// ----------------------
-	// Environment setup: docker and kubectl cluster
-	// ----------------------
 	upCmd := &cobra.Command{
 		Use:   "up",
 		Short: "Підняти Docker та Kubernetes кластер",
@@ -144,7 +135,6 @@ func main() {
 			name, _ := cmd.Flags().GetString("name")
 			cm := kubernetes.NewClusterManager(name)
 
-			// 1️⃣ Docker
 			running, err := docker.IsDockerdRunning()
 			if err != nil {
 				fmt.Println("Error checking Docker:", err)
@@ -162,7 +152,6 @@ func main() {
 				fmt.Println("Docker вже запущено ✅")
 			}
 
-			// 2️⃣ Kind кластер
 			exists, err := cm.Exists()
 			if err != nil {
 				fmt.Println("Error checking cluster:", err)
@@ -179,7 +168,6 @@ func main() {
 				fmt.Println("Kind кластер вже існує ✅")
 			}
 
-			// 3️⃣ Info
 			fmt.Println("Інформація про кластер:")
 			if err := cm.Info(); err != nil {
 				fmt.Println("Error getting cluster info:", err)
@@ -195,9 +183,6 @@ func main() {
 	rootCmd.AddCommand(app.AppCmd())
 	rootCmd.AddCommand(observability.ObservabilityCmd())
 
-	// ----------------------
-	// Execute
-	// ----------------------
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

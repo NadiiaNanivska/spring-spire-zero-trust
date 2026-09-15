@@ -1,25 +1,5 @@
 #!/usr/bin/env bash
-# Bypass B: an attacker-supplied jar on the real classpath.
-#
-# The app is started off the classpath through the Spring Boot launcher instead of
-# the canonical `java -jar`, with an extra jar ahead of the application jar:
-#
-#   java -cp /tmp/extra-evil.jar:/app/payments-service.jar \
-#        org.springframework.boot.loader.launch.JarLauncher
-#
-# Note this is NOT the `-cp evil.jar -jar app.jar` scenario: with -jar the launcher
-# ignores -cp entirely and the extra jar is never loaded, so that variant never
-# demonstrated a bypass at all. Here the extra jar is genuinely on the classpath,
-# and putting it FIRST guarantees the JVM opens it before it can even resolve the
-# launcher class — so it is provably open by the time the workload attests.
-#
-# Why the per-jar selector is not enough: jvm-attestor discovers every jar the
-# process holds open and emits one jvm:jar_sha256 per jar. SPIRE matches an entry
-# when its selectors are a SUBSET of the workload's, so an entry pinned only on the
-# application jar's hash would STILL match — the approved selector is present, the
-# extra one is simply ignored. The registration entry therefore also pins
-# jvm:jar_set_sha256, a digest over the whole discovered set, which any extra jar
-# changes. That is what denies the SVID here.
+# Put the extra jar first on the classpath so it is open before attestation.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -31,8 +11,6 @@ OUT_TEST="$OUT/$LABEL"
 MANIFEST="$OUT_TEST/payments-cp-classpath.yaml"
 mkdir -p "$OUT_TEST"
 
-# Spring Boot 3.2+ launcher class (payments-service is Spring Boot 3.3.2). Overridable
-# in case the launcher package changes in a future upgrade.
 JAR_LAUNCHER_CLASS="${JAR_LAUNCHER_CLASS:-org.springframework.boot.loader.launch.JarLauncher}"
 
 EVIL_JAR="/tmp/extra-evil.jar"
@@ -46,20 +24,12 @@ test_body() {
   pinned_hash=$(get_payments_pinned_jar_hash)
   [[ -n "$pinned_hash" ]] || die "cannot read pinned payments jar hash from jvm-hashes ConfigMap"
 
-  # Reproduce the digest wsldev pinned in the registration entry: SHA-256 over one
-  # "<path>:<sha256>\n" line per jar, ordered by path. For a clean workload that is
-  # exactly one line.
   expected_set=$(printf '%s:%s\n' "$PAYMENTS_JAR" "$pinned_hash" | sha256sum | awk '{print $1}')
   log "clean jar_set_sha256=${expected_set:0:16}... (pinned jar=${pinned_hash:0:16}...)"
 
   log "Deploying payments launched via classpath (no -jar) with an extra jar ahead of it"
 
-  # Build the extra jar as a REAL archive. A text file would be rejected by the JDK
-  # zip reader, the JVM would drop the descriptor immediately, and the scenario would
-  # silently test nothing. `jar` ships with the temurin JDK image; copying the app jar
-  # is a valid-archive fallback (a second path with the same content still changes the
-  # set digest).
-  #
+  # Use a valid archive; the JVM immediately closes invalid jars.
   start_cmd="mkdir -p /tmp/evil-src; echo evil-marker > /tmp/evil-src/evil.txt; (jar cf ${EVIL_JAR} -C /tmp/evil-src . || cp ${PAYMENTS_JAR} ${EVIL_JAR}); exec java -cp ${EVIL_JAR}:${PAYMENTS_JAR} ${JAR_LAUNCHER_CLASS}"
   cmd_json=$(jq -n --arg script "$start_cmd" '["sh","-c",$script]')
 
@@ -86,9 +56,6 @@ test_body() {
 
   local log_file="$OUT/$LABEL/agent-attestor.log"
 
-  # Proof: discovery worked. Without this a denial could just mean the jar was never
-  # found rather than that the extra
-  # jar was detected.
   assert_log_contains_for_pod 'jar_source=fd' "$log_file" "$pod" || return 1
   record_evidence_signal "discovery:fd"
 
@@ -101,7 +68,6 @@ test_body() {
   fi
   record_evidence_signal "jar-set-digest-changed"
 
-  # Proof: the Workload API refused an identity for this workload's PID(s).
   denied=1
   for hp in $host_pids; do
     if grep -E "No identity issued.*pid=${hp}.*registered=false" "$raw_log" >/dev/null 2>&1; then

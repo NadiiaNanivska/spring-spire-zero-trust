@@ -1,4 +1,3 @@
-# Role (namespace scoped) to be able to push certificate bundles to a configmap
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -9,7 +8,6 @@ rules:
   resources: ["configmaps"]
   verbs: ["patch", "get", "list"]
 ---
-# Binds above role to spire-server service account
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -24,7 +22,6 @@ roleRef:
   kind: Role
   name: spire-server-configmap-role
 ---
-# ClusterRole to allow spire-server node attestor to read pods and nodes, and query Token Review API
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -37,7 +34,6 @@ rules:
   resources: ["tokenreviews"]
   verbs: ["create"]
 ---
-# Binds above cluster role to spire-server service account
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:

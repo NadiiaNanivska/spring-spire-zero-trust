@@ -6,16 +6,12 @@ import (
 	"testing"
 )
 
-// runAntiDebug is a test helper that wraps AntiDebugChecker.Check with a minimal
-// AttestationContext built from procRoot. Mirrors the old checkAntiDebug signature.
 func runAntiDebug(t *testing.T, procRoot string) ([]string, error) {
 	t.Helper()
 	c := NewAntiDebugChecker()
 	return c.Check(&AttestationContext{ProcRoot: procRoot})
 }
 
-// writeProcStatus creates a fake /proc/<PID>/status file in a temp dir
-// and returns the procRoot path.
 func writeProcStatus(t *testing.T, content string) string {
 	t.Helper()
 	dir := t.TempDir()
@@ -67,7 +63,6 @@ func TestCheckAntiDebug_MissingStatus(t *testing.T) {
 }
 
 func TestCheckAntiDebug_NoTracerPidField(t *testing.T) {
-	// Some minimal /proc/status files may omit TracerPid — treat as clean.
 	procRoot := writeProcStatus(t, `Name:	java
 Pid:	1234
 VmRSS:	102400 kB

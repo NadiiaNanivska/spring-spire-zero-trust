@@ -2,7 +2,6 @@ package procfs
 
 import "strings"
 
-// SanitizeSelector replaces ':', '=', ' ', and control chars with '_' for safe use in SPIRE selector values.
 func SanitizeSelector(s string) string {
 	var b strings.Builder
 	b.Grow(len(s))
@@ -16,7 +15,6 @@ func SanitizeSelector(s string) string {
 	return b.String()
 }
 
-// ParseEnviron parses the NUL-separated KEY=VALUE content of /proc/<PID>/environ into a map.
 func ParseEnviron(raw string) map[string]string {
 	entries := strings.Split(raw, "\x00")
 	result := make(map[string]string, len(entries))

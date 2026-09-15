@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Master orchestrator for JVM attestor attack / resilience tests.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

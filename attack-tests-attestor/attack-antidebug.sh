@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Level 1: Anti-debug — ptrace / TracerPid detection.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,10 +11,7 @@ PTRACE_MANIFEST="$OUT_TEST/ptrace-pod.yaml"
 mkdir -p "$OUT_TEST"
 
 cleanup_ptrace() {
-  # Wait for the tracer to actually be gone (not --wait=false): its watch loop
-  # re-attaches to any payments JVM it sees, so it MUST be terminated before we
-  # restore the clean deployment, otherwise it would immediately re-trace (and
-  # deny) the restored payments pod.
+  # Wait for the tracer to exit before restoring the clean JVM.
   kubectl delete pod -n "$K8S_NAMESPACE" -l "attack-test=ptrace" --ignore-not-found=true --wait=true --timeout=60s 2>/dev/null || true
 }
 
@@ -28,11 +24,6 @@ run_antidebug_test() {
   ptrace_name="ptrace-attack-$$"
   log "Launching privileged re-attaching strace pod on node $node"
 
-  # Deny-first design: the strace container runs with hostPID:true, so /proc is the
-  # node's process table. Instead of a one-shot attach to the currently-running
-  # payments JVM, it runs a WATCH LOOP that continuously discovers the payments
-  # JVM's host PID and (re)attaches strace whenever the target PID changes. This
-  # lets it survive a pod replacement and re-trace the fresh JVM.
 
   cat >"$PTRACE_MANIFEST" <<EOF
 apiVersion: v1
@@ -81,12 +72,7 @@ EOF
   kubectl wait --for=condition=Ready "pod/$ptrace_name" -n "$K8S_NAMESPACE" --timeout=120s 2>/dev/null || true
   sleep 4
 
-  # Deny-first trigger: delete the healthy payments pod so the ReplicaSet spins up a
-  # replacement that boots WHILE the tracer is watching. The watch loop attaches to
-  # the new JVM during its startup (before java-spiffe fetches its first SVID), so
-  # the very first attestation reports debug_clean=false and the workload is denied
-  # an SVID outright — no dependency on TTL expiry, and no pre-existing mTLS
-  # connection to tear down.
+  # Restart under tracing so the first attestation is denied.
   log "Deleting healthy payments pod $pod to force a traced replacement"
   kubectl delete pod "$pod" -n "$K8S_NAMESPACE" --wait=true --timeout=60s 2>/dev/null || true
 
@@ -104,9 +90,6 @@ EOF
 
   log_file="$OUT/$LABEL/agent-attestor.log"
 
-  # The fresh payments pod attests asynchronously via the Workload API (no agent
-  # restart needed — the new PID triggers a new attestation). Poll the agent logs
-  # until the tampered attestation shows up.
   local i found=1
   for ((i = 1; i <= 12; i++)); do
     collect_agent_logs "$LABEL" "$OUT"

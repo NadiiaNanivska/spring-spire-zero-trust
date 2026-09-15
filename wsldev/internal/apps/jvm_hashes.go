@@ -14,21 +14,15 @@ import (
 	"wsldev/internal/kubernetes"
 )
 
-// jvmService describes a JVM workload whose jar SHA-256 must be published to the
-// jvm-attestor plugin via the jvm-hashes ConfigMap.
 type jvmService struct {
-	serviceDir  string // repo subdir holding the maven project (e.g. "payments-service")
-	jarPattern  string // glob (relative to serviceDir/target) matching the repackaged fat jar
-	manifestKey string // in-container jar path == key in jvm-hashes.json
+	serviceDir  string
+	jarPattern  string
+	manifestKey string
 
-	// Registration metadata: the SPIFFE ID the workload is issued and the k8s
-	// ServiceAccount it runs as (used to build the SPIRE registration entry).
 	spiffeID       string
 	serviceAccount string
 }
 
-// jvmServices maps a `wsldev app deploy <arg>` name to its JVM integrity metadata.
-// Only these apps are JVM workloads attested by the jvm-attestor plugin.
 var jvmServices = map[string]jvmService{
 	"payments": {
 		serviceDir:     "payments-service",
@@ -52,12 +46,7 @@ const (
 	spireAgentDaemonSet  = "spire-agent"
 )
 
-// SyncJVMHashes recomputes the SHA-256 of the freshly built jars for the deployed
-// JVM services, rewrites spiffe-spire/base/jvm-hashes-configmap.yaml, applies the
-// ConfigMap, and restarts the spire-agent DaemonSet so the plugin reloads the
-// manifest (which also clears its in-memory hash cache -> next attestation
-// recomputes the hash on the cold path). Non-JVM args are ignored; hashes for
-// JVM services that were not deployed this run are preserved as-is.
+// SyncJVMHashes updates deployed jars and restarts the agent; other hashes are preserved.
 func SyncJVMHashes(deployed []string) error {
 	targets := make([]string, 0, len(deployed))
 	for _, name := range deployed {
@@ -118,8 +107,6 @@ func SyncJVMHashes(deployed []string) error {
 	return nil
 }
 
-// findFatJar returns the single repackaged jar matching pattern under dir,
-// ignoring maven's -sources/-javadoc/.original side artifacts.
 func findFatJar(dir, pattern string) (string, error) {
 	matches, err := filepath.Glob(filepath.Join(dir, pattern))
 	if err != nil {
@@ -162,9 +149,6 @@ type hashManifest struct {
 	Jars    map[string]string `json:"jars"`
 }
 
-// readExistingHashes extracts the current jar->hash map from the embedded
-// jvm-hashes.json block so hashes for services not deployed this run survive.
-// A missing file or unparseable block yields an empty map rather than an error.
 func readExistingHashes(manifestPath string) (map[string]string, error) {
 	jars := make(map[string]string)
 
@@ -191,9 +175,6 @@ func readExistingHashes(manifestPath string) (map[string]string, error) {
 	return jars, nil
 }
 
-// extractManifestJSON pulls the literal block scalar under the
-// `jvm-hashes.json: |` key out of the ConfigMap YAML, de-indenting it back to
-// raw JSON. Returns "" if the key is not found.
 func extractManifestJSON(content string) string {
 	lines := strings.Split(content, "\n")
 
@@ -234,8 +215,6 @@ func extractManifestJSON(content string) string {
 	return strings.Join(out, "\n")
 }
 
-// writeHashesConfigMap regenerates the ConfigMap YAML with a deterministic,
-// sorted jars map embedded as an indented JSON literal block.
 func writeHashesConfigMap(manifestPath string, jars map[string]string) error {
 	keys := make([]string, 0, len(jars))
 	for k := range jars {

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Collect spire-agent logs relevant to JVM attack/resilience tests.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

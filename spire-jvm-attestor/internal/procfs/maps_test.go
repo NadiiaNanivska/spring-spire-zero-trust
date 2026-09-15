@@ -38,8 +38,6 @@ func TestParseJarPathsFromMaps_SingleJar(t *testing.T) {
 	if entries[0].Source != SourceMaps {
 		t.Errorf("expected source %q, got %q", SourceMaps, entries[0].Source)
 	}
-	// The handle must name the first mapping's address range so the caller can
-	// read the exact inode without resolving the pathname.
 	wantHandle := filepath.Join(procRoot, "map_files", "7f3a00000000-7f3a10000000")
 	if entries[0].KernelPath != wantHandle {
 		t.Errorf("expected kernel handle %s, got %s", wantHandle, entries[0].KernelPath)
@@ -47,7 +45,6 @@ func TestParseJarPathsFromMaps_SingleJar(t *testing.T) {
 }
 
 func TestParseJarPathsFromMaps_DeduplicatesJar(t *testing.T) {
-	// Same jar mapped multiple times (read + exec segments) — should yield 1 entry
 	procRoot := writeMaps(t, `7f3a00000000-7f3a10000000 r--p 00000000 fd:01 999 /app/fat.jar
 7f3a10000000-7f3a20000000 r-xp 01000000 fd:01 999 /app/fat.jar
 7f3a20000000-7f3a30000000 rw-p 02000000 fd:01 999 /app/fat.jar
@@ -76,7 +73,6 @@ func TestParseJarPathsFromMaps_NoJars(t *testing.T) {
 	}
 }
 
-// fakeFDTable builds a /proc/<PID>/fd-like directory of symlinks to real files.
 func fakeFDTable(t *testing.T, targets map[string]string) string {
 	t.Helper()
 	if runtime.GOOS != "linux" {
@@ -146,8 +142,6 @@ func TestExtractJarsFromFDs_DeduplicatesByInode(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// The same jar opened twice must not produce two entries, otherwise the
-	// aggregate set digest would depend on descriptor churn.
 	procRoot := fakeFDTable(t, map[string]string{"3": jarPath, "7": jarPath})
 
 	entries, err := ExtractJarsFromFDs(procRoot)

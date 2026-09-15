@@ -27,7 +27,6 @@ import statistics
 import sys
 from datetime import datetime, timezone
 
-# Reuse statistically correct estimators from plot_results.py
 from plot_results import (
     attestation_weighted_ms,
     collect_long_rows,
@@ -39,7 +38,7 @@ from plot_results import (
     service_means,
 )
 
-# 95% two-tailed t critical values (df = n-1), df 1..30; df>30 -> 1.96
+# 95% two-tailed t critical values: df 1–30; use 1.96 above 30.
 T_CRITICAL_975: dict[int, float] = {
     1: 12.706,
     2: 4.303,
@@ -73,7 +72,6 @@ T_CRITICAL_975: dict[int, float] = {
     30: 2.042,
 }
 
-# Metrics reported per scenario (thesis tables)
 SCENARIOS_CONFIG: dict[str, dict] = {
     "a": {
         "title": 'Таблиця 4.1 — Результати для Сценарію A: Масштабування з "теплим" кешем',
@@ -101,10 +99,8 @@ SCENARIOS_CONFIG: dict[str, dict] = {
     },
 }
 
-# Per-service metrics: one scalar row per service label (never blend services).
 PER_SERVICE_METRICS = frozenset({"http_req_p95_ms", "http_req_p99_ms", "jvm_heap_bytes"})
 
-# Agent metrics: mean over window but only from pods active in the last 30 s.
 ACTIVE_POD_METRICS = frozenset({"agent_cpu", "agent_memory_mb"})
 
 RUN_DIR_BASENAME_RE = re.compile(r"run-(\d{8}-\d{6})")
@@ -390,7 +386,6 @@ def resolve_run_dirs(args: argparse.Namespace) -> list[str]:
         matched = sorted(glob.glob(args.glob_pattern))
         dirs.extend(matched)
     dirs = [os.path.abspath(d) for d in dirs]
-    # Deduplicate preserving order
     seen: set[str] = set()
     unique: list[str] = []
     for d in dirs:
@@ -471,7 +466,6 @@ def main() -> int:
     long_all_path = os.path.join(out_dir, "long_all.csv")
     write_long_all_csv(long_rows, long_all_path)
 
-    # Record which runs were aggregated
     manifest_path = os.path.join(out_dir, "runs.txt")
     with open(manifest_path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(run_dirs) + "\n")

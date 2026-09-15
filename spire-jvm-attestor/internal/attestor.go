@@ -19,8 +19,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// JVMAttestor is a SPIRE WorkloadAttestor that verifies JVM process integrity
-// via /proc/<PID>/*: ptrace state, dangerous flags, and JAR SHA-256.
 type JVMAttestor struct {
 	workloadattestorv1.UnsafeWorkloadAttestorServer
 	configv1.UnimplementedConfigServer
@@ -125,9 +123,7 @@ func (p *JVMAttestor) Attest(
 		selectors, err := checker.Check(attestCtx)
 		checkerDurations[checker.Name()] = time.Since(checkStart)
 		if err != nil {
-			// ErrNotJVM means the process has no JAR files — it is simply not a JVM
-			// workload. Return empty selectors so that other attestors (k8s, unix)
-			// can still issue SVIDs for this process.
+			// No JARs: return empty selectors so other attestors can handle this process.
 			if errors.Is(err, checkers.ErrNotJVM) {
 				log.Debug("not a JVM process, skipping attestation",
 					"pid", req.Pid,

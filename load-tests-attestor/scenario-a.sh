@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# S-A: Cold-start attestation — scale to 0 and back up (no HTTP load).
-# Usage: scenario-a.sh <results_subdir>
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-// freshCache returns a new empty HashCache for isolated unit tests.
-// Each test gets its own instance — no global state to reset.
 func freshCache() *HashCache {
 	return NewHashCache()
 }
@@ -66,11 +64,6 @@ func TestHashCache_HitOnUnchangedFile(t *testing.T) {
 	}
 }
 
-// TestHashCache_DetectsInPlaceRewriteWithRestoredMtime is the tampering case the
-// (inode, mtime) key used to miss: an attacker with write access overwrites the
-// jar in place — which preserves the inode — and rewinds mtime with utimensat to
-// forge an unchanged key. ctime cannot be forged the same way, so the entry must
-// be invalidated and the new content hashed.
 func TestHashCache_DetectsInPlaceRewriteWithRestoredMtime(t *testing.T) {
 	if runtime.GOOS != "linux" {
 		t.Skip("ctime is only available through syscall.Stat_t on Linux")
@@ -90,7 +83,7 @@ func TestHashCache_DetectsInPlaceRewriteWithRestoredMtime(t *testing.T) {
 	}
 	origMtime := info.ModTime()
 
-	// Same length keeps size identical too, so mtime and size both look untouched.
+	// Keep size unchanged to isolate ctime-based invalidation.
 	if err := os.WriteFile(path, []byte("content-v2"), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -145,8 +138,6 @@ func TestHashCache_MissingFile(t *testing.T) {
 }
 
 func TestHashCache_ConcurrentAccess(t *testing.T) {
-	// Smoke test: concurrent reads/writes must not race.
-	// Run with: go test -race ./internal/...
 	c := freshCache()
 	path := writeJar(t, "concurrent-content")
 

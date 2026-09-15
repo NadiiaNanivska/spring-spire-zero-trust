@@ -38,8 +38,7 @@ export default function () {
 }
 
 export function handleSummary(data) {
-  // Emit the summary on stdout between markers so it can be recovered from
-  // pod logs when k6 runs in-cluster (the k6 image has no tar for kubectl cp).
+  // Recover the summary from pod logs; the k6 image lacks tar for kubectl cp.
   const oneLine = JSON.stringify(data);
   return {
     stdout: `\n__K6_SUMMARY_BEGIN__${oneLine}__K6_SUMMARY_END__\n`,

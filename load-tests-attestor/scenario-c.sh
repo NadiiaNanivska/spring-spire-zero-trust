@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# S-C: Rolling restart under steady HTTP load (re-attestation storm).
-# Usage: scenario-c.sh <results_subdir>
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -21,8 +19,7 @@ fi
 
 ensure_load_target
 
-# `wsldev app deploy` (scenario B) registers JVM selectors even on the default
-# overlay. Re-apply the correct entry shape before rollout restarts under load.
+# Restore overlay-specific entries after scenario B registers JVM selectors.
 ensure_spire_entries_for_overlay "${OVERLAY_NAME:-custom-jvm}"
 settle_workloads_after_entries
 

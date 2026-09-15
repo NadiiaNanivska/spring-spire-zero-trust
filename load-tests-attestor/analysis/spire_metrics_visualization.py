@@ -98,8 +98,6 @@ AGENT_METRICS = {
     "agent_memory_mb",
 }
 
-# Фіксовані кольори навмисно НЕ задаються:
-# matplotlib використовує стандартний цикл кольорів.
 
 
 def metric_label(metric: str, series: str = "") -> str:
@@ -146,7 +144,6 @@ def validate_long_df(df: pd.DataFrame) -> pd.DataFrame:
     out = out.dropna(subset=["elapsed_s", "value"])
     out = out[out["elapsed_s"] >= 0]
 
-    # Переведення heap з байтів у МБ.
     heap_mask = out["metric"].eq("jvm_heap_bytes")
     out.loc[heap_mask, "value"] /= 1024.0 ** 2
 
@@ -241,14 +238,10 @@ def clean_long_df(
     if bucket_seconds <= 0:
         raise ValueError("bucket_seconds має бути > 0.")
 
-    # Бакетування не змінює значення, а лише зменшує шум від частоти
-    # дискретизації. Внутрішня агрегація виконується окремо для кожного run.
     df["elapsed_s"] = (
         np.floor(df["elapsed_s"] / bucket_seconds) * bucket_seconds
     ).astype(int)
 
-    # Якщо у вихідному файлі виникли дублікати після бакетування,
-    # усереднюємо їх лише всередині того самого run/overlay/metric/series.
     keys = [
         "run", "scenario", "overlay", "metric", "series", "elapsed_s"
     ]
@@ -332,7 +325,6 @@ def available_series(
         .tolist()
     )
 
-    # Порожній series має бути першим.
     return sorted(series, key=lambda x: (x != "", x))
 
 
@@ -402,8 +394,6 @@ def plot_time_series(
                 ax.legend(frameon=False)
                 ax.margins(x=0.01)
 
-                # Не примушуємо вісь Y починатися з нуля для latency:
-                # це може приховати невеликі, але реальні відмінності.
                 if metric in {
                     "agent_cpu",
                     "agent_memory_mb",

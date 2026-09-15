@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Shared helpers for attestor overhead load tests.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -14,10 +13,6 @@ export ORDERS_SVC_PORT="${ORDERS_SVC_PORT:-8080}"
 export WARMUP_SEC="${WARMUP_SEC:-60}"
 export METRICS_STEP="${METRICS_STEP:-5s}"
 
-# Load-generation mode:
-#   incluster (default) -> run k6 as a Pod hitting the Service via kube-proxy
-#                          (survives rollouts/scale, no host port-forward).
-#   local               -> run k6 on the host against ORDERS_URL (needs port-forward).
 export K6_MODE="${K6_MODE:-incluster}"
 export ORDERS_INCLUSTER_URL="${ORDERS_INCLUSTER_URL:-http://orders-service.spire.svc.cluster.local:8080}"
 export K6_IMAGE="${K6_IMAGE:-grafana/k6:0.49.0}"
@@ -43,7 +38,6 @@ preflight() {
   for cmd in kubectl curl jq; do
     command -v "$cmd" >/dev/null 2>&1 || die "missing required command: $cmd"
   done
-  # k6 binary is only needed for local load mode; in-cluster mode runs k6 as a Pod.
   if [[ "$K6_MODE" == "local" ]] && ! command -v k6 >/dev/null 2>&1; then
     die "missing required command: k6 (needed for K6_MODE=local)"
   fi
@@ -136,8 +130,6 @@ stop_orders_port_forward() {
   pkill -f "kubectl port-forward.*svc/${ORDERS_SVC_NAME}.*${ORDERS_SVC_PORT}" 2>/dev/null || true
 }
 
-# kubectl port-forward to a Deployment dies when its pod is replaced (scenario C).
-# Forward via Service so traffic follows Ready endpoints across rollouts.
 _orders_port_forward_supervisor() {
   local local_port=$1
   while true; do
@@ -176,8 +168,6 @@ port_forward_orders() {
   log "WARN: orders API not responding at $ORDERS_URL yet (rollout may still be in progress)"
 }
 
-# Prepare whatever the load generator needs to reach orders.
-# In-cluster mode needs no host port-forward (k6 hits the Service directly).
 ensure_load_target() {
   ensure_orders_service
   if [[ "$K6_MODE" == "local" ]]; then
@@ -187,9 +177,6 @@ ensure_load_target() {
   fi
 }
 
-# ensure_workload_apps deploys orders/payments when missing (first run / fresh cluster).
-# A full deploy also syncs jar hashes into jvm-hashes-configmap.yaml and registers
-# SPIRE entries via wsldev app deploy.
 ensure_workload_apps() {
   local wsldev_bin missing=0 deploy
   wsldev_bin="$(resolve_wsldev)"
@@ -247,9 +234,7 @@ create_baseline_spire_entry() {
     >/dev/null
 }
 
-# ensure_baseline_spire_entries registers k8s-only entries for the default overlay
-# (no JVM plugin). Needed because `wsldev app deploy` always registers JVM selectors,
-# which would otherwise leave entries the default agent cannot satisfy.
+# The default agent needs k8s-only entries; it cannot satisfy JVM selectors.
 ensure_baseline_spire_entries() {
   log "Registering baseline SPIRE entries (k8s selectors only)"
   create_baseline_spire_entry \
@@ -259,9 +244,6 @@ ensure_baseline_spire_entries() {
   log "Baseline SPIRE entries registered"
 }
 
-# ensure_spire_entries (re)creates JVM workload registration entries from
-# spiffe-spire/base/jvm-hashes-configmap.yaml. The plugin only computes hashes;
-# these entries pin jvm:jar_sha256=<hash> and enforce integrity on the server.
 ensure_spire_entries() {
   local wsldev_bin
   wsldev_bin="$(resolve_wsldev)"
@@ -270,8 +252,6 @@ ensure_spire_entries() {
     die "wsldev spire register-jvm failed (populate hashes first: wsldev app deploy payments orders)"
 }
 
-# verify_jvm_spire_entries checks that both JVM workloads have entries with
-# jvm:jar_sha256 selectors (legacy k8s-only entries would skip jar enforcement).
 verify_jvm_spire_entries() {
   local show
   show=$(kubectl exec -n "$K8S_NAMESPACE" spire-server-0 -c spire-server -- \
@@ -289,7 +269,6 @@ verify_jvm_spire_entries() {
   log "JVM SPIRE entries verified (jar_sha256 present for workloads)"
 }
 
-# ensure_spire_entries_for_overlay picks baseline vs JVM registration entries.
 ensure_spire_entries_for_overlay() {
   local overlay=${1:-custom-jvm}
   if [[ "$overlay" == "default" ]]; then
@@ -404,9 +383,6 @@ run_k6_local() {
   fi
 }
 
-# Run k6 as an in-cluster Pod hitting the Service via kube-proxy. This survives
-# pod rollouts/scale (scenario B/C) because kube-proxy always routes to Ready
-# endpoints -- unlike host `kubectl port-forward`, which binds to a single pod.
 run_k6_incluster() {
   local duration=$1
   local rate=$2
@@ -462,7 +438,6 @@ EOF
     sleep 1
   done
 
-  # logs -f blocks until the pod finishes, so this doubles as the wait.
   kubectl logs -f "$name" -n "$K8S_NAMESPACE" 2>/dev/null | tee "$outdir/k6-output.log" || true
 
   sed -n 's/.*__K6_SUMMARY_BEGIN__\(.*\)__K6_SUMMARY_END__.*/\1/p' \

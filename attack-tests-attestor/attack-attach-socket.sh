@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Level 2: Anti-tamper — JVM Attach API socket (block_on_attach_socket=true).
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -27,11 +26,7 @@ test_body() {
   collect_agent_logs "$LABEL" "$OUT" "$SUBTEST_LOG_SINCE" "$pod"
   log_file="$OUT/$LABEL/agent-attestor.log"
 
-  # Attestor-log denial is the deterministic proof here — NOT orders->payments mTLS. This
-  # is a live-process injection into an already-SVID'd pod: SPIRE does not revoke the
-  # cached SVID and orders reuses its keep-alive connection to payments, so mTLS stays 200
-  # long past SVID expiry (that flakiness produced the prior false FAIL). We assert that
-  # the agent refused re-attestation for THIS pod.
+  # Assert re-attestation denial; an existing SVID and pooled connection can still serve mTLS.
   assert_denied_by_attestor_log_only "$pod" "$log_file" 'Attach API socket|FailedPrecondition|checker failed|anti-tamper|attach_socket_exposed'
 }
 

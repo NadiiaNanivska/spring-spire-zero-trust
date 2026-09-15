@@ -1,9 +1,3 @@
-// scenario5-identity-stress.js
-// Сценарій 5: Горизонтальне масштабування під паралельним навантаженням
-// Мета: Перевірити, як система (додатки + SPIRE) поводиться, коли кількість
-//       реплік змінюється (scale-out / scale-in) одночасно з живим потоком
-//       паралельних запитів. Масштабування виконується автоматично супровідним
-//       скриптом run-scenario5-scaling.sh, синхронізованим за часом з фазами нижче.
 
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -19,17 +13,15 @@ const phaseLatency = {
   cooldown: new Trend('latency_cooldown'),
 };
 
-// --- Часові межі фаз (секунди від старту тесту) ---------------------------
-// Мають збігатися з таймінгом kubectl scale у run-scenario5-scaling.sh
+// Має збігатися з таймінгом масштабування у run-scenario5-scaling.sh.
 const BASELINE_RPS = Number(__ENV.BASELINE_RPS || 30);
 const TARGET_RPS = Number(__ENV.TARGET_RPS || 150);
 
-const T_BASELINE_END = 120;   // кінець базового навантаження (2 хв)
-const T_RAMP_END = 180;       // кінець розгону навантаження (1 хв) -> тут стартує scale-up
-const T_SCALING_END = 300;    // кінець "перехідної" фази after scale-up (2 хв)
-const T_POST_SCALE_END = 540; // кінець стабільної фази на повних репліках (4 хв) -> тут стартує scale-down
-const T_SCALE_DOWN_END = 600; // кінець фази зниження навантаження/реплік (1 хв)
-// далі до кінця тесту (660s = 11 хв) - cooldown
+const T_BASELINE_END = 120;
+const T_RAMP_END = 180;
+const T_SCALING_END = 300;
+const T_POST_SCALE_END = 540;
+const T_SCALE_DOWN_END = 600;
 
 export const options = {
   scenarios: {
@@ -40,12 +32,12 @@ export const options = {
       preAllocatedVUs: 100,
       maxVUs: 300,
       stages: [
-        { duration: '2m', target: BASELINE_RPS },  // baseline: система в стані спокою
-        { duration: '1m', target: TARGET_RPS },    // ramp_up: навантаження росте -> тригер для scale-up
-        { duration: '2m', target: TARGET_RPS },    // scaling: нові поди піднімаються під навантаженням
-        { duration: '4m', target: TARGET_RPS },    // post_scale: стабільна робота на повних репліках
-        { duration: '1m', target: BASELINE_RPS },  // scale_down: навантаження падає -> тригер для scale-in
-        { duration: '1m', target: BASELINE_RPS },  // cooldown: система після зменшення реплік
+        { duration: '2m', target: BASELINE_RPS },
+        { duration: '1m', target: TARGET_RPS },
+        { duration: '2m', target: TARGET_RPS },
+        { duration: '4m', target: TARGET_RPS },
+        { duration: '1m', target: BASELINE_RPS },
+        { duration: '1m', target: BASELINE_RPS },
       ],
     },
   },
@@ -71,7 +63,6 @@ const formatLocalTime = (date) => {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 };
 
-// Визначає поточну фазу тесту на основі часу від старту (testStartTime передається через VU-shared env)
 function getPhase(elapsedSec) {
   if (elapsedSec < T_BASELINE_END) return 'baseline';
   if (elapsedSec < T_RAMP_END) return 'ramp_up';

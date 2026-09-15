@@ -1,22 +1,3 @@
-// Command jvm-attestor is a SPIRE WorkloadAttestor plugin that verifies
-// JVM process integrity at the Linux kernel level via /proc.
-//
-// It is invoked by the SPIRE Agent as an external plugin binary. The agent
-// communicates with it over a gRPC connection established via stdin/stdout
-// using the SPIRE plugin SDK protocol.
-//
-// Usage — agent.conf:
-//
-//	plugins {
-//	  WorkloadAttestor "jvm" {
-//	    plugin_cmd      = "/opt/spire/plugins/jvm-attestor"
-//	    plugin_checksum = "sha256:<hex>"
-//
-//	    plugin_data {
-//	      block_on_attach_socket = true
-//	    }
-//	  }
-//	}
 package main
 
 import (

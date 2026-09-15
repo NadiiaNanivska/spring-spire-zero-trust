@@ -23,11 +23,6 @@ import (
 
 const integrationTestPID = 9001
 
-// setupFakeProcFS creates a temporary /proc-like directory tree for a fake JVM
-// process. It returns the proc root and the expected SHA-256 of the fake JAR.
-//
-// The maps file uses inode=0 so the checker takes the Spring Boot fat-jar path,
-// which avoids platform-specific inode behaviour in cross-platform CI.
 func setupFakeProcFS(t *testing.T) (procRoot, jarHash string) {
 	t.Helper()
 
@@ -54,7 +49,7 @@ func setupFakeProcFS(t *testing.T) (procRoot, jarHash string) {
 		[]byte("PATH=/usr/bin\x00HOME=/root\x00"),
 		0644,
 	))
-	// inode=0 → checker treats this as a Spring Boot fat-jar (no inode comparison)
+	// Inode 0 skips platform-specific inode comparison.
 	require.NoError(t, os.WriteFile(
 		filepath.Join(pidRoot, "maps"),
 		[]byte("00400000-00452000 r-xp 00000000 08:02 0 /app/payments-service.jar\n"),
@@ -69,8 +64,6 @@ func setupFakeProcFS(t *testing.T) (procRoot, jarHash string) {
 	return tmpDir, jarHash
 }
 
-// servePlugin loads the plugin via plugintest (real gRPC transport) and returns
-// typed clients. plugintest registers t.Cleanup to shut the server down.
 func servePlugin(t *testing.T, plugin *internal.JVMAttestor) (
 	*workloadattestorv1.WorkloadAttestorPluginClient,
 	*configv1.ConfigServiceClient,
@@ -91,8 +84,6 @@ func servePlugin(t *testing.T, plugin *internal.JVMAttestor) (
 	return waClient, cfgClient
 }
 
-// TestIntegration_NotConfigured verifies that calling Attest before Configure
-// returns codes.FailedPrecondition over the gRPC transport.
 func TestIntegration_NotConfigured(t *testing.T) {
 	plugin := internal.New()
 	waClient, _ := servePlugin(t, plugin)
@@ -103,8 +94,6 @@ func TestIntegration_NotConfigured(t *testing.T) {
 	assert.Equal(t, codes.FailedPrecondition, status.Code(err))
 }
 
-// TestIntegration_Configure_InvalidHCL verifies that malformed HCL in the
-// plugin_data block causes Configure to return codes.InvalidArgument.
 func TestIntegration_Configure_InvalidHCL(t *testing.T) {
 	plugin := internal.New()
 	_, cfgClient := servePlugin(t, plugin)
@@ -117,10 +106,6 @@ func TestIntegration_Configure_InvalidHCL(t *testing.T) {
 	assert.Equal(t, codes.InvalidArgument, status.Code(err))
 }
 
-// TestIntegration_Attest_CleanJVM is the end-to-end happy-path test: it
-// configures the plugin, then calls Attest over gRPC and asserts that the
-// expected selectors — including the computed jar_sha256 — are present. There is
-// no reference manifest: the plugin only publishes the hash it computed.
 func TestIntegration_Attest_CleanJVM(t *testing.T) {
 	procRoot, expectedHash := setupFakeProcFS(t)
 
@@ -171,8 +156,6 @@ func TestIntegration_Attest_DebuggerAttached(t *testing.T) {
 	assert.NotContains(t, resp.SelectorValues, "maps_verified=true")
 }
 
-// TestIntegration_Close verifies that Close returns nil and that the plugin
-// can be closed multiple times without panicking (idempotence).
 func TestIntegration_Close(t *testing.T) {
 	plugin := internal.New()
 	_, cfgClient := servePlugin(t, plugin)

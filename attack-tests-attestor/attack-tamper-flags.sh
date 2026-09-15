@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Level 2: Anti-tamper — table-driven dangerous JVM cmdline flags.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,9 +11,7 @@ OUT_TEST="$OUT/$LABEL"
 MANIFEST_DIR="$OUT_TEST/manifests"
 mkdir -p "$MANIFEST_DIR"
 
-# All 7 dangerous flag prefixes from antitamper.go. javaagent/agentpath use benign
-# artefacts built at container start so the JVM boots and the attestor can observe
-# the prefix (missing files crash before attestation and do not test detection).
+# Use valid agent artifacts so the JVM reaches attestation.
 declare -a FLAG_TESTS=(
   "javaagent"
   "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"

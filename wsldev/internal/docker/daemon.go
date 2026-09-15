@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-// StartDockerd запускає dockerd у фоні
 func StartDockerd() error {
     cmd := exec.Command("sh", "-c", "dockerd > /dev/null 2>&1 &")
     cmd.Start()
@@ -28,7 +27,6 @@ func waitForDocker(timeout time.Duration) error {
 	return errors.New("docker daemon did not become ready in time")
 }
 
-// IsDockerdRunning перевіряє чи працює Docker daemon
 func IsDockerdRunning() (bool, error) {
     cmd := exec.Command("docker", "info")
     output, err := cmd.CombinedOutput()

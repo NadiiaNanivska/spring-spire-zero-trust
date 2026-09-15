@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Level 2: Anti-tamper — table-driven dangerous JVM environment variables.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

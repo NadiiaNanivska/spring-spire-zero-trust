@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Export Prometheus query_range snapshots for a test window.
-# Usage: metrics-export.sh <start_unix> <end_unix> <label> [output_dir]
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -18,7 +16,6 @@ mkdir -p "$OUT_DIR"
 STEP="${METRICS_STEP:-5s}"
 PROM="${PROMETHEUS_URL:-http://127.0.0.1:9090}"
 
-# Each entry: output_filename|PromQL
 QUERIES=(
   "attestation_elapsed_sum.json|spire_agent_workload_api_workload_attestation_elapsed_time_sum"
   "attestation_elapsed_count.json|spire_agent_workload_api_workload_attestation_elapsed_time_count"

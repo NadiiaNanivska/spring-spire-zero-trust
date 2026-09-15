@@ -11,11 +11,7 @@ import (
 	"golang.org/x/sync/singleflight"
 )
 
-// FileID identifies one content revision of one file.
-//
-// Dev+Ino pin the file itself, Size and MtimeNs catch ordinary rewrites, and
-// CtimeNs closes the tampering case: rewriting a jar in place and restoring its
-// mtime still moves ctime, so the cache no longer returns the pre-tamper hash.
+// FileID includes ctime to detect rewrites even when mtime is restored.
 type FileID struct {
 	Path    string
 	Dev     uint64
@@ -25,9 +21,7 @@ type FileID struct {
 	CtimeNs int64
 }
 
-// NewFileID builds a cache identity from a stat result. path must be the logical
-// jar path (e.g. /app/service.jar) rather than the /proc handle used to read it,
-// so the same file attested through different PIDs shares a single entry.
+// NewFileID uses the logical jar path so cache entries are shared across PIDs.
 func NewFileID(path string, fi os.FileInfo) FileID {
 	ino, _ := GetInode(fi)
 	dev, ctimeNs, _ := statExtra(fi)
@@ -47,10 +41,7 @@ func (id FileID) key() string {
 		id.Path, id.Dev, id.Ino, id.Size, id.MtimeNs, id.CtimeNs)
 }
 
-// GetDevInode returns the (device, inode) pair identifying a file. Inode numbers
-// are only unique within a filesystem, so callers deduplicating files across
-// mounts must key on both — a bare inode collides between, say, an overlay upper
-// dir and a tmpfs mount.
+// GetDevInode includes the device because inode numbers are unique only per filesystem.
 func GetDevInode(fi os.FileInfo) (dev, ino uint64, err error) {
 	ino, err = GetInode(fi)
 	if err != nil {
@@ -92,8 +83,7 @@ func (hc *HashCache) Len() int {
 	return len(hc.store)
 }
 
-// GetOrCompute returns the cached hash for id, or computes and stores it.
-// Concurrent attestations of the same file collapse into a single computation.
+// GetOrCompute coalesces concurrent requests for the same file.
 func (hc *HashCache) GetOrCompute(id FileID, computeFn func() (string, error)) (string, error) {
 	if hash, ok := hc.Get(id); ok {
 		return hash, nil
@@ -116,9 +106,7 @@ func (hc *HashCache) GetOrCompute(id FileID, computeFn func() (string, error)) (
 	return v.(string), nil
 }
 
-// GetOrComputeByPath is a convenience wrapper that opens the file once and
-// derives the cache identity from the open descriptor, so the bytes hashed and
-// the metadata keyed on always belong to the same file.
+// GetOrComputeByPath hashes and stats one descriptor to avoid path-swap races.
 func (hc *HashCache) GetOrComputeByPath(filePath string) (string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -136,7 +124,6 @@ func (hc *HashCache) GetOrComputeByPath(filePath string) (string, error) {
 	})
 }
 
-// SHA256Reader hashes r, optionally reusing a caller-supplied buffer.
 func SHA256Reader(r io.Reader, buf []byte) (string, error) {
 	hasher := sha256.New()
 	if _, err := io.CopyBuffer(hasher, r, buf); err != nil {

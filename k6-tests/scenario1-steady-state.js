@@ -9,9 +9,9 @@ export const options = {
     scenarios: {
         steady_state: {
             executor: 'constant-arrival-rate',
-            rate: 100,              // 100 RPS
+            rate: 100,
             timeUnit: '1s',
-            duration: '10m',        // Тривалість тесту
+            duration: '10m',
             preAllocatedVUs: 50,
             maxVUs: 100,
         },

@@ -1,6 +1,3 @@
-// scenario2-connection-churn.js
-// Сценарій 2: Ціна нового з'єднання (Connection Churn)
-// Мета: Показати слабку сторону mTLS — важкий Handshake
 
 import http from 'k6/http';
 import {check, sleep} from 'k6';
@@ -24,7 +21,7 @@ export const options = {
     insecureSkipTLSVerify: false,
     thresholds: {
         http_req_duration: ['p(95)<1000', 'p(99)<2000'],
-        http_req_connecting: ['p(95)<500'], // Час встановлення з'єднання
+        http_req_connecting: ['p(95)<500'],
         errors: ['rate<0.05'],
     },
 };
@@ -35,7 +32,6 @@ const AUTH_TYPE = __ENV.AUTH_TYPE || 'JWT';
 export default function () {
     const url = `${BASE_URL}/api/orders/create`;
 
-    // Тіло запиту (Payload)
     const payload = JSON.stringify({
                                        itemId: "test-item-123",
                                        quantity: 1

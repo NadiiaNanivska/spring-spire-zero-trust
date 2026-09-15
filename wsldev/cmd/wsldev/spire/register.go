@@ -5,11 +5,6 @@ import (
 	"wsldev/internal/apps"
 )
 
-// spireRegisterJVMCmd re-runs the CI/CD registration step on its own: it parses
-// the expected hashes from spiffe-spire/base/jvm-hashes-configmap.yaml and creates
-// SPIRE registration entries (jvm:jar_sha256=<hash> + integrity selectors) for the
-// JVM workloads. Useful after editing the ConfigMap or restarting SPIRE without a
-// full `wsldev app deploy`.
 func spireRegisterJVMCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "register-jvm [app...]",

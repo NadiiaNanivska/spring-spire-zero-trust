@@ -179,8 +179,6 @@ def svid_issued_total(subdir: str) -> float:
         "svid_issued_total.json",
     )
 
-    # Використовуємо ту саму реалізацію counter delta, що й
-    # aggregate_runs / plot_results.
     from plot_results import counter_delta_sum
     return counter_delta_sum(path)
 
@@ -381,7 +379,6 @@ def rank_biserial_from_differences(
 
     abs_d = np.abs(d)
 
-    # Average ranks for ties.
     order = np.argsort(abs_d, kind="mergesort")
     sorted_abs = abs_d[order]
 
@@ -397,7 +394,6 @@ def rank_biserial_from_differences(
         ):
             end += 1
 
-        # Ranks are 1-based.
         average_rank = (
             (start + 1) + end
         ) / 2.0
@@ -483,10 +479,7 @@ def wilcoxon_paired(
         result["W"] = float(test.statistic)
         result["p"] = float(test.pvalue)
 
-        # SciPy's public result object does not guarantee exposing
-        # the internally selected method in every supported version.
-        # The exact/approximation decision is therefore reported
-        # conservatively from the input characteristics.
+        # Infer the method from inputs; SciPy may not expose its selected method.
         has_ties = (
             len(np.unique(np.abs(nonzero)))
             < len(nonzero)
@@ -953,7 +946,6 @@ def plot_boxplots(
             whis=1.5,
         )
 
-        # Окремі run-значення показуємо, щоб не приховувати малий N.
         for x, values in enumerate(data, start=1):
             jitter = np.linspace(
                 -0.055,

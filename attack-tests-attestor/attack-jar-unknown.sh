@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Level 3: Jar integrity — tampered jar hash no longer matches the pinned SPIRE entry.
-# The plugin computes jar_sha256 from the running jar; the registration entry (with
-# the pre-tamper hash from jvm-hashes-configmap.yaml) enforces the allow-list.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

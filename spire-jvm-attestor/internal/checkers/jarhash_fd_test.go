@@ -17,9 +17,6 @@ import (
 	"github.com/yourorg/spire-jvm-attestor/internal/procfs"
 )
 
-// fakeProcWithFDs builds a /proc/<PID>-like tree whose maps holds no jar, so
-// discovery has to fall through to the descriptor table — the situation for
-// Spring Boot fat-jars, which the JDK reads with pread() instead of mapping.
 func fakeProcWithFDs(t *testing.T, jarPaths ...string) string {
 	t.Helper()
 	if runtime.GOOS != "linux" {
@@ -42,12 +39,6 @@ func fakeProcWithFDs(t *testing.T, jarPaths ...string) string {
 	return procRoot
 }
 
-// fakeProcWithMapsAndFDs builds a /proc/<PID> tree in which some jars are
-// file-backed mappings and others are only held open as descriptors.
-//
-// Mapped jars get a working map_files handle, as on a kernel built with
-// CONFIG_CHECKPOINT_RESTORE, and their maps line carries the file's real inode so
-// the consistency comparison passes.
 func fakeProcWithMapsAndFDs(t *testing.T, mappedJars, openJars []string) string {
 	t.Helper()
 	if runtime.GOOS != "linux" {
@@ -127,20 +118,11 @@ func TestJarHashChecker_FallsBackToFDTable(t *testing.T) {
 
 	assert.Contains(t, selectors, SelectorJarSha256Prefix+computeRawSHA256([]byte("fat-jar-bytecode")))
 	assert.Contains(t, selectors, SelectorJarSourcePrefix+"fd")
-	// A jar reached through its descriptor is kernel-attested on both counts:
-	// the source is the fd table and the bytes came through the fd itself.
 	assert.Contains(t, selectors, SelectorMapsVerified)
 	assert.Contains(t, selectors, SelectorKernelHandleTrue)
 }
 
-// TestJarHashChecker_ReadsThroughKernelHandleNotPathname is the property that
-// makes symlink swaps and path-level TOCTOU irrelevant: the bytes must come from
-// the /proc handle, never from resolving the jar's name under the process root.
-//
-// A real /proc/<PID>/fd/N is a magic link bound to the inode rather than to a
-// name, which is why the swap cannot follow it. That binding cannot be faked in a
-// temp directory, so the test instead plants different bytes at the namespace
-// path the checker would use if it ever fell back to pathname resolution.
+// Use different namespace bytes to detect fallback; ordinary symlinks cannot emulate /proc fd binding.
 func TestJarHashChecker_ReadsThroughKernelHandleNotPathname(t *testing.T) {
 	appDir := t.TempDir()
 	jarPath := writeJarFile(t, appDir, "payments-service.jar", "original-bytecode")
@@ -164,11 +146,6 @@ func TestJarHashChecker_ReadsThroughKernelHandleNotPathname(t *testing.T) {
 	assert.Contains(t, selectors, SelectorKernelHandleTrue)
 }
 
-// TestJarHashChecker_DecoyJarChangesSetDigest documents why the per-jar selector
-// is not sufficient on its own. SPIRE matches an entry when its selectors are a
-// SUBSET of the workload's, so an attacker who opens a clean jar alongside a
-// malicious one still satisfies an entry pinned on the clean jar_sha256. Only the
-// set-wide digest reacts to the extra jar.
 func TestJarHashChecker_DecoyJarChangesSetDigest(t *testing.T) {
 	appDir := t.TempDir()
 	cleanPath := writeJarFile(t, appDir, "clean.jar", "clean-bytecode")
@@ -200,15 +177,6 @@ func TestJarHashChecker_DecoyJarChangesSetDigest(t *testing.T) {
 		"the set digest must change when an extra jar appears")
 }
 
-// TestJarHashChecker_MapsDoesNotShadowFDTable is the regression test for a
-// discovery bypass that existed while the sources were tried in turn.
-//
-// A process that runs attacker code can map one approved jar into its own address
-// space with a single FileChannel.map call. That made /proc/<PID>/maps non-empty,
-// discovery stopped there, and the extra jar the process held open via fd was
-// never scanned — so the workload published exactly the approved selector set,
-// including the pinned jar_set_sha256, while running the attacker's code. The
-// sources are unioned precisely so the descriptor table cannot be hidden this way.
 func TestJarHashChecker_MapsDoesNotShadowFDTable(t *testing.T) {
 	appDir := t.TempDir()
 	approved := writeJarFile(t, appDir, "payments-service.jar", "approved-bytecode")
@@ -229,17 +197,11 @@ func TestJarHashChecker_MapsDoesNotShadowFDTable(t *testing.T) {
 		"a jar held open via fd must not be hidden by a mapped one")
 	assert.Contains(t, selectors, SelectorJarSourcePrefix+procfs.SourceMapsAndFD)
 
-	// What actually denies the SVID: the entry pins a digest over the approved jar
-	// alone, and the extra jar must break it.
 	clean := sha256.Sum256([]byte(approved + ":" + computeRawSHA256([]byte("approved-bytecode")) + "\n"))
 	assert.NotContains(t, selectors, SelectorJarSetSha256Prefix+hex.EncodeToString(clean[:]),
 		"the set digest must not still equal the clean single-jar value")
 }
 
-// TestJarHashChecker_SameJarMappedAndOpenCountsOnce guards the union against
-// double counting: a jar that is both mapped and held open is still one jar, and
-// must contribute exactly one line to the set digest, or no clean workload would
-// ever reproduce the digest wsldev pinned.
 func TestJarHashChecker_SameJarMappedAndOpenCountsOnce(t *testing.T) {
 	appDir := t.TempDir()
 	jarPath := writeJarFile(t, appDir, "payments-service.jar", "fat-jar-bytecode")
@@ -267,12 +229,7 @@ func TestJarHashChecker_SameJarMappedAndOpenCountsOnce(t *testing.T) {
 	assert.Contains(t, selectors, SelectorJarSetSha256Prefix+hex.EncodeToString(sum[:]))
 }
 
-// TestJarHashChecker_SetDigestWireFormat pins the exact bytes the set digest is
-// taken over: one "<path>:<sha256>\n" line per jar, ordered by path. wsldev
-// recomputes this offline to pin it in the registration entry, and it lives in a
-// separate Go module, so the mirrored test there
-// (apps.TestJarSetDigest_MatchesPluginWireFormat) asserts the same literal. If the
-// two ever drift, every JVM workload silently loses its identity.
+// Keep this digest fixture identical to wsldev/apps.TestJarSetDigest_MatchesPluginWireFormat.
 func TestJarHashChecker_SetDigestWireFormat(t *testing.T) {
 	appDir := t.TempDir()
 	jarPath := writeJarFile(t, appDir, "payments-service.jar", "fat-jar-bytecode")
@@ -314,8 +271,6 @@ func TestJarHashChecker_CmdlineFallbackIsNotVerified(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	// The hash is still published, but nothing about it is kernel-attested, so the
-	// registration entry (which requires maps_verified=true) will not match.
 	assert.Contains(t, selectors, SelectorJarSourcePrefix+"cmdline")
 	assert.Contains(t, selectors, SelectorMapsVerifiedFalse)
 	assert.Contains(t, selectors, SelectorKernelHandleFalse)

@@ -30,7 +30,6 @@ def _require_matplotlib():
 
 RUN_DIR_RE = re.compile(r"^(?P<overlay>default|custom-jvm)-scenario-(?P<scenario>[a-d])-")
 
-# Prometheus metric files to plot as time series (filename without .json).
 TIME_SERIES_METRICS = [
     "attestation_avg_ms",
     "agent_cpu",
@@ -46,17 +45,12 @@ TIME_SERIES_METRICS = [
     "jvm_heap_bytes",
 ]
 
-# Gauge metrics summarised as a single scalar via a simple mean over the window.
-# These are true gauges (CPU cores, RSS MB) that are sampled continuously over
-# the full window, so an unweighted mean is the correct estimator.
 AGGREGATE_MEAN_METRICS = [
     "agent_cpu",
     "agent_memory_mb",
 ]
 
-# Percentile metrics carry a per-service label. Pooling services into one mean
-# mixes two different latency distributions, so we emit one bar chart per
-# service instead of a single blended bar.
+# Keep service percentiles separate; averaging them mixes latency distributions.
 AGGREGATE_PER_SERVICE_METRICS = [
     "http_req_p95_ms",
     "http_req_p99_ms",
@@ -116,7 +110,7 @@ def discover_runs(run_dir):
 
 
 def nanmean(values):
-    clean = [v for v in values if v == v]  # drop NaN
+    clean = [v for v in values if v == v]
     return sum(clean) / len(clean) if clean else float("nan")
 
 
@@ -313,7 +307,6 @@ def _scalar_for(metric, subdir):
 def plot_aggregate_bars(runs, plots_dir):
     scenarios = sorted(runs)
 
-    # attestation (count-weighted) + gauges (simple mean) + 5xx (full-window).
     scalar_specs = [
         ("attestation_avg_ms", "attestation_avg_ms (count-weighted, ms)"),
         ("http_5xx_rate", "http_5xx_rate (mean over full window, req/s)"),
@@ -327,7 +320,6 @@ def plot_aggregate_bars(runs, plots_dir):
             os.path.join(plots_dir, f"aggregate-{metric}.png"),
         )
 
-    # Percentile metrics: one chart per service, never blended across services.
     for metric in AGGREGATE_PER_SERVICE_METRICS:
         services = set()
         for scenario in scenarios:

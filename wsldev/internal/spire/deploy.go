@@ -46,10 +46,6 @@ func validateManifestsDir(path string) (string, error) {
 	return path, nil
 }
 
-// Attestor variants available under spiffe-spire/overlays/.
-// "custom-jvm" enables the JVM integrity attestor (anti-debug + anti-tamper +
-// jar-hash) alongside the standard k8s/unix attestors; "default" disables it,
-// giving a clean baseline for comparative load tests.
 const (
 	AttestorDefault   = "default"
 	AttestorCustomJVM = "custom-jvm"
@@ -81,8 +77,7 @@ func Deploy(attestorVariant string) error {
 		return err
 	}
 
-	// The SPIRE agent does not hot-reload agent.conf, so pods must restart to
-	// pick up a switched attestor variant.
+	// Restart pods because SPIRE does not hot-reload agent.conf.
 	fmt.Println("Restarting spire-agent DaemonSet to apply config...")
 	if err := kubernetes.Kubectl("rollout", "restart", "daemonset/spire-agent", "-n", "spire"); err != nil {
 		return err

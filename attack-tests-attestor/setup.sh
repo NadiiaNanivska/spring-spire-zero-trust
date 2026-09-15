@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Bootstrap cluster state for JVM attestor attack tests.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

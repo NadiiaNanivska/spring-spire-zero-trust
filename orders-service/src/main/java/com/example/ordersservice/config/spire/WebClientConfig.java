@@ -77,10 +77,7 @@ public class WebClientConfig {
                         ClientAuth.REQUIRE
                 );
 
-        // Bound pooled connection lifetime below the SVID TTL so mTLS is
-        // periodically re-handshaked. A tampered/revoked peer whose SVID stops
-        // renewing then fails at the next handshake instead of riding a stale,
-        // long-lived connection whose peer cert is never re-validated.
+        // Keep pooled connections shorter-lived than the SVID so peers are periodically revalidated.
         ConnectionProvider connectionProvider = ConnectionProvider.builder("payments")
                 .maxIdleTime(Duration.ofSeconds(10))
                 .maxLifeTime(Duration.ofSeconds(30))

@@ -64,7 +64,6 @@ func TestWriteAndReadRoundtrip(t *testing.T) {
 		t.Fatalf("writeHashesConfigMap: %v", err)
 	}
 
-	// The embedded block must be valid JSON with the expected jars.
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatalf("read back: %v", err)

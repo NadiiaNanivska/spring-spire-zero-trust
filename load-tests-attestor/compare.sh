@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Compare default vs custom-jvm runs -> results/summary.csv and summary.md
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,9 +9,7 @@ RESULTS_ROOT=${1:-${RESULTS_DIR:-$LIB_DIR/results}}
 SUMMARY_CSV="$RESULTS_ROOT/summary.csv"
 SUMMARY_MD="$RESULTS_ROOT/summary.md"
 
-# Mean of all sample values across all series over the window.
-# tonumber parses "NaN" into a NaN number here (not an error) and NaN == NaN is
-# true in jq 1.7, so drop non-finite values with isnan/isinfinite.
+# Filter NaN explicitly; jq 1.7 treats NaN == NaN as true.
 prom_avg() {
   local file=$1
   [[ -f "$file" ]] || { echo ""; return; }
@@ -22,7 +19,6 @@ prom_avg() {
   ' "$file" 2>/dev/null || echo ""
 }
 
-# Peak sample across all series (kept only where a spike is meaningful).
 prom_max() {
   local file=$1
   [[ -f "$file" ]] || { echo ""; return; }
@@ -32,7 +28,6 @@ prom_max() {
   ' "$file" 2>/dev/null || echo ""
 }
 
-# For monotonic counters: sum over series of (last - first) across the window.
 prom_counter_delta() {
   local file=$1
   [[ -f "$file" ]] || { echo ""; return; }
@@ -45,8 +40,7 @@ prom_counter_delta() {
   ' "$file" 2>/dev/null || echo ""
 }
 
-# Mean full workload-attestation time in ms, computed from the raw histogram
-# _sum/_count counters (SPIRE reports elapsed time in milliseconds, so no /1e6).
+# SPIRE histogram counters use milliseconds; do not divide by 1e6.
 attestation_avg_ms() {
   local prom=$1
   local s c
@@ -78,7 +72,6 @@ csv_stats() {
 }
 
 emit_delta() {
-  # $1=default $2=custom ; prints signed pct or empty
   local d=$1 c=$2
   if [[ -n "$d" && -n "$c" && "$d" != "0" && "$d" != "null" ]]; then
     awk -v d="$d" -v c="$c" 'BEGIN { printf "%.1f", (c - d) / d * 100 }'
@@ -103,12 +96,10 @@ SCENARIOS=(a b c)
     def_prom="$def_dir/prometheus"
     cj_prom="$cj_dir/prometheus"
 
-    # Attestation time (ms) from raw counters -- the primary, unit-correct signal.
     d=$(attestation_avg_ms "$def_prom")
     c=$(attestation_avg_ms "$cj_prom")
     echo "$sc,attestation_avg_ms,$d,$c,$(emit_delta "$d" "$c")"
 
-    # Mean-over-window metrics (stable; not noisy single peaks).
     metrics_avg=(
       "agent_cpu_cores_avg|agent_cpu.json"
       "agent_memory_mb_avg|agent_memory_mb.json"
@@ -127,12 +118,10 @@ SCENARIOS=(a b c)
       echo "$sc,$name,$d,$c,$(emit_delta "$d" "$c")"
     done
 
-    # Peak HTTP p99 -- a spike here is meaningful (rollout/scale disruption).
     d=$(prom_max "$def_prom/http_req_p99_ms.json")
     c=$(prom_max "$cj_prom/http_req_p99_ms.json")
     echo "$sc,http_p99_ms_max,$d,$c,$(emit_delta "$d" "$c")"
 
-    # k6 client-side view.
     def_k6="$def_dir/k6-summary.json"
     cj_k6="$cj_dir/k6-summary.json"
     if [[ -f "$def_k6" && -f "$cj_k6" ]]; then
@@ -144,7 +133,6 @@ SCENARIOS=(a b c)
       echo "$sc,k6_error_rate,$d,$c,"
     fi
 
-    # Plugin-only cost from agent logs (custom side only; the cleanest overhead).
     cj_csv="$cj_dir/attestor-timing.csv"
     if [[ -f "$cj_csv" ]]; then
       read -r avg_jar max_jar <<<"$(csv_stats "$cj_csv" jar_hash_us | tr ',' ' ')"
@@ -174,7 +162,6 @@ SCENARIOS=(a b c)
   echo "- Prometheus rows are **means over the measurement window** (except \`http_p99_ms_max\`)."
   echo "- default and custom-jvm are separate runs, so treat small (<~30%) deltas as run-to-run noise."
   echo ""
-  # Round numeric cells to 4 significant figures for readability; leave blanks as em-dash.
   fmt() {
     local v=$1
     [[ -z "$v" || "$v" == "null" ]] && { printf '—'; return; }

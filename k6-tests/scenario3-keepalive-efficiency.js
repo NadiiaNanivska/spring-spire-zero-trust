@@ -1,5 +1,3 @@
-// scenario3-keepalive-efficiency.js
-// Сценарій 3: Ефективність у довгих сесіях (Keep-Alive Efficiency)
 
 import http from 'k6/http';
 import {check, sleep} from 'k6';
@@ -56,7 +54,6 @@ export default function () {
         'low latency': (r) => r.timings.duration < 150,
     }) || errorRate.add(1);
 
-    // Дуже короткий sleep - імітація інтенсивного трафіку
     sleep(0.001);
 }
 

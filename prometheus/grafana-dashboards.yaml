@@ -4,7 +4,7 @@ metadata:
   name: grafana-dashboards
   namespace: spire
   labels:
-    grafana_dashboard: "1" # Ця мітка дозволяє Grafana Sidecar автоматично знайти дашборд
+    grafana_dashboard: "1"
 data:
   spire-dashboard.json: |
     {

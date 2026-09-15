@@ -111,7 +111,6 @@ func TestCheckAntiTamper_JavaToolOptions(t *testing.T) {
 }
 
 func TestCheckAntiTamper_EmptyJavaToolOptions(t *testing.T) {
-	// Empty JAVA_TOOL_OPTIONS should be treated as safe.
 	procRoot := makeProcDir(t,
 		[]string{"java", "-jar", "/app/service.jar"},
 		map[string]string{"JAVA_TOOL_OPTIONS": ""},
@@ -132,7 +131,6 @@ func TestCheckAntiTamper_AttachSocket_BlockMode(t *testing.T) {
 		map[string]string{},
 	)
 
-	// Create the Attach API socket file.
 	socketDir := filepath.Join(procRoot, "root", "tmp")
 	if err := os.MkdirAll(socketDir, 0o755); err != nil {
 		t.Fatalf("mkdir: %v", err)
@@ -142,7 +140,7 @@ func TestCheckAntiTamper_AttachSocket_BlockMode(t *testing.T) {
 		t.Fatalf("create socket: %v", err)
 	}
 
-	_, err := runAntiTamper(t, procRoot, 1234, true /* blockOnAttachSocket */)
+	_, err := runAntiTamper(t, procRoot, 1234, true)
 	if err == nil {
 		t.Error("expected error in block mode when Attach socket exists")
 	}
@@ -163,7 +161,7 @@ func TestCheckAntiTamper_AttachSocket_SelectorMode(t *testing.T) {
 		t.Fatalf("create socket: %v", err)
 	}
 
-	selectors, err := runAntiTamper(t, procRoot, 1234, false /* non-blocking */)
+	selectors, err := runAntiTamper(t, procRoot, 1234, false)
 	if err != nil {
 		t.Fatalf("unexpected error in selector mode: %v", err)
 	}

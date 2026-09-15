@@ -15,21 +15,10 @@ import (
 	"github.com/yourorg/spire-jvm-attestor/internal/procfs"
 )
 
-// ErrNotJVM is returned by Check when the process holds no JAR files — i.e. it
-// is not a JVM workload. Callers should treat this as "not applicable" rather
-// than an integrity failure.
+// ErrNotJVM means attestation is not applicable, not an integrity failure.
 var ErrNotJVM = errors.New("no jar files found in maps, fd table or cmdline")
 
-// JarHashChecker computes the SHA-256 of every JAR a JVM process has mapped or
-// open and emits both per-jar and set-wide selectors. It does NOT compare against
-// a reference value: the expected hash is enforced by the SPIRE registration
-// entry, which the deployment step pins from the artifact registry. Keeping the
-// comparison out of the hot path means the attestor never blocks on an external
-// API call.
-//
-// Jars are read through /proc handles (map_files or fd) whenever the kernel
-// offers one, so the bytes hashed belong to the inode the JVM actually holds
-// rather than to whatever the pathname resolves to at attestation time.
+// JarHashChecker emits hashes; SPIRE registration entries enforce the expected values.
 type JarHashChecker struct {
 	bufPool sync.Pool
 }
@@ -118,26 +107,7 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 	return allSelectors, nil
 }
 
-// discoverJars collects every jar the process holds and reports which sources
-// produced them.
-//
-// The two kernel-attested sources are UNIONED, not tried in turn. Taking the
-// first non-empty source would let a process hide its own descriptor table:
-// mapping a single approved jar into its address space (one FileChannel.map call
-// from inside the JVM) makes maps non-empty, so an extra jar held open via fd
-// would never be scanned. Since the aggregate set digest is what actually pins a
-// workload, that would reinstate the very extra-code hole jar_set_sha256 exists
-// to close — the process would publish exactly the approved selector set while
-// running attacker code.
-//
-// cmdline stays a true fallback: it is consulted only when the kernel offers
-// nothing, and it is reported as its own source so the caller can degrade the
-// selectors.
-//
-// Results are sorted by path so the aggregate set digest depends only on WHICH
-// jars are present, not on the order the kernel happened to report them in
-// (address order in maps, descriptor-allocation order in the fd table). The
-// deployment step has to reproduce that digest offline, so it must be canonical.
+// Union maps and fd sources so a mapped jar cannot hide additional open jars.
 func discoverJars(procRoot string) ([]procfs.MapsEntry, string, error) {
 	mapped, err := procfs.ParseJarPathsFromMaps(procRoot)
 	if err != nil {
@@ -150,13 +120,7 @@ func discoverJars(procRoot string) ([]procfs.MapsEntry, string, error) {
 	}
 
 	if entries := mergeByPath(mapped, opened); len(entries) > 0 {
-		// summariseSources must see the RAW mapped/opened lists, not the
-		// post-merge entries: mergeByPath dedups by path and lets the fd entry
-		// win when a jar is both mapped and held open (see its comment), which
-		// overwrites that entry's Source to SourceFD. Summarising from the
-		// merged list would then read as "fd only" for a jar the kernel also
-		// reported in maps, hiding the maps+fd signal this selector exists to
-		// surface.
+		// Summarise before merging: deduplication replaces mapped entries with fd entries.
 		return sortByPath(entries), summariseSources(mapped, opened), nil
 	}
 
@@ -171,13 +135,7 @@ func discoverJars(procRoot string) ([]procfs.MapsEntry, string, error) {
 	return nil, "", nil
 }
 
-// mergeByPath unions the kernel sources, keeping one entry per jar path.
-//
-// A jar that is both mapped and held open appears in both lists. The fd entry
-// wins because its handle is always readable, whereas map_files needs
-// CONFIG_CHECKPOINT_RESTORE and falls back to pathname resolution when absent.
-// Deduplicating on the path (rather than the inode) also keeps the set digest
-// well formed: it is built from one "<path>:<hash>" line per entry.
+// mergeByPath prefers fd handles because map_files may be unavailable.
 func mergeByPath(mapped, opened []procfs.MapsEntry) []procfs.MapsEntry {
 	merged := make(map[string]procfs.MapsEntry, len(mapped)+len(opened))
 
@@ -221,17 +179,13 @@ type hashResult struct {
 	computeDuration time.Duration
 }
 
-// hashEntry opens one jar, derives its cache identity from the open descriptor
-// and returns its SHA-256. Opening once and calling fstat on that descriptor —
-// rather than stat'ing a path and then opening it — removes the window in which
-// the file could be swapped between the two calls.
+// hashEntry hashes and stats the same descriptor to avoid path-swap races.
 func (c *JarHashChecker) hashEntry(ctx *AttestationContext, entry procfs.MapsEntry) (hashResult, error) {
 	result := hashResult{inodeMatches: true}
 
 	readPath := entry.KernelPath
 	if readPath != "" {
-		// map_files is only present with CONFIG_CHECKPOINT_RESTORE; degrade to the
-		// namespace path and record the weaker guarantee instead of failing.
+		// Missing map_files: fall back to the namespace path and report the weaker guarantee.
 		if _, err := os.Stat(readPath); err != nil {
 			readPath = ""
 		}
@@ -253,10 +207,7 @@ func (c *JarHashChecker) hashEntry(ctx *AttestationContext, entry procfs.MapsEnt
 		return result, fmt.Errorf("cannot stat open jar %s: %w", entry.Path, err)
 	}
 
-	// Inode 0 means the source recorded no kernel inode (cmdline fallback), so
-	// there is nothing to compare against. A genuine mismatch means the file
-	// behind the path changed after the JVM took it — typical for an OverlayFS
-	// copy-up, but also what a swap would look like.
+	// Inode 0 is unverified; mismatches can indicate OverlayFS copy-up or a file swap.
 	if entry.Inode != 0 {
 		if diskInode, err := cache.GetInode(info); err == nil && diskInode != entry.Inode {
 			result.inodeMatches = false

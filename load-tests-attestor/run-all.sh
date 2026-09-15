@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Master orchestrator: overlay x scenario load tests + metrics export + summary.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -86,9 +85,7 @@ for overlay in "${OVERLAYS[@]}"; do
     "$LIB_DIR/metrics-export.sh" "$START" "$END" "$label" "$RESULTS_DIR"
 
     if [[ "$overlay" == "custom-jvm" ]]; then
-      # S-B restarts spire-agent every cycle, so it collects & merges agent logs
-      # per-cycle itself (the final pod's logs alone would miss earlier cycles).
-      # For scenarios where the agent stays alive (A, C) collect once here.
+      # Scenario B collects logs per cycle because each restart deletes the previous pod.
       if [[ -f "$subdir/attestor-timing.csv" ]]; then
         log "Agent logs already collected per-cycle by scenario; skipping final collect for $label"
       else

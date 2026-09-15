@@ -1,9 +1,4 @@
 #!/bin/bash
-# run-scenario5-scaling.sh
-# Запускає scenario5 (паралельне навантаження) і автоматично масштабує
-# deployment точно в момент, коли навантаження досягає піку (scale-up)
-# та коли воно спадає (scale-down). Час синхронізований з фазами
-# в scenario5-identity-stress.js: T_RAMP_END=180s, T_POST_SCALE_END=540s.
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -18,7 +13,7 @@ DEPLOYMENT="${K8S_DEPLOYMENT:-payments-service}"
 MIN_REPLICAS="${MIN_REPLICAS:-1}"
 MAX_REPLICAS="${MAX_REPLICAS:-15}"
 
-# Мають збігатися з константами T_RAMP_END / T_POST_SCALE_END у .js файлі
+# Має збігатися з T_RAMP_END / T_POST_SCALE_END у scenario5-identity-stress.js.
 SCALE_UP_AT_SEC="${SCALE_UP_AT_SEC:-180}"
 SCALE_DOWN_AT_SEC="${SCALE_DOWN_AT_SEC:-540}"
 
@@ -64,7 +59,6 @@ export_prometheus_data() {
 
 START_TIME=$(date -u +%s)
 
-# --- Запускаємо k6 у фоні -------------------------------------------------
 k6 run \
   -e BASE_URL="$SPIRE_URL" \
   -e AUTH_TYPE="$AUTH_TYPE" \
@@ -76,19 +70,16 @@ k6 run \
   | tee "$RESULTS_DIR/scenario5-${AUTH_TYPE}-output.log" &
 K6_PID=$!
 
-# --- Плануємо scale-up рівно на початок фази ramp_up ----------------------
 (
   sleep "$SCALE_UP_AT_SEC"
   scale_deployment "$MAX_REPLICAS" "scale-out під навантаженням"
 ) &
 
-# --- Плануємо scale-down рівно на кінець фази post_scale -------------------
 (
   sleep "$SCALE_DOWN_AT_SEC"
   scale_deployment "$MIN_REPLICAS" "scale-in під спадаючим навантаженням"
 ) &
 
-# Чекаємо завершення k6 (основний критерій закінчення тесту)
 wait "$K6_PID"
 K6_EXIT_CODE=$?
 
@@ -110,7 +101,6 @@ else
   echo -e "${RED}❌ Test failed (exit code $K6_EXIT_CODE).${NC}"
 fi
 
-# --- Безпека: гарантуємо повернення до MIN_REPLICAS навіть при збої тесту --
 echo -e "${YELLOW}↩️  Ensuring deployment is scaled back to ${MIN_REPLICAS} replicas...${NC}"
 scale_deployment "$MIN_REPLICAS" "cleanup"
 

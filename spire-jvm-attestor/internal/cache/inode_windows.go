@@ -8,8 +8,6 @@ import (
 )
 
 func GetInode(fileInfo os.FileInfo) (uint64, error) {
-	// On Windows, use a hash of the full file path as an inode substitute
-	// since Windows doesn't have traditional inodes
 	path := fileInfo.Name()
 	return hashPath(path), nil
 }

@@ -26,10 +26,6 @@ func EntryCreate(spiffeID, parentID, namespace, serviceAccount string) error {
 	return kubernetes.Kubectl(cmd...)
 }
 
-// EntryCreateWithSelectors creates a registration entry with an explicit selector
-// set (each element already in "type:value" form, e.g. "jvm:jar_sha256=abc123").
-// This is how JVM workloads are registered so the SPIRE server — not the plugin —
-// enforces the expected jar hash and integrity selectors.
 func EntryCreateWithSelectors(spiffeID, parentID string, selectors []string) error {
 	cmd := []string{
 		"exec", "-n", "spire", spireServerPod, "--",
@@ -43,8 +39,6 @@ func EntryCreateWithSelectors(spiffeID, parentID string, selectors []string) err
 	return kubernetes.Kubectl(cmd...)
 }
 
-// GetAgentParentID returns the SPIFFE ID of the first attested SPIRE agent, used
-// as the parent for node-anchored workload registration entries.
 func GetAgentParentID() (string, error) {
 	out, err := kubernetes.KubectlOutput(
 		"exec", "-n", "spire", spireServerPod, "--",
@@ -54,8 +48,7 @@ func GetAgentParentID() (string, error) {
 		return "", fmt.Errorf("list spire agents: %w", err)
 	}
 
-	// Handle both output shapes seen across SPIRE versions: a flat "spiffe_id"
-	// string, or a structured "id" object with trust_domain + path.
+	// Accept both flat and structured SPIFFE IDs across SPIRE versions.
 	var parsed struct {
 		Agents []struct {
 			SpiffeID string    `json:"spiffe_id"`
@@ -89,9 +82,6 @@ func agentSpiffeID(flat string, structured spiffeIDT) string {
 	return ""
 }
 
-// EntryDeleteBySpiffeID removes every existing registration entry for a SPIFFE ID
-// so registration is idempotent (re-running deploy refreshes the jar_sha256
-// selector instead of erroring on a duplicate entry).
 func EntryDeleteBySpiffeID(spiffeID string) error {
 	out, err := kubernetes.KubectlOutput(
 		"exec", "-n", "spire", spireServerPod, "--",
@@ -101,7 +91,6 @@ func EntryDeleteBySpiffeID(spiffeID string) error {
 		return fmt.Errorf("show entries for %s: %w", spiffeID, err)
 	}
 
-	// "id" (current) and "entry_id" (older) are both accepted.
 	var parsed struct {
 		Entries []struct {
 			ID      string `json:"id"`

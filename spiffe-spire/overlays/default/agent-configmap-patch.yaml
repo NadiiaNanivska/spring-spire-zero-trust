@@ -1,6 +1,4 @@
-# Strategic merge patch: повністю замінює data.agent.conf (це скалярний
-# рядок, тому патч перезаписує його цілком, а не мержить), прибираючи блок
-# WorkloadAttestor "jvm".
+# Патч замінює весь рядок data.agent.conf.
 apiVersion: v1
 kind: ConfigMap
 metadata:

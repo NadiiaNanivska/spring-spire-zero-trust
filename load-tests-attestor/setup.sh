@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Bootstrap cluster state for attestor load tests (workloads + custom-jvm + SPIRE entries).
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

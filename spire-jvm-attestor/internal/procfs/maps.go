@@ -10,32 +10,14 @@ import (
 	"github.com/yourorg/spire-jvm-attestor/internal/cache"
 )
 
-// Discovery sources, in descending order of trustworthiness.
 const (
-	// SourceMaps: the jar is file-backed in the process address space. The path
-	// and inode are recorded by the kernel in the VMA.
 	SourceMaps = "maps"
-	// SourceFD: the jar is held open by the process. The link target is recorded
-	// by the kernel at open() time and is not writable from user space.
 	SourceFD = "fd"
-	// SourceCmdline: last resort. /proc/<PID>/cmdline is a window into the
-	// process' own argv memory, which the process can rewrite (MITRE T1036.011),
-	// so a jar discovered this way carries no kernel guarantee at all.
 	SourceCmdline = "cmdline"
-	// SourceMapsAndFD: the same process contributed jars through both kernel
-	// sources. Reported instead of either one alone so the selector cannot be
-	// read as "only the address space was consulted".
 	SourceMapsAndFD = "maps+fd"
 )
 
-// MapsEntry is one jar discovered inside a JVM process.
-//
-// KernelPath, when non-empty, is a /proc handle resolving to the exact inode the
-// kernel associates with the mapping or descriptor. Reading through it bypasses
-// pathname resolution, so a symlink swap or a path-level TOCTOU on the jar cannot
-// redirect the hash to a different file. Inode is the value the kernel recorded
-// at map/open time; comparing it against the fstat of the handle detects that the
-// file backing the path changed after the JVM took it.
+// KernelPath binds reads to the JVM-held inode; Inode checks for backing-file changes.
 type MapsEntry struct {
 	Path       string
 	Inode      uint64
@@ -43,8 +25,6 @@ type MapsEntry struct {
 	KernelPath string
 }
 
-// ParseJarPathsFromMaps reads /proc/<PID>/maps and returns unique .jar entries
-// with their kernel inodes and their map_files handles.
 func ParseJarPathsFromMaps(procRoot string) ([]MapsEntry, error) {
 	mapsPath := filepath.Join(procRoot, "maps")
 	data, err := os.ReadFile(mapsPath)
@@ -72,9 +52,6 @@ func ParseJarPathsFromMaps(procRoot string) ([]MapsEntry, error) {
 			continue
 		}
 
-		// map_files entries are named after the address range exactly as maps
-		// prints it. The directory requires CONFIG_CHECKPOINT_RESTORE, so the
-		// caller must tolerate the handle not existing.
 		results = append(results, MapsEntry{
 			Path:       pathname,
 			Inode:      inode,
@@ -86,15 +63,7 @@ func ParseJarPathsFromMaps(procRoot string) ([]MapsEntry, error) {
 	return results, nil
 }
 
-// ExtractJarsFromFDs discovers jars the process currently holds open by walking
-// /proc/<PID>/fd.
-//
-// This is the discovery path for Spring Boot fat-jars: the JDK zip implementation
-// reads the archive with pread() rather than mapping it, so the jar never appears
-// in maps, but the JVM keeps its descriptor open for the process lifetime. Unlike
-// cmdline, the link target here is recorded by the kernel and cannot be rewritten
-// by the process, and the descriptor itself can be reopened to reach the very
-// inode the JVM holds.
+// Spring Boot fat-jars use pread(), so discover them through fd rather than maps.
 func ExtractJarsFromFDs(procRoot string) ([]MapsEntry, error) {
 	fdDir := filepath.Join(procRoot, "fd")
 
@@ -118,15 +87,11 @@ func ExtractJarsFromFDs(procRoot string) ([]MapsEntry, error) {
 		if err != nil {
 			continue
 		}
-		// An unlinked jar still yields a usable descriptor; keep it and drop the
-		// kernel's " (deleted)" suffix so the logical path stays comparable.
 		target = stripDeleted(target)
 		if !filepath.IsAbs(target) || !strings.HasSuffix(target, ".jar") {
 			continue
 		}
 
-		// Stat the descriptor rather than the target path: this is the inode the
-		// process actually holds, even if the name now points elsewhere.
 		fi, err := os.Stat(fdPath)
 		if err != nil || !fi.Mode().IsRegular() {
 			continue
@@ -146,14 +111,10 @@ func ExtractJarsFromFDs(procRoot string) ([]MapsEntry, error) {
 		})
 	}
 
-	// Returned in descriptor-allocation order; the caller canonicalises the order.
 	return results, nil
 }
 
-// ExtractJarsFromCmdline is the last-resort fallback when neither maps nor the
-// descriptor table yields a jar. Inode is 0 and KernelPath is empty because
-// nothing here is kernel-attested: the caller must degrade its selectors
-// accordingly rather than treat the result as verified.
+// Cmdline discovery is unverified; callers must degrade the selectors.
 func ExtractJarsFromCmdline(procRoot string) ([]MapsEntry, error) {
 	cmdlineRaw, err := os.ReadFile(filepath.Join(procRoot, "cmdline"))
 	if err != nil {
@@ -197,8 +158,6 @@ func resolveJarPath(procRoot, jarPath string) (string, error) {
 	return filepath.Clean(filepath.Join(stripDeleted(cwd), jarPath)), nil
 }
 
-// stripDeleted removes the " (deleted)" marker the kernel appends to maps
-// pathnames and fd link targets whose file has been unlinked.
 func stripDeleted(path string) string {
 	if idx := strings.Index(path, " (deleted)"); idx >= 0 {
 		return path[:idx]

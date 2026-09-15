@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Shared helpers for JVM attestor attack / resilience tests.
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -163,11 +162,7 @@ deploy_clean_apps() {
 
 workload_pod() {
   local deploy=$1
-  # Pick the NEWEST pod, not items[0]. items[0] is ordered arbitrarily by kubectl and,
-  # when a finished test leaves stale pods around (denied variant still Running, old
-  # ReplicaSet mid-rollout), it can return the wrong test's pod -> assertions run
-  # against unrelated log lines. Sorting by creationTimestamp and taking the last entry
-  # always yields the pod the current test just deployed.
+  # Select the newest pod to avoid stale pods from previous scenarios.
   kubectl get pods -n "$K8S_NAMESPACE" -l "app=$deploy" \
     --sort-by=.metadata.creationTimestamp \
     -o jsonpath='{.items[-1:].metadata.name}' 2>/dev/null
@@ -358,10 +353,6 @@ spire_entry_delete_for_spiffe() {
   done
 }
 
-# create_jvm_entry pins a full JVM selector set for one workload, in the correct
-# "key=value" form emitted by the plugin, including an explicit jar_sha256. Used to
-# simulate an unapproved/mismatched jar (pin a wrong hash -> workload denied). For
-# the normal happy path prefer ensure_spire_entries (wsldev is the source of truth).
 create_jvm_entry() {
   local spiffe_id=$1
   local sa=$2
@@ -386,10 +377,6 @@ create_jvm_entry() {
     >/dev/null
 }
 
-# ensure_spire_entries (re)creates the JVM workload registration entries via wsldev,
-# the single source of truth: it parses spiffe-spire/base/jvm-hashes-configmap.yaml
-# and pins jvm:jar_sha256=<hash> plus the integrity selectors (correct "=" form).
-# The plugin only computes hashes; these entries are what enforce them.
 ensure_spire_entries() {
   local wsldev_bin
   wsldev_bin="$(resolve_wsldev)"
@@ -448,14 +435,7 @@ assert_mtls_ok() {
 }
 
 assert_mtls_fails() {
-  # SPIRE never revokes an already-issued SVID; it only stops renewing one whose
-  # entry no longer matches (e.g. a traced workload emitting debug_clean=false). So
-  # for live-process attacks the tampered workload keeps serving mTLS until its SVID
-  # expires (default_x509_svid_ttl, kept short for this reason) and the agent refuses
-  # to reissue. Poll until the probe stops returning 2xx (denial reached) or we time
-  # out. Restart-based attacks fail on the very first probe, so this returns fast for
-  # them and only actually waits for the TTL-bounded cases.
-  # HTTP 000 (probe/curl failure) is NOT treated as denial — it produces false PASS.
+  # HTTP 000 is a probe failure, not proof of denial.
   local attempts=${MTLS_FAIL_RETRIES:-30}
   local delay=${MTLS_FAIL_DELAY:-5}
   local code i
@@ -556,17 +536,7 @@ assert_denied_by_attestor() {
   return 1
 }
 
-# assert_denied_by_attestor_log_only proves the agent REFUSED attestation purely from the
-# agent log, without gating on a downstream orders->payments mTLS failure. Use it for
-# LIVE-process tamper injected into an already-running, already-SVID'd pod (the Attach-API
-# socket test). Two facts make the mTLS probe the WRONG signal there:
-#   1. SPIRE never revokes an already-issued SVID, so the still-running payments pod keeps
-#      serving with the SVID it fetched BEFORE the socket was injected until TTL expiry.
-#   2. orders keeps a keep-alive connection pool to payments, so once a handshake has
-#      succeeded, subsequent probes reuse that connection and never re-validate payments'
-#      cert — orders->payments stays HTTP 200 well past any SVID expiry.
-# The guarantee of the attach-socket defense is that RE-ATTESTATION is refused (checker
-# failed / FailedPrecondition -> "No identity issued"), which is exactly what we assert.
+# Use agent logs for live tampering: existing SVIDs and pooled TLS connections can remain valid.
 assert_denied_by_attestor_log_only() {
   local pod=$1
   local log_file=$2
@@ -926,11 +896,6 @@ create_attach_socket() {
   '
 }
 
-# pin_unapproved_payments_hash simulates an "unknown"/unapproved jar. The plugin no
-# longer reads the jvm-hashes ConfigMap — the hash allow-list now lives in the
-# registration entry — so we re-pin the payments entry to a hash that does NOT match
-# the running jar. The workload's computed jvm:jar_sha256 then matches no entry and
-# SVID issuance is denied.
 BOGUS_JAR_SHA256="${BOGUS_JAR_SHA256:-0000000000000000000000000000000000000000000000000000000000000000}"
 
 pin_unapproved_payments_hash() {

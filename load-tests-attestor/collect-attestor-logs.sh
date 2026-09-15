@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Parse JVM attestor timing lines from spire-agent logs.
-# Usage: collect-attestor-logs.sh <start_unix> <end_unix> <label> [output_dir]
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -32,7 +30,6 @@ kubectl logs -n "$K8S_NAMESPACE" daemonset/spire-agent -c spire-agent --since="$
   echo "timestamp,pod,pid,total_us,anti_debug_us,anti_tamper_us,jar_hash_us,selectors"
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
-    # Example: ... level=info msg="jvm attestation timing" pid=123 total_us=450 anti_debug_us=10 ...
     pid=$(echo "$line" | sed -n 's/.*pid=\([0-9]*\).*/\1/p')
     total=$(echo "$line" | sed -n 's/.*total_us=\([0-9]*\).*/\1/p')
     anti_debug=$(echo "$line" | sed -n 's/.*anti_debug_us=\([0-9]*\).*/\1/p')

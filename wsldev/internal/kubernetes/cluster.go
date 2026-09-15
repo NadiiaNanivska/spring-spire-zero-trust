@@ -6,13 +6,11 @@ import (
 	"os/exec"
 )
 
-// ClusterManager відповідає за управління Kind кластером
 type ClusterManager struct {
 	Name string
-	Path string // повний шлях до kind, наприклад "/usr/local/bin/kind"
+	Path string
 }
 
-// NewClusterManager створює новий менеджер
 func NewClusterManager(name string) *ClusterManager {
 	return &ClusterManager{
 		Name: name,
@@ -20,7 +18,6 @@ func NewClusterManager(name string) *ClusterManager {
 	}
 }
 
-// Exists перевіряє, чи існує кластер
 func (c *ClusterManager) Exists() (bool, error) {
 	cmd := exec.Command(c.Path, "get", "clusters")
 	output, err := cmd.CombinedOutput()
@@ -32,7 +29,6 @@ func (c *ClusterManager) Exists() (bool, error) {
 	return containsLine(clusters, c.Name), nil
 }
 
-// Create створює кластер, повертає помилку, якщо існує
 func (c *ClusterManager) Create() error {
 	exists, err := c.Exists()
 	if err != nil {
@@ -48,7 +44,6 @@ func (c *ClusterManager) Create() error {
 	return cmd.Run()
 }
 
-// Delete видаляє кластер
 func (c *ClusterManager) Delete() error {
 	exists, err := c.Exists()
 	if err != nil {
@@ -64,7 +59,6 @@ func (c *ClusterManager) Delete() error {
 	return cmd.Run()
 }
 
-// Reset видаляє і створює кластер заново
 func (c *ClusterManager) Reset() error {
 	if err := c.Delete(); err != nil {
 		fmt.Println("Warning:", err)
@@ -72,7 +66,6 @@ func (c *ClusterManager) Reset() error {
 	return c.Create()
 }
 
-// ClusterInfo виводить інформацію про кластер
 func (c *ClusterManager) Info() error {
 	cmd := exec.Command("kubectl", "cluster-info")
 	cmd.Stdout = os.Stdout
@@ -80,7 +73,6 @@ func (c *ClusterManager) Info() error {
 	return cmd.Run()
 }
 
-// допоміжна функція для пошуку кластера у виводі
 func containsLine(output, line string) bool {
 	lines := splitLines(output)
 	for _, l := range lines {

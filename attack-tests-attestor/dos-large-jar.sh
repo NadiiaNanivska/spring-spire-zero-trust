@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Resilience D: Large jar / cold hash compute latency (DoS resistance).
 set -euo pipefail
 
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

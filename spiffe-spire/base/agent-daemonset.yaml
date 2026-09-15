@@ -25,9 +25,6 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ['sh', '-c', "until nc -z spire-server 8081; do echo waiting for spire-server; sleep 2; done"]
 
-        # Copies the jvm-attestor binary from the plugin image into the
-        # shared jvm-plugin emptyDir volume so the SPIRE agent can exec it.
-        # Image is loaded directly into Kind via `make kind-load` — no registry needed.
         - name: install-jvm-attestor
           image: spire-jvm-attestor:latest
           imagePullPolicy: Never
@@ -95,6 +92,5 @@ spec:
                 path: spire-agent
                 expirationSeconds: 7200
                 audience: spire-server
-        # Shared emptyDir populated by the install-jvm-attestor init-container
         - name: jvm-plugin
           emptyDir: {}
