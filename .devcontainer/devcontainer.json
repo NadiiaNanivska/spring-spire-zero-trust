@@ -1,11 +1,6 @@
 {
 	"image": "mcr.microsoft.com/devcontainers/universal:2",
 	"features": {
-		"ghcr.io/devcontainers/features/java:1": {
-			"version": "17",
-			"jdkDistro": "ms",
-			"installMaven": true
-		},
 		"ghcr.io/stu-bell/devcontainer-features/python:0": {
 			"apt_get": true,
 			"installTools": true,
