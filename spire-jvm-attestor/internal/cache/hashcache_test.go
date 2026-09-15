@@ -82,13 +82,34 @@ func TestHashCache_DetectsInPlaceRewriteWithRestoredMtime(t *testing.T) {
 		t.Fatal(err)
 	}
 	origMtime := info.ModTime()
-
-	// Keep size unchanged to isolate ctime-based invalidation.
-	if err := os.WriteFile(path, []byte("content-v2"), 0o644); err != nil {
-		t.Fatal(err)
+	_, origCtimeNs, ok := statExtra(info)
+	if !ok {
+		t.Fatal("cannot read ctime from file metadata")
 	}
-	if err := os.Chtimes(path, origMtime, origMtime); err != nil {
-		t.Fatal(err)
+
+	// Some filesystems have coarse timestamp resolution. Retry until ctime ticks,
+	// while keeping both size and mtime unchanged.
+	deadline := time.Now().Add(3 * time.Second)
+	for {
+		if err := os.WriteFile(path, []byte("content-v2"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Chtimes(path, origMtime, origMtime); err != nil {
+			t.Fatal(err)
+		}
+
+		updatedInfo, err := os.Stat(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, updatedCtimeNs, _ := statExtra(updatedInfo)
+		if updatedCtimeNs != origCtimeNs {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("ctime did not change after an in-place rewrite; filesystem cannot validate ctime-based cache invalidation")
+		}
+		time.Sleep(25 * time.Millisecond)
 	}
 
 	hash2, err := c.GetOrComputeByPath(path)
