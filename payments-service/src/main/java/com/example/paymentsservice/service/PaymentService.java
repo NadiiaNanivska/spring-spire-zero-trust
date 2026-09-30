@@ -1,6 +1,7 @@
 package com.example.paymentsservice.service;
 
-import lombok.RequiredArgsConstructor;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -16,10 +17,18 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentRepository repository;
+    private final Counter successfulPayments;
+
+    public PaymentService(PaymentRepository repository, MeterRegistry meterRegistry) {
+        this.repository = repository;
+        this.successfulPayments = Counter.builder("payments.processed")
+                .description("Number of successfully processed payments")
+                .tag("outcome", "success")
+                .register(meterRegistry);
+    }
 
     public Mono<PaymentResponse> processPayment(PaymentRequest request) {
         log.info("Received payment request for Order ID: {}", request.orderId());
@@ -37,6 +46,7 @@ public class PaymentService {
                 .delayElement(Duration.ofMillis(20))
                 .flatMap(repository::save)
                 .map(savedPayment -> {
+                    successfulPayments.increment();
                     log.info("Payment processed successfully. TxID: {}", savedPayment.transactionId());
                     return new PaymentResponse(
                             savedPayment.transactionId(),
