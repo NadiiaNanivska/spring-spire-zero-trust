@@ -1,7 +1,9 @@
 package apps
 
 import (
+	"crypto/ed25519"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -45,6 +47,56 @@ const (
 	spireNamespace       = "spire"
 	spireAgentDaemonSet  = "spire-agent"
 )
+
+// JVMSigningKeyEnv contains a base64-encoded Ed25519 private key (64 bytes).
+// Keep it in a secret store or local environment; never commit the private key.
+const JVMSigningKeyEnv = "WSLDEV_JVM_SIGNING_KEY"
+
+// SignJVMJar signs the raw SHA-256 digest and writes the raw Ed25519 signature to <jar>.sig.
+func SignJVMJar(jarPath string) (string, error) {
+	privateKey, err := jvmSigningPrivateKey()
+	if err != nil {
+		return "", err
+	}
+	hashHex, err := sha256File(jarPath)
+	if err != nil {
+		return "", fmt.Errorf("hash JAR before signing: %w", err)
+	}
+	digest, err := hex.DecodeString(hashHex)
+	if err != nil {
+		return "", fmt.Errorf("decode JAR SHA-256: %w", err)
+	}
+	if err := os.WriteFile(jarPath+".sig", ed25519.Sign(privateKey, digest), 0o644); err != nil {
+		return "", fmt.Errorf("write JAR signature: %w", err)
+	}
+	fingerprint := jvmKeyFingerprint(privateKey.Public().(ed25519.PublicKey))
+	fmt.Printf("jvm-signing: %s signed_by=%s\\n", filepath.Base(jarPath), fingerprint)
+	return fingerprint, nil
+}
+
+func jvmSigningPrivateKey() (ed25519.PrivateKey, error) {
+	encoded := strings.TrimSpace(os.Getenv(JVMSigningKeyEnv))
+	raw, err := base64.StdEncoding.DecodeString(encoded)
+	if encoded == "" || err != nil || len(raw) != ed25519.PrivateKeySize {
+		return nil, fmt.Errorf("%s must contain a base64-encoded Ed25519 private key (64 bytes)", JVMSigningKeyEnv)
+	}
+	return ed25519.PrivateKey(raw), nil
+}
+
+func jvmKeyFingerprint(publicKey ed25519.PublicKey) string {
+	sum := sha256.Sum256(publicKey)
+	return "SHA256:" + hex.EncodeToString(sum[:])
+}
+
+// JVMKeyPublicConfig returns the trusted public key in the agent plugin's configuration format.
+func JVMKeyPublicConfig() (fingerprint, encodedPublicKey string, err error) {
+	privateKey, err := jvmSigningPrivateKey()
+	if err != nil {
+		return "", "", err
+	}
+	publicKey := privateKey.Public().(ed25519.PublicKey)
+	return jvmKeyFingerprint(publicKey), base64.StdEncoding.EncodeToString(publicKey), nil
+}
 
 // SyncJVMHashes updates deployed jars and restarts the agent; other hashes are preserved.
 func SyncJVMHashes(deployed []string) error {
