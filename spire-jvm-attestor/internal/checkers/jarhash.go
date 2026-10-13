@@ -66,7 +66,9 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 		inodeConsistent = inodeConsistent && result.inodeMatches
 		kernelHandle = kernelHandle && result.viaKernelHandle
 
-		allSelectors = append(allSelectors, SelectorJarSha256Prefix+result.hash)\n\t\tctx.JARHashes[entry.Path] = result.hash\n\t\tctx.JARPaths = append(ctx.JARPaths, entry.Path)
+		allSelectors = append(allSelectors, SelectorJarSha256Prefix+result.hash)
+		ctx.JARHashes[entry.Path] = result.hash
+		ctx.JARPaths = append(ctx.JARPaths, entry.Path)
 		fmt.Fprintf(setDigest, "%s:%s\n", entry.Path, result.hash)
 	}
 

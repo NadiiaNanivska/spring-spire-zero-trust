@@ -10,8 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
-
-	"github.com/yourorg/spire-jvm-attestor/internal/procfs"
 )
 
 const maxSignatureSize = 4096

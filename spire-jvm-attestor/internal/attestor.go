@@ -109,12 +109,13 @@ func (p *JVMAttestor) Attest(
 	)
 
 	attestCtx := &checkers.AttestationContext{
-		Context:   ctx,
-		PID:       req.Pid,
-		ProcRoot:  fmt.Sprintf("%s/%d", p.procFS, req.Pid),
-		HashCache: p.hashCache,
-		Logger:    log,
+		Context:    ctx,
+		PID:        req.Pid,
+		ProcRoot:   fmt.Sprintf("%s/%d", p.procFS, req.Pid),
+		HashCache:  p.hashCache,
+		Logger:     log,
 		PublicKeys: cfg.PublicKeys,
+		JARHashes:  make(map[string]string),
 	}
 
 	var allSelectors []string
