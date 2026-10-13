@@ -41,9 +41,6 @@ func DeployPaymentsPoC() error {
 	if err := RunCmd("mvn", "clean", "package", "-DskipTests"); err != nil {
 		return err
 	}
-	if _, err := SignJVMJar("target/orders-service-0.0.1-SNAPSHOT.jar"); err != nil {
-		return err
-	}
 	if _, err := SignJVMJar("target/payments-service-0.0.1-SNAPSHOT.jar"); err != nil {
 		return err
 	}
@@ -104,6 +101,9 @@ func DeployOrdersPoC() error {
 	}
 
 	if err := RunCmd("mvn", "clean", "package", "-DskipTests"); err != nil {
+		return err
+	}
+	if _, err := SignJVMJar("target/orders-service-0.0.1-SNAPSHOT.jar"); err != nil {
 		return err
 	}
 
