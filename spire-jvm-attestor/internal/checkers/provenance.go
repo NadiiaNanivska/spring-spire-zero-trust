@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -51,4 +50,3 @@ func (c *ProvenanceChecker) Check(ctx *AttestationContext) ([]string, error) {
 	return nil, nil
 }
 
-var _ = fmt.Sprintf
