@@ -31,13 +31,12 @@ func TestJvmEntrySelectors_PinsSetDigest(t *testing.T) {
 	sum := sha256.Sum256([]byte("/app/payments-service.jar:" + hash + "\n"))
 	wantSet := "jvm:jar_set_sha256=" + hex.EncodeToString(sum[:])
 
-	selectors := jvmEntrySelectors(svc, hash)
+	selectors := jvmEntrySelectors(svc, hash, "SHA256:trusted-key")
 
 	for _, want := range []string{
-		"jvm:debug_clean=true",
-		"jvm:agent_flags_clean=true",
-		"jvm:maps_verified=true",
-		"jvm:hash_via_kernel_handle=true",
+		"jvm:jdk_verified=true",
+		"jvm:subject_match=true",
+		"jvm:signed_by=SHA256:trusted-key",
 		"jvm:jar_sha256=" + hash,
 		wantSet,
 	} {
