@@ -29,6 +29,7 @@ func (c *JDKChecker) Check(ctx *AttestationContext) ([]string, error) {
 		return nil, nil
 	}
 	jdkRoot := filepath.Dir(filepath.Dir(exePath))
+	ctx.JDKRoot = jdkRoot
 	releasePath := filepath.Join(ctx.ProcRoot, "root", strings.TrimPrefix(filepath.Join(jdkRoot, "release"), "/"))
 	f, err := os.Open(releasePath)
 	if err != nil {
