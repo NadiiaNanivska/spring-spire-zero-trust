@@ -43,7 +43,7 @@ func (c *ProvenanceChecker) Check(ctx *AttestationContext) ([]string, error) {
 			actual := sha256.Sum256(pub)
 			if fingerprint != "SHA256:"+hex.EncodeToString(actual[:]) { continue }
 			if ed25519.Verify(ed25519.PublicKey(pub), digest, sig) {
-				return []string{SelectorSignedByPrefix+procfs.SanitizeSelector(fingerprint), SelectorSubjectMatchPrefix+"true"}, nil
+				return []string{SelectorSignedByPrefix+fingerprint, SelectorSubjectMatchPrefix+"true"}, nil
 			}
 		}
 	}
