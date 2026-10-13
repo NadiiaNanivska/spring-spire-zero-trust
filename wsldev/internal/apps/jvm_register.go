@@ -77,10 +77,9 @@ func jvmEntrySelectors(svc jvmService, hash, fingerprint string) []string {
 	return []string{
 		fmt.Sprintf("k8s:ns:%s", spireNamespace),
 		fmt.Sprintf("k8s:sa:%s", svc.serviceAccount),
-		"jvm:debug_clean=true",
-		"jvm:agent_flags_clean=true",
-		"jvm:maps_verified=true",
-		"jvm:hash_via_kernel_handle=true",
+		"jvm:jdk_verified=true",
+		"jvm:subject_match=true",
+		fmt.Sprintf("jvm:signed_by=%s", fingerprint),
 		fmt.Sprintf("jvm:jar_sha256=%s", hash),
 		fmt.Sprintf("jvm:jar_set_sha256=%s", jarSetDigest(map[string]string{svc.manifestKey: hash})),
 	}
