@@ -63,9 +63,10 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 
 func (p *JVMAttestor) buildPipeline(cfg *config.Config) {
 	p.pipeline = []checkers.Checker{
-		checkers.NewAntiDebugChecker(),
-		checkers.NewAntiTamperChecker(cfg.BlockOnAttachSocket),
+		checkers.NewJDKChecker(),
+		checkers.NewLaunchFactsChecker(cfg.BlockOnAttachSocket),
 		checkers.NewJarHashChecker(),
+		checkers.NewProvenanceChecker(),
 	}
 }
 
@@ -113,6 +114,7 @@ func (p *JVMAttestor) Attest(
 		ProcRoot:  fmt.Sprintf("%s/%d", p.procFS, req.Pid),
 		HashCache: p.hashCache,
 		Logger:    log,
+		PublicKeys: cfg.PublicKeys,
 	}
 
 	var allSelectors []string
@@ -138,10 +140,8 @@ func (p *JVMAttestor) Attest(
 				"error", err,
 			)
 			switch checker.Name() {
-			case "anti-debug":
-				return nil, status.Errorf(codes.Internal, "anti-debug check: %v", err)
-			case "anti-tamper":
-				return nil, status.Errorf(codes.FailedPrecondition, "%s check failed: %v", checker.Name(), err)
+			case "jdk", "launch-facts":
+				return nil, status.Errorf(codes.Internal, "%s check: %v", checker.Name(), err)
 			default:
 				return nil, status.Errorf(codes.PermissionDenied, "%s check failed: %v", checker.Name(), err)
 			}
@@ -149,18 +149,15 @@ func (p *JVMAttestor) Attest(
 
 		allSelectors = append(allSelectors, selectors...)
 
-		if containsSelector(selectors, checkers.SelectorDebugCleanFalse) ||
-			containsSelector(selectors, checkers.SelectorAgentFlagsCleanFalse) {
-			break
-		}
 	}
 
 	log.Info("jvm attestation timing",
 		"pid", req.Pid,
 		"total_us", time.Since(attestStart).Microseconds(),
-		"anti_debug_us", checkerDurations["anti-debug"].Microseconds(),
-		"anti_tamper_us", checkerDurations["anti-tamper"].Microseconds(),
+		"jdk_us", checkerDurations["jdk"].Microseconds(),
+		"launch_facts_us", checkerDurations["launch-facts"].Microseconds(),
 		"jar_hash_us", checkerDurations["jar-hash"].Microseconds(),
+		"provenance_us", checkerDurations["provenance"].Microseconds(),
 		"selectors", len(allSelectors),
 	)
 	return buildResponse(allSelectors), nil
