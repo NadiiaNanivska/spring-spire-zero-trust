@@ -122,6 +122,7 @@ func (p *JVMAttestor) Attest(
 
 	for _, checker := range pipeline {
 		checkStart := time.Now()
+		log.Info("checker started", "checker", checker.Name(), "pid", req.Pid)
 		selectors, err := checker.Check(attestCtx)
 		checkerDurations[checker.Name()] = time.Since(checkStart)
 		if err != nil {
@@ -147,8 +148,14 @@ func (p *JVMAttestor) Attest(
 			}
 		}
 
+		log.Info("checker completed",
+			"checker", checker.Name(),
+			"pid", req.Pid,
+			"duration_us", checkerDurations[checker.Name()].Microseconds(),
+			"selector_count", len(selectors),
+			"selectors", strings.Join(selectors, ","),
+		)
 		allSelectors = append(allSelectors, selectors...)
-
 	}
 
 	log.Info("jvm attestation timing",
