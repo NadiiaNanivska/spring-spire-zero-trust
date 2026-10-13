@@ -44,6 +44,7 @@ var jvmServices = map[string]jvmService{
 
 const (
 	jvmHashesManifestRel = "spiffe-spire/base/jvm-hashes-configmap.yaml"
+	jvmAgentConfigRel     = "spiffe-spire/base/agent-configmap.yaml"
 	spireNamespace       = "spire"
 	spireAgentDaemonSet  = "spire-agent"
 )
@@ -140,6 +141,13 @@ func SyncJVMHashes(deployed []string) error {
 		return err
 	}
 
+	if err := syncJVMTrustedPublicKey(root); err != nil {
+		return err
+	}
+	if err := kubernetes.Kubectl("apply", "-f", filepath.Join(root, filepath.FromSlash(jvmAgentConfigRel))); err != nil {
+		return fmt.Errorf("apply JVM attestor public key: %w", err)
+	}
+
 	if err := kubernetes.Kubectl("apply", "-f", manifestPath); err != nil {
 		return fmt.Errorf("apply jvm-hashes ConfigMap: %w", err)
 	}
@@ -156,6 +164,38 @@ func SyncJVMHashes(deployed []string) error {
 	}
 
 	fmt.Println("jvm-hashes: ConfigMap applied and spire-agent restarted (hash cache cleared)")
+	return nil
+}
+
+// syncJVMTrustedPublicKey injects the derived public key into the local agent ConfigMap.
+func syncJVMTrustedPublicKey(root string) error {
+	fingerprint, publicKey, err := JVMKeyPublicConfig()
+	if err != nil {
+		return err
+	}
+	path := filepath.Join(root, filepath.FromSlash(jvmAgentConfigRel))
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("read SPIRE agent ConfigMap: %w", err)
+	}
+	content := string(data)
+	lines := strings.Split(content, "\n")
+	filtered := lines[:0]
+	for _, line := range lines {
+		if !strings.Contains(line, "public_keys = {") {
+			filtered = append(filtered, line)
+		}
+	}
+	content = strings.Join(filtered, "\n")
+	old := "          block_on_attach_socket = true"
+	newLine := old + "\n          public_keys = { \"" + fingerprint + "\" = \"" + publicKey + "\" }"
+	if !strings.Contains(content, old) {
+		return fmt.Errorf("cannot find block_on_attach_socket in %s", jvmAgentConfigRel)
+	}
+	content = strings.Replace(content, old, newLine, 1)
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		return fmt.Errorf("write SPIRE agent ConfigMap: %w", err)
+	}
 	return nil
 }
 
