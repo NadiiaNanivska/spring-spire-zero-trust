@@ -47,7 +47,9 @@ func RegisterJVMWorkloads(deployed []string) error {
 				svc.manifestKey, jvmHashesManifestRel)
 		}
 
-		selectors := jvmEntrySelectors(svc, hash)
+		fingerprint, _, err := JVMKeyPublicConfig()
+		if err != nil { return fmt.Errorf("load JVM signing key: %w", err) }
+		selectors := jvmEntrySelectors(svc, hash, fingerprint)
 
 		if err := spire.EntryDeleteBySpiffeID(svc.spiffeID); err != nil {
 			return fmt.Errorf("clear existing entry for %s: %w", svc.spiffeID, err)
@@ -71,7 +73,7 @@ func JVMServiceNames() []string {
 }
 
 // Pin the whole jar set: SPIRE subset matching would otherwise allow extra jars.
-func jvmEntrySelectors(svc jvmService, hash string) []string {
+func jvmEntrySelectors(svc jvmService, hash, fingerprint string) []string {
 	return []string{
 		fmt.Sprintf("k8s:ns:%s", spireNamespace),
 		fmt.Sprintf("k8s:sa:%s", svc.serviceAccount),
