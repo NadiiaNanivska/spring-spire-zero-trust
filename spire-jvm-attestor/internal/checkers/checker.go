@@ -16,6 +16,7 @@ type AttestationContext struct {
 	JDKRoot string
 	JARHashes map[string]string
 	JARPaths []string
+	PublicKeys map[string]string
 }
 
 type Checker interface {
