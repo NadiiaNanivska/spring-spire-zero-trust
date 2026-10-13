@@ -49,8 +49,8 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 			config:    &config.Config{BlockOnAttachSocket: false},
 			hashCache: cache.NewHashCache(),
 			pipeline: []checkers.Checker{
-				checkers.NewAntiDebugChecker(),
-				checkers.NewAntiTamperChecker(false),
+				checkers.NewJDKChecker(),
+				checkers.NewLaunchFactsChecker(false),
 				checkers.NewJarHashChecker(),
 			},
 		}
@@ -61,44 +61,14 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 
-		assert.Contains(t, resp.SelectorValues, "debug_clean=true")
-		assert.Contains(t, resp.SelectorValues, "agent_flags_clean=true")
-		assert.Contains(t, resp.SelectorValues, "attach_socket_exposed=false")
+		assert.Contains(t, resp.SelectorValues, "has_javaagent=false")
+		assert.Contains(t, resp.SelectorValues, "has_jdwp=false")
+		assert.Contains(t, resp.SelectorValues, "attach_socket=false")
 		assert.Contains(t, resp.SelectorValues, "jar_sha256="+expectedHash)
 		assert.Contains(t, resp.SelectorValues, "maps_verified=true")
 		assert.Contains(t, resp.SelectorValues, "inode_consistent=true")
 	})
 
-	t.Run("Fail-Fast: Stop execution if process is under debug", func(t *testing.T) {
-		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
-
-		statusPath := filepath.Join(procRoot, "status")
-		require.NoError(t, os.WriteFile(statusPath, []byte("Name: java\nTracerPid: 9999\n"), 0644))
-
-		attestor := &JVMAttestor{
-			procFS:    tmpDir,
-			config:    &config.Config{BlockOnAttachSocket: false},
-			hashCache: cache.NewHashCache(),
-			pipeline: []checkers.Checker{
-				checkers.NewAntiDebugChecker(),
-				checkers.NewAntiTamperChecker(false),
-				checkers.NewJarHashChecker(),
-			},
-		}
-
-		req := &workloadattestorv1.AttestRequest{Pid: int32(pid)}
-		resp, err := attestor.Attest(context.Background(), req)
-
-		require.NoError(t, err)
-		require.NotNil(t, resp)
-		assert.Contains(t, resp.SelectorValues, "debug_clean=false")
-		assert.Contains(t, resp.SelectorValues, "tracer_pid=9999")
-
-		for _, s := range resp.SelectorValues {
-			assert.NotContains(t, s, "jar_sha256")
-			assert.NotContains(t, s, "maps_verified")
-		}
-	})
 
 	t.Run("Modified JAR: still issues selectors (policy lives in the entry)", func(t *testing.T) {
 		setupCleanProcFS(t, procRoot, actualInode, "/app/payments-service.jar")
@@ -108,8 +78,8 @@ func TestJVMAttestor_Attest_Pipeline(t *testing.T) {
 			config:    &config.Config{BlockOnAttachSocket: false},
 			hashCache: cache.NewHashCache(),
 			pipeline: []checkers.Checker{
-				checkers.NewAntiDebugChecker(),
-				checkers.NewAntiTamperChecker(false),
+				checkers.NewJDKChecker(),
+				checkers.NewLaunchFactsChecker(false),
 				checkers.NewJarHashChecker(),
 			},
 		}
