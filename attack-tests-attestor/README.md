@@ -41,14 +41,14 @@ Partial run:
 
 | Script | Level | Attack / scenario | Expected outcome |
 |--------|-------|-------------------|------------------|
-| `attack-antidebug.sh` | 1 | ptrace / strace on JVM | `debug_clean=false`, SVID denied |
-| `attack-tamper-flags.sh` | 2 | Boot-safe dangerous cmdline flags (jdwp, `-Xdebug`, attach, jmxremote) | `agent_flags_clean=false`, pod Running, SVID denied |
-| `attack-tamper-env.sh` | 2 | All 4 dangerous env vars | `suspicious_env`, pod Running, SVID denied |
+| `attack-antidebug.sh` | 1 | ptrace / strace on JVM | SPIRE identity issuance denied for the traced JVM |
+| `attack-tamper-flags.sh` | 2 | Boot-safe dangerous cmdline flags (jdwp, `-Xdebug`, attach, jmxremote) | SPIRE identity issuance denied; pod remains Running when the JVM supports the flag |
+| `attack-tamper-env.sh` | 2 | All 4 dangerous env vars | SPIRE identity issuance denied; pod remains Running |
 | `attack-attach-socket.sh` | 2 | `.java_pid` Attach socket | `FailedPrecondition`, SVID denied |
-| `attack-jar-unknown.sh` | 3 | Tampered / unapproved jar hash (not in allow-list) | computed `jar_sha256` matches no entry ⇒ SVID denied |
+| `attack-jar-unknown.sh` | 3 | Tampered / unapproved jar hash (not in allow-list) | computed artifact selectors do not match registration ⇒ SVID denied |
 | `attack-cp-classpath.sh` | B | Classpath launch (no `-jar`) with an attacker jar ahead of the app jar | both jars discovered via `fd`; approved `jar_sha256` still present but `jar_set_sha256` no longer matches ⇒ **SVID denied** |
-| `bypass-symlink.sh` | B | Jar pathname redirected to an attacker decoy (`ln -s decoy.jar payments-service.jar`) | `jar_source=fd`, published hash still equals the pinned one, decoy hash never appears ⇒ SVID kept |
-| `bypass-mmap-shadow.sh` | B | Extra classpath jar **plus** a `FileChannel.map` of the approved jar, to make `maps` answer first and hide the fd table | `jar_source=maps+fd` (sources unioned), extra jar still counted, `jar_set_sha256` no longer matches ⇒ **SVID denied** |
+| `bypass-symlink.sh` | B | Jar pathname redirected to an attacker decoy (`ln -s decoy.jar payments-service.jar`) | the approved workload remains usable; per-process selector values are not logged |
+| `bypass-mmap-shadow.sh` | B | Extra classpath jar **plus** a `FileChannel.map` of the approved jar, to make `maps` answer first and hide the fd table | extra classpath jar scenario ⇒ **SVID denied** (runtime selectors are not logged) |
 | `dos-large-jar.sh` | D | Large jar SHA-256 stress | Agent survives, latency logged |
 
 ## Methodology
@@ -122,8 +122,7 @@ Level 1 anti-debug     -> /proc/<pid>/status TracerPid
 Level 2 anti-tamper    -> /proc/cmdline flags, /proc/environ, Attach socket
 Level 3 jar-hash       -> jar discovery unions /proc/<pid>/maps and /proc/<pid>/fd,
                           falling back to (unverified) cmdline only when the kernel
-                          reports nothing; SHA-256 read through the /proc handle
-                          and published as jvm:jar_sha256 + jvm:jar_set_sha256
+                          reports nothing; SHA-256 selectors are evaluated by SPIRE
                           (expected value enforced by the SPIRE registration entry)
 ```
 
@@ -132,7 +131,7 @@ Level 3 jar-hash       -> jar discovery unions /proc/<pid>/maps and /proc/<pid>/
 > `jvm:jar_sha256=<hash>`; the SPIRE **registration entry** (populated by `wsldev`
 > from `spiffe-spire/base/jvm-hashes-configmap.yaml`) pins the approved value, so a
 > tampered or unapproved jar simply fails to match and is denied an SVID. This is
-> why the Level 3 tests assert a denied mTLS probe rather than a plugin hard-fail
-> log line.
+> why tests assert externally observable identity/mTLS outcomes rather than per-process
+> selector log lines. The plugin logs the enabled modules at configuration time only.
 
 See [spire-jvm-attestor/README.md](../spire-jvm-attestor/README.md) for plugin design.
