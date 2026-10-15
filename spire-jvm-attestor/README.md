@@ -11,7 +11,11 @@ making it impossible to distinguish between workloads by code identity.
 
 The plugin reads `/proc/<PID>/*` — kernel-authoritative data that cannot be spoofed
 from user-space — and returns SPIRE selectors that reflect the actual runtime state
-of the process:
+of the process.
+
+Each checker is independently configurable through `check_jdk`, `check_launch`,
+`check_jar_hash`, and `check_provenance`. All checks default to enabled when omitted.
+Provenance requires JAR hashing to be enabled.
 
 | Check | Source | Cost |
 |---|---|---|
@@ -36,6 +40,10 @@ pathname cannot redirect the hash.
 ## Selectors
 
 ```
+jvm:java_version=<version>
+jvm:has_javaagent=true|false
+jvm:has_jdwp=true|false
+jvm:java_tool_options_set=true|false
 jvm:debug_clean=true|false
 jvm:agent_flags_clean=true|false
 jvm:attach_socket_exposed=true|false
@@ -100,6 +108,10 @@ plugins {
 
     plugin_data {
       block_on_attach_socket = true
+      check_jdk        = true   # default true
+      check_launch     = true   # default true
+      check_jar_hash   = true   # default true
+      check_provenance = true   # default true; requires check_jar_hash = true
     }
   }
 }

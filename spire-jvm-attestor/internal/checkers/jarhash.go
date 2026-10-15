@@ -67,6 +67,8 @@ func (c *JarHashChecker) Check(ctx *AttestationContext) ([]string, error) {
 		kernelHandle = kernelHandle && result.viaKernelHandle
 
 		allSelectors = append(allSelectors, SelectorJarSha256Prefix+result.hash)
+		ctx.JARHashes[entry.Path] = result.hash
+		ctx.JARPaths = append(ctx.JARPaths, entry.Path)
 		fmt.Fprintf(setDigest, "%s:%s\n", entry.Path, result.hash)
 	}
 

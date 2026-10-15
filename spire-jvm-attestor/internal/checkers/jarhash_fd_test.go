@@ -113,6 +113,7 @@ func TestJarHashChecker_FallsBackToFDTable(t *testing.T) {
 		PID:       1234,
 		ProcRoot:  procRoot,
 		HashCache: cache.NewHashCache(),
+		JARHashes: map[string]string{},
 	})
 	require.NoError(t, err)
 
@@ -137,6 +138,7 @@ func TestJarHashChecker_ReadsThroughKernelHandleNotPathname(t *testing.T) {
 		PID:       1234,
 		ProcRoot:  procRoot,
 		HashCache: cache.NewHashCache(),
+		JARHashes: map[string]string{},
 	})
 	require.NoError(t, err)
 
@@ -157,6 +159,7 @@ func TestJarHashChecker_DecoyJarChangesSetDigest(t *testing.T) {
 			PID:       1234,
 			ProcRoot:  fakeProcWithFDs(t, jars...),
 			HashCache: cache.NewHashCache(),
+			JARHashes: map[string]string{},
 		})
 		require.NoError(t, err)
 		return selectors
@@ -189,6 +192,7 @@ func TestJarHashChecker_MapsDoesNotShadowFDTable(t *testing.T) {
 		PID:       1234,
 		ProcRoot:  procRoot,
 		HashCache: cache.NewHashCache(),
+		JARHashes: map[string]string{},
 	})
 	require.NoError(t, err)
 
@@ -213,6 +217,7 @@ func TestJarHashChecker_SameJarMappedAndOpenCountsOnce(t *testing.T) {
 		PID:       1234,
 		ProcRoot:  procRoot,
 		HashCache: cache.NewHashCache(),
+		JARHashes: map[string]string{},
 	})
 	require.NoError(t, err)
 
@@ -240,6 +245,7 @@ func TestJarHashChecker_SetDigestWireFormat(t *testing.T) {
 		PID:       1234,
 		ProcRoot:  procRoot,
 		HashCache: cache.NewHashCache(),
+		JARHashes: map[string]string{},
 	})
 	require.NoError(t, err)
 
@@ -268,6 +274,7 @@ func TestJarHashChecker_CmdlineFallbackIsNotVerified(t *testing.T) {
 		PID:       1234,
 		ProcRoot:  procRoot,
 		HashCache: cache.NewHashCache(),
+		JARHashes: map[string]string{},
 	})
 	require.NoError(t, err)
 
@@ -288,6 +295,7 @@ func TestJarHashChecker_NotAJVMProcess(t *testing.T) {
 		PID:       1234,
 		ProcRoot:  procRoot,
 		HashCache: cache.NewHashCache(),
+		JARHashes: map[string]string{},
 	})
 	assert.ErrorIs(t, err, ErrNotJVM)
 }

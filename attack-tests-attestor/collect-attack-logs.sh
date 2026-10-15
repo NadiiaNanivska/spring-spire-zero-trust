@@ -19,7 +19,7 @@ POD_SCOPED="$OUT_DIR/agent-attestor-pod.log"
 log "Collecting spire-agent logs (since=$SINCE pod=${POD_FILTER:-all}) -> $GREP"
 
 kubectl logs -n "$K8S_NAMESPACE" daemonset/spire-agent -c spire-agent --since="$SINCE" 2>/dev/null | tee "$RAW" | \
-  grep -E 'jvm attestation|checker failed|debug_clean|agent_flags_clean|jar-hash|FailedPrecondition|attach_socket|inode_consistent|suspicious_|tracer_pid|maps_verified|jar_sha256|not a JVM|No identity issued|PID attested' \
+  grep -E 'JVM attestor configured|enabled_modules|checker failed|FailedPrecondition|attach_socket|suspicious_|not a JVM|No identity issued|PID attested|registered=false|failed to attest|attestation failed' \
   >"$GREP" || true
 
 if [[ -n "$POD_FILTER" ]]; then

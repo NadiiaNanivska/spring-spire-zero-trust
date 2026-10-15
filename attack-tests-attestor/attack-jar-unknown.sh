@@ -21,8 +21,9 @@ test_body() {
   collect_agent_logs "$LABEL" "$OUT" "$SUBTEST_LOG_SINCE" "$pod"
   log_file="$OUT/$LABEL/agent-attestor.log"
 
-  assert_jar_hash_changed_for_pod "$pod" "$log_file" "$pinned_hash"
-  assert_denied_by_attestor "$pod" "$log_file" 'jar_sha256='
+  # The current plugin intentionally logs only configured modules, not runtime selectors.
+  # Verify the externally observable result: the modified artifact cannot obtain an identity.
+  assert_denied_by_attestor "$pod" "$log_file" 'No identity issued|registered=false|failed to attest|attestation failed'
 }
 
 if ! run_test_wrapper "level3-jar-unknown" "PASS" "$OUT_TEST" test_body; then

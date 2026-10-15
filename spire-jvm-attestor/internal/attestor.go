@@ -7,7 +7,6 @@ import (
 	"io"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/hashicorp/go-hclog"
 	workloadattestorv1 "github.com/spiffe/spire-plugin-sdk/proto/spire/plugin/agent/workloadattestor/v1"
@@ -62,10 +61,23 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 }
 
 func (p *JVMAttestor) buildPipeline(cfg *config.Config) {
-	p.pipeline = []checkers.Checker{
-		checkers.NewAntiDebugChecker(),
-		checkers.NewAntiTamperChecker(cfg.BlockOnAttachSocket),
-		checkers.NewJarHashChecker(),
+	checkersToConfigure := []struct {
+		enabled bool
+		create  func() checkers.Checker
+	}{
+		{cfg.CheckJDK, func() checkers.Checker { return checkers.NewJDKChecker() }},
+		{cfg.CheckLaunch, func() checkers.Checker {
+			return checkers.NewLaunchFactsChecker(cfg.BlockOnAttachSocket)
+		}},
+		{cfg.CheckJarHash, func() checkers.Checker { return checkers.NewJarHashChecker() }},
+		{cfg.CheckProvenance, func() checkers.Checker { return checkers.NewProvenanceChecker() }},
+	}
+
+	p.pipeline = make([]checkers.Checker, 0, len(checkersToConfigure))
+	for _, candidate := range checkersToConfigure {
+		if candidate.enabled {
+			p.pipeline = append(p.pipeline, candidate.create())
+		}
 	}
 }
 
@@ -83,7 +95,14 @@ func (p *JVMAttestor) Configure(
 	p.buildPipeline(cfg)
 	p.mu.Unlock()
 
-	p.safeLogger().Info("plugin configured", "block_on_attach_socket", cfg.BlockOnAttachSocket)
+	enabledModules := make([]string, 0, len(p.pipeline))
+	for _, checker := range p.pipeline {
+		enabledModules = append(enabledModules, checker.Name())
+	}
+	p.safeLogger().Info("JVM attestor configured",
+		"enabled_modules", strings.Join(enabledModules, ","),
+		"block_on_attach_socket", cfg.BlockOnAttachSocket,
+	)
 	return &configv1.ConfigureResponse{}, nil
 }
 
@@ -100,69 +119,44 @@ func (p *JVMAttestor) Attest(
 		return nil, status.Error(codes.FailedPrecondition, "plugin not configured; call Configure first")
 	}
 
-	attestStart := time.Now()
 	log := p.safeLogger()
-	log.Debug("jvm attestation started",
-		"pid", req.Pid,
-		"started_at", attestStart.Format(time.RFC3339Nano),
-	)
 
 	attestCtx := &checkers.AttestationContext{
-		Context:   ctx,
-		PID:       req.Pid,
-		ProcRoot:  fmt.Sprintf("%s/%d", p.procFS, req.Pid),
-		HashCache: p.hashCache,
-		Logger:    log,
+		Context:    ctx,
+		PID:        req.Pid,
+		ProcRoot:   fmt.Sprintf("%s/%d", p.procFS, req.Pid),
+		HashCache:  p.hashCache,
+		Logger:     log,
+		PublicKeys: cfg.PublicKeys,
+		JARHashes:  make(map[string]string),
 	}
 
 	var allSelectors []string
-	checkerDurations := make(map[string]time.Duration, len(pipeline))
 
 	for _, checker := range pipeline {
-		checkStart := time.Now()
 		selectors, err := checker.Check(attestCtx)
-		checkerDurations[checker.Name()] = time.Since(checkStart)
 		if err != nil {
 			// No JARs: return empty selectors so other attestors can handle this process.
 			if errors.Is(err, checkers.ErrNotJVM) {
-				log.Debug("not a JVM process, skipping attestation",
-					"pid", req.Pid,
-					"duration_us", time.Since(attestStart).Microseconds(),
-				)
+				log.Debug("process is not a JVM; skipping JVM attestation", "pid", req.Pid)
 				return &workloadattestorv1.AttestResponse{}, nil
 			}
 			log.Warn("checker failed",
 				"checker", checker.Name(),
 				"pid", req.Pid,
-				"duration_us", checkerDurations[checker.Name()].Microseconds(),
 				"error", err,
 			)
 			switch checker.Name() {
-			case "anti-debug":
-				return nil, status.Errorf(codes.Internal, "anti-debug check: %v", err)
-			case "anti-tamper":
-				return nil, status.Errorf(codes.FailedPrecondition, "%s check failed: %v", checker.Name(), err)
+			case "jdk", "launch-facts":
+				return nil, status.Errorf(codes.Internal, "%s check: %v", checker.Name(), err)
 			default:
 				return nil, status.Errorf(codes.PermissionDenied, "%s check failed: %v", checker.Name(), err)
 			}
 		}
 
 		allSelectors = append(allSelectors, selectors...)
-
-		if containsSelector(selectors, checkers.SelectorDebugCleanFalse) ||
-			containsSelector(selectors, checkers.SelectorAgentFlagsCleanFalse) {
-			break
-		}
 	}
 
-	log.Info("jvm attestation timing",
-		"pid", req.Pid,
-		"total_us", time.Since(attestStart).Microseconds(),
-		"anti_debug_us", checkerDurations["anti-debug"].Microseconds(),
-		"anti_tamper_us", checkerDurations["anti-tamper"].Microseconds(),
-		"jar_hash_us", checkerDurations["jar-hash"].Microseconds(),
-		"selectors", len(allSelectors),
-	)
 	return buildResponse(allSelectors), nil
 }
 

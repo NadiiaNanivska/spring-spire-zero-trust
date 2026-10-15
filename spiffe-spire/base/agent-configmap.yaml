@@ -50,16 +50,18 @@ data:
       #                   `make checksum-sync` (which `make dev` runs for you).
       #                   A stale value makes the agent refuse the plugin and exit.
       #
-      # The plugin only COMPUTES the jar SHA-256 and emits it as a
-      # jvm:jar_sha256=<hash> selector. It no longer compares against a reference
-      # (no manifest / Artifactory lookup on the attestation hot path). The
-      # expected hash is enforced by the SPIRE registration entry, which wsldev
-      # populates from spiffe-spire/base/jvm-hashes-configmap.yaml at deploy time.
+      # The plugin computes configured runtime selectors. Expected values are
+      # enforced by the SPIRE registration entry.
       WorkloadAttestor "jvm" {
         plugin_cmd      = "/opt/spire/plugins/jvm-attestor"
-        plugin_checksum = "74e20eac2d65ab183068f7914dafde943db9a92d09e1474630c365a5e60ad1ec"
+        plugin_checksum = "56940d8515b4d538a1aa24008d6a67f8c23f8c4110db6925a4ed6a6a7bf2f55e"
         plugin_data {
           block_on_attach_socket = true
+          check_jdk        = true
+          check_launch     = true
+          check_jar_hash   = true
+          check_provenance = true
+          public_keys = { "SHA256:7f18a4bbebbfedbb5b9e18e6b64c4ed6de93bf8be862bb93a54e98cb889cdc93" = "ZN64/KRxmI8h2SqW8ypSKeWjFX9DtkCh2SQwfmFTLOg=" }
         }
       }
     }

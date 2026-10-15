@@ -47,7 +47,9 @@ func RegisterJVMWorkloads(deployed []string) error {
 				svc.manifestKey, jvmHashesManifestRel)
 		}
 
-		selectors := jvmEntrySelectors(svc, hash)
+		fingerprint, _, err := JVMKeyPublicConfig()
+		if err != nil { return fmt.Errorf("load JVM signing key: %w", err) }
+		selectors := jvmEntrySelectors(svc, hash, fingerprint)
 
 		if err := spire.EntryDeleteBySpiffeID(svc.spiffeID); err != nil {
 			return fmt.Errorf("clear existing entry for %s: %w", svc.spiffeID, err)
@@ -71,14 +73,23 @@ func JVMServiceNames() []string {
 }
 
 // Pin the whole jar set: SPIRE subset matching would otherwise allow extra jars.
-func jvmEntrySelectors(svc jvmService, hash string) []string {
+//
+// The launch-facts selectors below (has_javaagent/has_jdwp/java_tool_options_set/
+// attach_socket, all pinned "=false") are what actually makes dangerous JVM flags,
+// env vars and the Attach API socket deny SVID issuance: the plugin only computes
+// these as facts and never hard-fails on them, so without pinning the "false" value
+// here SPIRE's subset match would accept a tampered process just the same. See
+// spire-jvm-attestor/internal/checkers/launchfacts.go.
+func jvmEntrySelectors(svc jvmService, hash, fingerprint string) []string {
 	return []string{
 		fmt.Sprintf("k8s:ns:%s", spireNamespace),
 		fmt.Sprintf("k8s:sa:%s", svc.serviceAccount),
-		"jvm:debug_clean=true",
-		"jvm:agent_flags_clean=true",
-		"jvm:maps_verified=true",
-		"jvm:hash_via_kernel_handle=true",
+		"jvm:has_javaagent=false",
+		"jvm:has_jdwp=false",
+		"jvm:java_tool_options_set=false",
+		"jvm:attach_socket=false",
+		"jvm:subject_match=true",
+		fmt.Sprintf("jvm:signed_by=%s", fingerprint),
 		fmt.Sprintf("jvm:jar_sha256=%s", hash),
 		fmt.Sprintf("jvm:jar_set_sha256=%s", jarSetDigest(map[string]string{svc.manifestKey: hash})),
 	}

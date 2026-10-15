@@ -508,7 +508,7 @@ attestor_evidence_reason() {
 assert_denied_by_attestor() {
   local pod=$1
   local log_file=$2
-  local log_pattern=${3:-'agent_flags_clean=false|debug_clean=false|suspicious_flag=|suspicious_env=|FailedPrecondition|checker failed|Attach API socket|tracer_pid='}
+  local log_pattern=${3:-'No identity issued|registered=false|failed to attest|attestation failed|FailedPrecondition|checker failed|Attach API socket'}
 
   if ! assert_log_contains_for_pod "$log_pattern" "$log_file" "$pod"; then
     return 1
@@ -540,7 +540,7 @@ assert_denied_by_attestor() {
 assert_denied_by_attestor_log_only() {
   local pod=$1
   local log_file=$2
-  local log_pattern=${3:-'FailedPrecondition|checker failed|Attach API socket|attach_socket_exposed'}
+  local log_pattern=${3:-'No identity issued|registered=false|failed to attest|attestation failed|FailedPrecondition|checker failed|Attach API socket'}
 
   if ! assert_log_contains_for_pod "$log_pattern" "$log_file" "$pod"; then
     return 1
