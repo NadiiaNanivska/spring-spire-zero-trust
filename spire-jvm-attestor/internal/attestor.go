@@ -62,12 +62,20 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 }
 
 func (p *JVMAttestor) buildPipeline(cfg *config.Config) {
-	p.pipeline = []checkers.Checker{
-		checkers.NewJDKChecker(),
-		checkers.NewLaunchFactsChecker(cfg.BlockOnAttachSocket),
-		checkers.NewJarHashChecker(),
-		checkers.NewProvenanceChecker(),
+	pipeline := make([]checkers.Checker, 0, 4)
+	if cfg.CheckJDK {
+		pipeline = append(pipeline, checkers.NewJDKChecker())
 	}
+	if cfg.CheckLaunch {
+		pipeline = append(pipeline, checkers.NewLaunchFactsChecker(cfg.BlockOnAttachSocket))
+	}
+	if cfg.CheckJarHash {
+		pipeline = append(pipeline, checkers.NewJarHashChecker())
+	}
+	if cfg.CheckProvenance {
+		pipeline = append(pipeline, checkers.NewProvenanceChecker())
+	}
+	p.pipeline = pipeline
 }
 
 func (p *JVMAttestor) Configure(
@@ -84,7 +92,13 @@ func (p *JVMAttestor) Configure(
 	p.buildPipeline(cfg)
 	p.mu.Unlock()
 
-	p.safeLogger().Info("plugin configured", "block_on_attach_socket", cfg.BlockOnAttachSocket)
+	p.safeLogger().Info("plugin configured",
+		"block_on_attach_socket", cfg.BlockOnAttachSocket,
+		"check_jdk", cfg.CheckJDK,
+		"check_launch", cfg.CheckLaunch,
+		"check_jar_hash", cfg.CheckJarHash,
+		"check_provenance", cfg.CheckProvenance,
+	)
 	return &configv1.ConfigureResponse{}, nil
 }
 
