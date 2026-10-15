@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 )
 
 const maxSignatureSize = 4096
@@ -21,6 +22,7 @@ func (c *ProvenanceChecker) Name() string { return "provenance" }
 // Check verifies raw Ed25519 signatures over the 32-byte SHA-256 digest emitted by JarHashChecker.
 // Signature files are <jar>.sig, contain raw signature bytes, and are opened with O_NOFOLLOW.
 func (c *ProvenanceChecker) Check(ctx *AttestationContext) ([]string, error) {
+	checkStart := time.Now()
 	if len(ctx.JARHashes) == 0 || len(ctx.PublicKeys) == 0 { return nil, nil }
 	for _, jarPath := range ctx.JARPaths {
 		hashHex, ok := ctx.JARHashes[jarPath]; if !ok { continue }
@@ -41,9 +43,25 @@ func (c *ProvenanceChecker) Check(ctx *AttestationContext) ([]string, error) {
 			actual := sha256.Sum256(pub)
 			if fingerprint != "SHA256:"+hex.EncodeToString(actual[:]) { continue }
 			if ed25519.Verify(ed25519.PublicKey(pub), digest, sig) {
+				if ctx.Logger != nil {
+					ctx.Logger.Debug("provenance stage timing",
+						"pid", ctx.PID,
+						"provenance_check_us", time.Since(checkStart).Microseconds(),
+						"jar_count", len(ctx.JARPaths),
+						"signed_by", fingerprint,
+					)
+				}
 				return []string{SelectorSignedByPrefix+fingerprint, SelectorSubjectMatchPrefix+"true"}, nil
 			}
 		}
+	}
+	if ctx.Logger != nil {
+		ctx.Logger.Debug("provenance stage timing",
+			"pid", ctx.PID,
+			"provenance_check_us", time.Since(checkStart).Microseconds(),
+			"jar_count", len(ctx.JARPaths),
+			"signed_by", "",
+		)
 	}
 	return nil, nil
 }

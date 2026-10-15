@@ -54,13 +54,13 @@ data:
       # enforced by the SPIRE registration entry.
       WorkloadAttestor "jvm" {
         plugin_cmd      = "/opt/spire/plugins/jvm-attestor"
-        plugin_checksum = "9237d05259c76f845632692634d5b6c903cc91f56e64ad37c0991289ca44b9a5"
+        plugin_checksum = "56940d8515b4d538a1aa24008d6a67f8c23f8c4110db6925a4ed6a6a7bf2f55e"
         plugin_data {
           block_on_attach_socket = true
           check_jdk        = true
           check_launch     = true
-          check_jar_hash   = false
-          check_provenance = false
+          check_jar_hash   = true
+          check_provenance = true
           public_keys = { "SHA256:7f18a4bbebbfedbb5b9e18e6b64c4ed6de93bf8be862bb93a54e98cb889cdc93" = "ZN64/KRxmI8h2SqW8ypSKeWjFX9DtkCh2SQwfmFTLOg=" }
         }
       }

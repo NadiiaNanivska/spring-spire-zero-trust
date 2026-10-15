@@ -34,6 +34,10 @@ func TestJvmEntrySelectors_PinsSetDigest(t *testing.T) {
 	selectors := jvmEntrySelectors(svc, hash, "SHA256:trusted-key")
 
 	for _, want := range []string{
+		"jvm:has_javaagent=false",
+		"jvm:has_jdwp=false",
+		"jvm:java_tool_options_set=false",
+		"jvm:attach_socket=false",
 		"jvm:subject_match=true",
 		"jvm:signed_by=SHA256:trusted-key",
 		"jvm:jar_sha256=" + hash,
