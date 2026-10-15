@@ -62,20 +62,24 @@ func newWithProcFS(procFS string, cfg *config.Config) *JVMAttestor {
 }
 
 func (p *JVMAttestor) buildPipeline(cfg *config.Config) {
-	pipeline := make([]checkers.Checker, 0, 4)
-	if cfg.CheckJDK {
-		pipeline = append(pipeline, checkers.NewJDKChecker())
+	checkersToConfigure := []struct {
+		enabled bool
+		create  func() checkers.Checker
+	}{
+		{cfg.CheckJDK, func() checkers.Checker { return checkers.NewJDKChecker() }},
+		{cfg.CheckLaunch, func() checkers.Checker {
+			return checkers.NewLaunchFactsChecker(cfg.BlockOnAttachSocket)
+		}},
+		{cfg.CheckJarHash, func() checkers.Checker { return checkers.NewJarHashChecker() }},
+		{cfg.CheckProvenance, func() checkers.Checker { return checkers.NewProvenanceChecker() }},
 	}
-	if cfg.CheckLaunch {
-		pipeline = append(pipeline, checkers.NewLaunchFactsChecker(cfg.BlockOnAttachSocket))
+
+	p.pipeline = make([]checkers.Checker, 0, len(checkersToConfigure))
+	for _, candidate := range checkersToConfigure {
+		if candidate.enabled {
+			p.pipeline = append(p.pipeline, candidate.create())
+		}
 	}
-	if cfg.CheckJarHash {
-		pipeline = append(pipeline, checkers.NewJarHashChecker())
-	}
-	if cfg.CheckProvenance {
-		pipeline = append(pipeline, checkers.NewProvenanceChecker())
-	}
-	p.pipeline = pipeline
 }
 
 func (p *JVMAttestor) Configure(
@@ -92,12 +96,13 @@ func (p *JVMAttestor) Configure(
 	p.buildPipeline(cfg)
 	p.mu.Unlock()
 
-	p.safeLogger().Info("plugin configured",
+	enabledModules := make([]string, 0, len(p.pipeline))
+	for _, checker := range p.pipeline {
+		enabledModules = append(enabledModules, checker.Name())
+	}
+	p.safeLogger().Info("JVM attestor configured",
+		"enabled_modules", strings.Join(enabledModules, ","),
 		"block_on_attach_socket", cfg.BlockOnAttachSocket,
-		"check_jdk", cfg.CheckJDK,
-		"check_launch", cfg.CheckLaunch,
-		"check_jar_hash", cfg.CheckJarHash,
-		"check_provenance", cfg.CheckProvenance,
 	)
 	return &configv1.ConfigureResponse{}, nil
 }
@@ -115,12 +120,7 @@ func (p *JVMAttestor) Attest(
 		return nil, status.Error(codes.FailedPrecondition, "plugin not configured; call Configure first")
 	}
 
-	attestStart := time.Now()
 	log := p.safeLogger()
-	log.Debug("jvm attestation started",
-		"pid", req.Pid,
-		"started_at", attestStart.Format(time.RFC3339Nano),
-	)
 
 	attestCtx := &checkers.AttestationContext{
 		Context:    ctx,
@@ -133,26 +133,18 @@ func (p *JVMAttestor) Attest(
 	}
 
 	var allSelectors []string
-	checkerDurations := make(map[string]time.Duration, len(pipeline))
 
 	for _, checker := range pipeline {
-		checkStart := time.Now()
-		log.Info("checker started", "checker", checker.Name(), "pid", req.Pid)
 		selectors, err := checker.Check(attestCtx)
-		checkerDurations[checker.Name()] = time.Since(checkStart)
 		if err != nil {
 			// No JARs: return empty selectors so other attestors can handle this process.
 			if errors.Is(err, checkers.ErrNotJVM) {
-				log.Debug("not a JVM process, skipping attestation",
-					"pid", req.Pid,
-					"duration_us", time.Since(attestStart).Microseconds(),
-				)
+				log.Debug("process is not a JVM; skipping JVM attestation", "pid", req.Pid)
 				return &workloadattestorv1.AttestResponse{}, nil
 			}
 			log.Warn("checker failed",
 				"checker", checker.Name(),
 				"pid", req.Pid,
-				"duration_us", checkerDurations[checker.Name()].Microseconds(),
 				"error", err,
 			)
 			switch checker.Name() {
@@ -163,25 +155,9 @@ func (p *JVMAttestor) Attest(
 			}
 		}
 
-		log.Info("checker completed",
-			"checker", checker.Name(),
-			"pid", req.Pid,
-			"duration_us", checkerDurations[checker.Name()].Microseconds(),
-			"selector_count", len(selectors),
-			"selectors", strings.Join(selectors, ","),
-		)
 		allSelectors = append(allSelectors, selectors...)
 	}
 
-	log.Info("jvm attestation timing",
-		"pid", req.Pid,
-		"total_us", time.Since(attestStart).Microseconds(),
-		"jdk_us", checkerDurations["jdk"].Microseconds(),
-		"launch_facts_us", checkerDurations["launch-facts"].Microseconds(),
-		"jar_hash_us", checkerDurations["jar-hash"].Microseconds(),
-		"provenance_us", checkerDurations["provenance"].Microseconds(),
-		"selectors", len(allSelectors),
-	)
 	return buildResponse(allSelectors), nil
 }
 
