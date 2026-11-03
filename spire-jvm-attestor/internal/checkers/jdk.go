@@ -43,7 +43,10 @@ func (c *JDKChecker) Check(ctx *AttestationContext) ([]string, error) {
 		if !strings.HasPrefix(line, "JAVA_VERSION=") { continue }
 		version := strings.Trim(strings.TrimPrefix(line, "JAVA_VERSION="), "\"")
 		if version == "" { return nil, nil }
-		return []string{SelectorJavaVersionPrefix + procfs.SanitizeSelector(version)}, nil
+		// Pin the major runtime line (e.g. 17), not a patch release that changes
+		// with the floating eclipse-temurin:17-alpine image tag.
+		major := strings.SplitN(version, ".", 2)[0]
+		return []string{SelectorJavaVersionPrefix + procfs.SanitizeSelector(major)}, nil
 	}
 	if err := scanner.Err(); err != nil { return nil, fmt.Errorf("read JDK release file: %w", err) }
 	return nil, nil
