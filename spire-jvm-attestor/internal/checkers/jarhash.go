@@ -183,7 +183,7 @@ type hashResult struct {
 
 // hashEntry hashes and stats the same descriptor to avoid path-swap races.
 func (c *JarHashChecker) hashEntry(ctx *AttestationContext, entry procfs.MapsEntry) (hashResult, error) {
-	result := hashResult{inodeMatches: true}
+	result := hashResult{inodeMatches: entry.Inode != 0}
 
 	readPath := entry.KernelPath
 	if readPath != "" {
@@ -211,7 +211,8 @@ func (c *JarHashChecker) hashEntry(ctx *AttestationContext, entry procfs.MapsEnt
 
 	// Inode 0 is unverified; mismatches can indicate OverlayFS copy-up or a file swap.
 	if entry.Inode != 0 {
-		if diskInode, err := cache.GetInode(info); err == nil && diskInode != entry.Inode {
+		diskInode, inodeErr := cache.GetInode(info)
+		if inodeErr != nil || diskInode != entry.Inode {
 			result.inodeMatches = false
 		}
 	}
