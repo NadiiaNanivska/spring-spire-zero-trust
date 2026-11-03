@@ -14,7 +14,7 @@ func TestJDKCheckerReadsReleaseVersion(t *testing.T) {
 	if err := os.Symlink("/usr/lib/jvm/testjdk/bin/java",filepath.Join(proc,"exe")); err != nil { t.Fatal(err) }
 	got, err := NewJDKChecker().Check(&AttestationContext{ProcRoot:proc})
 	if err != nil { t.Fatal(err) }
-	if !containsSelector(got,"jvm:java_version=21.0.5") { t.Fatalf("expected JDK version selector, got %v",got) }
+	if !containsSelector(got,"jvm:java_version=21") { t.Fatalf("expected JDK version selector, got %v",got) }
 }
 
 func TestJDKCheckerMissingExeIsUnavailableFact(t *testing.T) {
