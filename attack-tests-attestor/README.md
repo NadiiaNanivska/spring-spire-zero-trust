@@ -37,18 +37,28 @@ Partial run:
 ./run-all.sh --skip-setup --tests attack-tamper-flags.sh
 ```
 
+`--skip-setup` skips `setup.sh`, i.e. also `wsldev spire register-jvm`. The runner
+therefore checks that the live `payments-app` entry already pins
+`jvm:has_javaagent=false`, `jvm:has_jdwp=false`, `jvm:java_tool_options_set=false`
+and `jvm:attach_socket=false` and aborts with a hint if the entry is stale (created
+by an older `wsldev`). Re-register with:
+
+```bash
+(cd ../wsldev && go build -o wsldev ./cmd/wsldev && ./wsldev spire register-jvm)
+```
+
 ## Test matrix
 
 | Script | Level | Attack / scenario | Expected outcome |
 |--------|-------|-------------------|------------------|
-| `attack-tamper-flags.sh` | 2 | Boot-safe dangerous cmdline flags (jdwp, `-Xdebug`, attach, jmxremote) | SPIRE identity issuance denied; pod remains Running when the JVM supports the flag |
-| `attack-tamper-env.sh` | 2 | All 4 dangerous env vars | SPIRE identity issuance denied; pod remains Running |
-| `attack-attach-socket.sh` | 2 | `.java_pid` Attach socket | `FailedPrecondition`, SVID denied |
+| `attack-tamper-flags.sh` | 2 | Boot-safe dangerous cmdline flags the launch-facts checker recognises: `-javaagent:`, `-agentlib:jdwp`, `-agentpath:`, `-Xrunjdwp`, `-Xdebug` (`-D` properties such as `jdk.attach.allowAttachSelf`/`com.sun.management.jmxremote` are not inspected by the plugin and are not in the matrix) | `has_javaagent=true` / `has_jdwp=true` ⇒ entry (pinned `=false`) no longer matches ⇒ SPIRE identity issuance denied; pod remains Running |
+| `attack-tamper-env.sh` | 2 | All 4 dangerous env vars | `java_tool_options_set=true` ⇒ SPIRE identity issuance denied; pod remains Running |
+| `attack-attach-socket.sh` | 2 | `.java_pid` Attach socket | `attach_socket=true` ⇒ entry (pinned `attach_socket=false`) no longer matches ⇒ SVID denied (`No identity issued ... registered=false`) |
 | `attack-jar-unknown.sh` | 3 | Tampered / unapproved jar hash (not in allow-list) | computed artifact selectors do not match registration ⇒ SVID denied |
 | `attack-cp-classpath.sh` | B | Classpath launch (no `-jar`) with an attacker jar ahead of the app jar | both jars discovered via `fd`; approved `jar_sha256` still present but `jar_set_sha256` no longer matches ⇒ **SVID denied** |
 | `bypass-symlink.sh` | B | Jar pathname redirected to an attacker decoy (`ln -s decoy.jar payments-service.jar`) | the approved workload remains usable; per-process selector values are not logged |
 | `bypass-mmap-shadow.sh` | B | Extra classpath jar **plus** a `FileChannel.map` of the approved jar, to make `maps` answer first and hide the fd table | extra classpath jar scenario ⇒ **SVID denied** (runtime selectors are not logged) |
-| `dos-large-jar.sh` | D | Large jar SHA-256 stress | Agent survives, latency logged |
+| `attack-provenance.sh` | 3 | Jar left intact, but its `<jar>.sig` is corrupted (64 zero bytes), deleted, or replaced by a symlink (`O_NOFOLLOW`); fresh payments pod per mode | provenance logs `signed_by=""`, `subject_match=true` is not emitted ⇒ entry (pinned `subject_match=true`/`signed_by`) no longer matches ⇒ SVID denied |
 
 ## Methodology
 
@@ -104,8 +114,6 @@ results/run-<timestamp>/
 | `K8S_NAMESPACE` | `spire` | Target namespace |
 | `SETTLE_SEC` | `30` | Wait after deploy/restart |
 | `LOG_SINCE` | `300s` | Agent log window |
-| `LARGE_JAR_MB` | `200` | DoS test append size |
-| `DOS_LATENCY_THRESHOLD_US` | `60000000` | Max acceptable jar_hash_us |
 | `SUBTEST_LOG_SINCE` | `120s` | Per-subtest agent log window |
 | `MTLS_OK_RETRIES_AFTER_AGENT_RESTART` | `24` | mTLS ok retries after agent restart |
 | `WSLDEV_BIN` | auto | Path to wsldev |

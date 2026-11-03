@@ -57,11 +57,11 @@ data:
         plugin_checksum = "56940d8515b4d538a1aa24008d6a67f8c23f8c4110db6925a4ed6a6a7bf2f55e"
         plugin_data {
           block_on_attach_socket = true
+          public_keys = { "SHA256:b743dfaf6852437fa1fe77c389cf55d36dd1302f7e7f503a66a22e1d4ca68cbc" = "5G3ug2aU4dsl4OTy6RHR33sQi+uL/KDE8jBvup+c1Ag=" }
           check_jdk        = true
           check_launch     = true
           check_jar_hash   = true
           check_provenance = true
-          public_keys = { "SHA256:7f18a4bbebbfedbb5b9e18e6b64c4ed6de93bf8be862bb93a54e98cb889cdc93" = "ZN64/KRxmI8h2SqW8ypSKeWjFX9DtkCh2SQwfmFTLOg=" }
         }
       }
     }

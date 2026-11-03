@@ -15,7 +15,10 @@ JAR_LAUNCHER_CLASS="${JAR_LAUNCHER_CLASS:-org.springframework.boot.loader.launch
 
 EVIL_JAR="/tmp/extra-evil.jar"
 
-JVM_SELECTOR_RE='JVM attestor configured|enabled_modules='
+# Proof the jvm plugin attested something inside the log window. "JVM attestor configured" /
+# "enabled_modules=" are only logged once at agent start-up, i.e. outside SUBTEST_LOG_SINCE,
+# so match the per-attestation DEBUG lines of the current plugin instead.
+JVM_ACTIVE_RE='jar-hash stage timing|provenance stage timing|PID attested to have selectors|skipping JVM attestation'
 
 test_body() {
   local pod start_cmd cmd_json raw_log host_pids hp denied code
@@ -45,8 +48,8 @@ test_body() {
   raw_log="$OUT/$LABEL/agent-raw.log"
   [[ -s "$raw_log" ]] || { log "ASSERT FAIL: no agent raw log at $raw_log"; return 1; }
 
-  if ! grep -qE "${JVM_SELECTOR_RE}|jvm attestation" "$raw_log"; then
-    log "ASSERT FAIL (inconclusive): no jvm selectors anywhere in the agent log window — the jvm plugin looks inactive. Re-run with setup (custom-jvm overlay)."
+  if ! grep -qE "$JVM_ACTIVE_RE" "$raw_log"; then
+    log "ASSERT FAIL (inconclusive): no jvm plugin activity in the agent log window — the jvm plugin looks inactive (agent log_level must be DEBUG). Re-run with setup (custom-jvm overlay)."
     return 1
   fi
   record_evidence_signal "jvm-plugin-active"

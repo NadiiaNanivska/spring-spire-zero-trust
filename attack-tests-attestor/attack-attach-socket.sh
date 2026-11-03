@@ -27,7 +27,10 @@ test_body() {
   log_file="$OUT/$LABEL/agent-attestor.log"
 
   # Assert re-attestation denial; an existing SVID and pooled connection can still serve mTLS.
-  assert_denied_by_attestor_log_only "$pod" "$log_file" 'Attach API socket|FailedPrecondition|checker failed|anti-tamper|attach_socket_exposed'
+  # The plugin never hard-fails on the attach socket: it emits jvm:attach_socket=true and
+  # the entry (pinned attach_socket=false) stops matching, so denial shows up in SPIRE's
+  # own "No identity issued ... registered=false" line, not in a plugin error.
+  assert_denied_by_attestor_log_only "$pod" "$log_file"
 }
 
 if ! run_test_wrapper "level2-attach-socket" "PASS" "$OUT_TEST" test_body; then
