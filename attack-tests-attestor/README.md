@@ -86,7 +86,7 @@ rather than TTL-bounded. How the artifact is planted depends on where it lives:
 
 1. **Agent logs** — `collect-attack-logs.sh` greps for JVM selectors and errors.
 2. **Functional mTLS** — probe `orders -> payments` via in-cluster curl (`orders_create_from_pod`).
-3. **SPIRE entries** — entries are created by `wsldev` (`wsldev spire register-jvm`, also run automatically by `wsldev app deploy`) and require `jvm:has_javaagent=false`, `jvm:has_jdwp=false`, `jvm:java_tool_options_set=false`, `jvm:attach_socket=false`, `jvm:subject_match=true`, `jvm:signed_by=<fingerprint>`, `jvm:jar_sha256=<hash>` and `jvm:jar_set_sha256=<digest>` (see `jvmEntrySelectors` in `wsldev/internal/apps/jvm_register.go`). The plugin only *computes* these values and never hard-fails on a dangerous flag/env/attach-socket; pinning the launch-facts selectors `=false` in the entry is what actually makes SPIRE deny a tampered process. The set digest is the one that actually pins the workload against extra jars — see `jarSetDigest` in the same file.
+3. **SPIRE entries** — entries are created by `wsldev` (`wsldev spire register-jvm`, also run automatically by `wsldev app deploy`) and require `jvm:java_version=17`, `jvm:has_javaagent=false`, `jvm:has_jdwp=false`, `jvm:java_tool_options_set=false`, `jvm:attach_socket=false`, `jvm:maps_verified=true`, `jvm:hash_via_kernel_handle=true`, `jvm:inode_consistent=true`, `jvm:subject_match=true`, `jvm:signed_by=<fingerprint>`, `jvm:jar_sha256=<hash>` and `jvm:jar_set_sha256=<digest>` (see `jvmEntrySelectors` in `wsldev/internal/apps/jvm_register.go`). The plugin only *computes* these values and never hard-fails on a dangerous flag/env/attach-socket; pinning the launch-facts selectors `=false` in the entry is what actually makes SPIRE deny a tampered process. The set digest is the one that actually pins the workload against extra jars — see `jarSetDigest` in the same file.
 
 ### Result statuses
 
@@ -121,7 +121,7 @@ results/run-<timestamp>/
 ## Checker ↔ attack map
 
 ```
-Level 2 anti-tamper (launch-facts) -> /proc/cmdline flags, /proc/environ, Attach socket
+JDK selector                     -> major version from the JDK release file (not cryptographic JDK verification)\nLevel 2 anti-tamper (launch-facts) -> /proc/cmdline flags, /proc/environ, Attach socket
 Level 3 jar-hash                   -> jar discovery unions /proc/<pid>/maps and /proc/<pid>/fd,
                                        falling back to (unverified) cmdline only when the kernel
                                        reports nothing; SHA-256 selectors are evaluated by SPIRE
