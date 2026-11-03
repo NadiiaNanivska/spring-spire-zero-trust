@@ -1,106 +1,61 @@
 # SPIRE JVM Process Attestor
 
-A custom [SPIRE](https://github.com/spiffe/spire) `WorkloadAttestor` plugin that verifies
-JVM process integrity at the Linux kernel level before issuing an SVID.
+A custom SPIRE `WorkloadAttestor` plugin that adds Java-specific runtime selectors to workload attestation on Linux. It is intended to let SPIRE registration entries distinguish JVM workloads by selected launch facts and by the JAR artifacts observed for the process.
 
-Addresses [spiffe/spire#2426](https://github.com/spiffe/spire/issues/2426): the standard
-`unix` attestor identifies all JVM processes by the same binary path (`/usr/bin/java`),
-making it impossible to distinguish between workloads by code identity.
+The plugin observes process state through `/proc/<PID>`. This relies on the integrity of the host kernel and SPIRE agent; it is not a defense against a compromised node or kernel.
 
-## How it works
+## Checks
 
-The plugin reads `/proc/<PID>/*` — kernel-authoritative data that cannot be spoofed
-from user-space — and returns SPIRE selectors that reflect the actual runtime state
-of the process.
+Each checker can be enabled independently through `check_jdk`, `check_launch`, `check_jar_hash`, and `check_provenance`. All are enabled by default when omitted. Provenance verification requires JAR hashing.
 
-Each checker is independently configurable through `check_jdk`, `check_launch`,
-`check_jar_hash`, and `check_provenance`. All checks default to enabled when omitted.
-Provenance requires JAR hashing to be enabled.
-
-| Check | Source | Cost |
+| Checker | Observed information | Important limitation |
 |---|---|---|
-| 1. Anti-Debug | `/proc/<PID>/status → TracerPid` | ~10 µs |
-| 2. Anti-Tamper | `/proc/<PID>/cmdline`, `environ`, Attach socket | ~110 µs |
-| 3. Jar Integrity | `/proc/<PID>/maps` ∪ `/proc/<PID>/fd`, SHA-256 read through the `/proc` handle | ~200 ms (first), ~15 µs (cached) |
+| JDK | Major Java version read from the executable's JDK `release` file | Reports a version; does not cryptographically verify JDK binaries |
+| Launch facts | Java agent/JDWP flags in `cmdline`, JVM option environment variables, Attach socket | Does not detect every possible runtime instrumentation or JMX configuration |
+| JAR hashing | SHA-256 of discovered JARs, a digest of the sorted JAR set, discovery source, kernel-handle and inode consistency facts | Uses a path-based fallback when a kernel handle is unavailable; the resulting selectors expose this weaker state |
+| Provenance | Ed25519 signature over the JAR SHA-256 digest, verified against configured public keys | A valid signature proves that the trusted key signed the digest; it does not independently prove source-code or CI build provenance |
 
-### Jar discovery
+## JAR discovery and integrity selectors
 
-The two kernel-attested sources are **unioned**, not tried in turn. A Spring Boot
-fat-jar is read with `pread()` rather than mapped, so it appears only in the fd
-table — but taking the first non-empty source would let a process hide that table
-by mapping one approved jar into its own address space, concealing any extra jar it
-holds open. `cmdline` is consulted only when the kernel reports nothing, and a jar
-found that way is flagged `maps_verified=false` because the process can rewrite its
-own argv ([T1036.011](https://attack.mitre.org/techniques/T1036/011/)).
+JAR discovery unions entries from `/proc/<PID>/maps` and `/proc/<PID>/fd`. This prevents the implementation from ignoring open descriptors merely because at least one mapped JAR was found. If neither kernel-observed source finds a JAR, the checker can fall back to `cmdline`; that result is explicitly marked `maps_verified=false`.
 
-Jars are read through `/proc/<PID>/fd/<N>` (or `map_files/<range>`), which the
-kernel binds to the inode, so a symlink swap or an unlink-and-replace on the
-pathname cannot redirect the hash.
+For each discovered JAR the checker emits `jar_sha256`. It also emits `jar_set_sha256`, computed from sorted `<path>:<sha256>\n` records. The additional facts `maps_verified`, `hash_via_kernel_handle`, and `inode_consistent` describe how the files were discovered and read. These are observations, not independent proof that the whole JVM runtime is uncompromised.
 
 ## Selectors
 
 ```
-jvm:java_version=<version>
+jvm:java_version=<major-version>
 jvm:has_javaagent=true|false
 jvm:has_jdwp=true|false
 jvm:java_tool_options_set=true|false
-jvm:debug_clean=true|false
-jvm:agent_flags_clean=true|false
-jvm:attach_socket_exposed=true|false
+jvm:attach_socket=true|false
 jvm:maps_verified=true|false
 jvm:hash_via_kernel_handle=true|false
 jvm:inode_consistent=true|false
 jvm:jar_source=maps|fd|maps+fd|cmdline
-jvm:jar_sha256=<hex>              # one per discovered jar
+jvm:jar_sha256=<hex>              # one per discovered JAR
 jvm:jar_set_sha256=<hex>          # digest over the whole sorted set
+jvm:signed_by=<public-key-fingerprint>
+jvm:subject_match=true
 ```
 
-The plugin **computes** these values; it never compares them against a reference.
-The expected hash is pinned in the SPIRE registration entry, so attestation never
-blocks on an external API call. `jar_set_sha256` is what actually pins a workload:
-SPIRE matches an entry when its selectors are a *subset* of the workload's, so an
-entry pinned only on `jar_sha256` would still match a process that additionally
-loaded an attacker's jar.
+The plugin computes selectors; it does not compare them with an allow-list. SPIRE registration entries perform that comparison. Because SPIRE selector matching is subset-based, the entry must pin every security-relevant fact that is required for the workload. In particular, an entry that does not require `maps_verified=true`, `hash_via_kernel_handle=true`, and `inode_consistent=true` may accept a workload whose JAR discovery or hashing used a weaker path.
 
-## Build
+The `wsldev` registration currently pins:
+- `jvm:java_version=17` (the Java major version);
+- `jvm:has_javaagent=false`, `jvm:has_jdwp=false`, `jvm:java_tool_options_set=false`, and `jvm:attach_socket=false`;
+- `jvm:maps_verified=true`, `jvm:hash_via_kernel_handle=true`, and `jvm:inode_consistent=true`;
+- the expected `jvm:jar_sha256`, `jvm:jar_set_sha256`, `jvm:signed_by`, and `jvm:subject_match=true`.
 
-```bash
-make build
-```
+These selectors intentionally make an absent fact or a weaker observation fail to match the registered workload.
 
-This produces two files in `bin/`:
+## Attach socket behavior
 
-| File | Purpose |
-|---|---|
-| `bin/jvm-attestor` | Plugin binary (permissions: `0755`) |
-| `bin/jvm-attestor.sha256` | SHA256 checksum for `plugin_checksum` |
-
-## Deploy
-
-Copy the binary to the SPIRE agent host and set the `plugin_checksum` field in
-`agent.conf` to the value produced by `make build`:
-
-```bash
-# Print the checksum value to use in agent.conf
-cat bin/jvm-attestor.sha256
-# Example output: a3f2b1c4d5e6f7a8...  bin/jvm-attestor
-
-# Deploy the binary
-install -m 0755 bin/jvm-attestor /opt/spire/plugins/jvm-attestor
-```
-
-```hcl
-# agent.conf — use the hex digest from bin/jvm-attestor.sha256
-plugin_checksum = "sha256:<hex digest>"
-```
-
-The binary must be owned by root and have permissions `0755` (or `0700`) so the
-SPIRE agent can execute it but untrusted users cannot replace it.
+When `block_on_attach_socket=true`, detection of an Attach socket makes the launch-facts checker return no selectors. SPIRE then cannot match the registration entry that requires the clean launch selectors. The decision is enforced by registration matching, not by a separate cryptographic property of the socket.
 
 ## Configuration
 
 ```hcl
-# /etc/spire/agent/agent.conf
 plugins {
   WorkloadAttestor "jvm" {
     plugin_cmd      = "/opt/spire/plugins/jvm-attestor"
@@ -108,45 +63,20 @@ plugins {
 
     plugin_data {
       block_on_attach_socket = true
-      check_jdk        = true   # default true
-      check_launch     = true   # default true
-      check_jar_hash   = true   # default true
-      check_provenance = true   # default true; requires check_jar_hash = true
+      check_jdk        = true
+      check_launch     = true
+      check_jar_hash   = true
+      check_provenance = true
     }
   }
 }
 ```
 
-## CI/CD manifest generation
+## Build and test
 
 ```bash
-./scripts/generate-manifest.sh /app/payments-service.jar jvm-hashes.json
-```
-
-## SPIRE registration entry example
-
-This is the selector set `wsldev` pins (see `jvmEntrySelectors` in
-`wsldev/internal/apps/jvm_register.go`):
-
-```hcl
-spiffe://prod.example.org/service/payments {
-  selectors = [
-    "jvm:debug_clean=true",
-    "jvm:agent_flags_clean=true",
-    "jvm:maps_verified=true",
-    "jvm:hash_via_kernel_handle=true",
-    "jvm:jar_sha256=a3f2b1c4d5e6f7a8...",
-    "jvm:jar_set_sha256=9e4c7b2d1f0a3e5c...",
-  ]
-}
-```
-
-`jar_set_sha256` is SHA-256 over one `<path>:<sha256>\n` line per discovered jar,
-ordered by path. `wsldev` reproduces that format offline in `jarSetDigest`; the two
-live in separate Go modules, so mirrored tests pin the wire format.
-
-## Run tests
-
-```bash
+make build
 go test ./...
 ```
+
+Build the plugin binary and configure its checksum in the SPIRE Agent configuration before deployment. The public Ed25519 key used for JAR signature verification must be supplied to the agent configuration; the corresponding private key must remain outside the repository and be protected as a signing secret.
