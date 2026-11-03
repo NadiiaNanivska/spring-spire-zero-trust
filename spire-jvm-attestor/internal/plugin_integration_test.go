@@ -123,15 +123,16 @@ func TestIntegration_Attest_CleanJVM(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	assert.Contains(t, resp.SelectorValues, "debug_clean=true")
-	assert.Contains(t, resp.SelectorValues, "agent_flags_clean=true")
-	assert.Contains(t, resp.SelectorValues, "attach_socket_exposed=false")
+	assert.Contains(t, resp.SelectorValues, "has_javaagent=false")
+	assert.Contains(t, resp.SelectorValues, "has_jdwp=false")
+	assert.Contains(t, resp.SelectorValues, "java_tool_options_set=false")
+	assert.Contains(t, resp.SelectorValues, "attach_socket=false")
 	assert.Contains(t, resp.SelectorValues, "jar_sha256="+expectedHash)
 	assert.Contains(t, resp.SelectorValues, "maps_verified=true")
 }
 
 func TestIntegration_Attest_DebuggerAttached(t *testing.T) {
-	procRoot, _ := setupFakeProcFS(t)
+	procRoot, expectedHash := setupFakeProcFS(t)
 
 	statusPath := filepath.Join(procRoot, fmt.Sprintf("%d", integrationTestPID), "status")
 	require.NoError(t, os.WriteFile(statusPath, []byte("Name: java\nState: S (sleeping)\nTgid: 4321\nPid: 4321\nTracerPid: 9999\n"), 0644))
@@ -150,10 +151,14 @@ func TestIntegration_Attest_DebuggerAttached(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	assert.Contains(t, resp.SelectorValues, "debug_clean=false")
-	assert.Contains(t, resp.SelectorValues, "tracer_pid=9999")
-	assert.NotContains(t, resp.SelectorValues, "jar_sha256=")
-	assert.NotContains(t, resp.SelectorValues, "maps_verified=true")
+	assert.Contains(t, resp.SelectorValues, "has_javaagent=false")
+	assert.Contains(t, resp.SelectorValues, "has_jdwp=false")
+	assert.Contains(t, resp.SelectorValues, "java_tool_options_set=false")
+	assert.Contains(t, resp.SelectorValues, "attach_socket=false")
+	assert.Contains(t, resp.SelectorValues, "jar_sha256="+expectedHash)
+	assert.Contains(t, resp.SelectorValues, "maps_verified=true")
+	assert.NotContains(t, resp.SelectorValues, "debug_clean=false")
+	assert.NotContains(t, resp.SelectorValues, "tracer_pid=9999")
 }
 
 func TestIntegration_Close(t *testing.T) {

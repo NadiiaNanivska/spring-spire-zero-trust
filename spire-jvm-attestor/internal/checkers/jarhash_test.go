@@ -49,6 +49,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 			PID:       1234,
 			ProcRoot:  procRoot,
 			HashCache: hashCache,
+			JARHashes: map[string]string{},
 		}
 
 		createFakeMapsFile(t, procRoot, ino1, jar1NsPath, ino2, jar2NsPath)
@@ -68,6 +69,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 			PID:       1234,
 			ProcRoot:  procRoot,
 			HashCache: cache.NewHashCache(),
+			JARHashes: map[string]string{},
 		}
 
 		createFakeMapsFile(t, procRoot, 0, jar1NsPath, 0, "")
@@ -84,6 +86,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 			PID:       1234,
 			ProcRoot:  procRoot,
 			HashCache: hashCache,
+			JARHashes: map[string]string{},
 		}
 
 		createFakeMapsFile(t, procRoot, 99999, jar1NsPath, 0, "")
@@ -100,6 +103,7 @@ func TestJarHashChecker_Check(t *testing.T) {
 			PID:       1234,
 			ProcRoot:  procRoot,
 			HashCache: cache.NewHashCache(),
+			JARHashes: map[string]string{},
 		}
 
 		modifiedContent := []byte("MALICIOUS_BYTECODE_INJECTED")

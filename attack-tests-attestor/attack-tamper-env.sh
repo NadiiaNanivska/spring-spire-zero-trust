@@ -80,7 +80,7 @@ EOF
   collect_agent_logs "${LABEL}-${env_name}" "$OUT" "$SUBTEST_LOG_SINCE" "$pod"
   log_file="$OUT/${LABEL}-${env_name}/agent-attestor.log"
 
-  assert_denied_by_attestor "$pod" "$log_file" 'agent_flags_clean=false|suspicious_env='
+  assert_denied_by_attestor "$pod" "$log_file" 'No identity issued|registered=false|failed to attest|attestation failed'
 }
 
 test_body() {

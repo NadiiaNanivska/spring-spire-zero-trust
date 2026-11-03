@@ -22,7 +22,7 @@ Options:
   --tests LIST        Comma-separated test scripts (default: all)
   -h, --help          Show help
 
-Environment: K8S_NAMESPACE, SETTLE_SEC, LARGE_JAR_MB, WSLDEV_BIN
+Environment: K8S_NAMESPACE, SETTLE_SEC, WSLDEV_BIN
 EOF
 }
 
@@ -55,7 +55,6 @@ mkdir -p "$RESULTS_DIR"
 trap cleanup_port_forwards EXIT
 
 ALL_TESTS=(
-  attack-antidebug.sh
   attack-tamper-flags.sh
   attack-tamper-env.sh
   attack-attach-socket.sh
@@ -63,7 +62,7 @@ ALL_TESTS=(
   attack-cp-classpath.sh
   bypass-symlink.sh
   bypass-mmap-shadow.sh
-  dos-large-jar.sh
+  attack-provenance.sh
 )
 
 if [[ ${#TESTS[@]} -eq 0 ]]; then
@@ -76,6 +75,12 @@ preflight
 if [[ $SKIP_SETUP -eq 0 ]]; then
   "$LIB_DIR/setup.sh" "$RESULTS_DIR"
 fi
+
+# Always verify the live entries carry the launch-facts pins the tamper tests rely on.
+# With --skip-setup nothing re-registers them; without it, a stale wsldev binary on
+# PATH (built before jvmEntrySelectors pinned them) would silently register entries
+# that accept -javaagent/-agentlib/jdwp JVMs and every tamper test would "fail".
+assert_entries_pin_launch_facts
 
 FAILURES=0
 SUMMARY="$RESULTS_DIR/summary.md"

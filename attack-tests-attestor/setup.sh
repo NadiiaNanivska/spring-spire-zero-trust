@@ -21,8 +21,8 @@ log "Recording baseline: clean workloads should obtain SVID and complete mTLS"
 collect_agent_logs "baseline" "$OUT" || true
 
 BASELINE_LOG="$OUT/baseline/agent-attestor.log"
-if assert_log_contains 'debug_clean=true|jvm attestation timing' "$BASELINE_LOG" 2>/dev/null; then
-  log "Baseline log: JVM attestation observed"
+if assert_log_contains 'JVM attestor configured|enabled_modules=' "$BASELINE_LOG" 2>/dev/null; then
+  log "Baseline log: JVM attestor configuration observed"
 else
   log "WARN: baseline JVM attestation lines not found yet (may appear after first Workload API call)"
 fi

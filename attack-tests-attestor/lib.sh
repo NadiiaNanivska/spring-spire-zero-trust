@@ -15,8 +15,6 @@ export ORDERS_INCLUSTER_URL="${ORDERS_INCLUSTER_URL:-http://orders-service.spire
 export SETTLE_SEC="${SETTLE_SEC:-30}"
 export LOG_SINCE="${LOG_SINCE:-300s}"
 export SUBTEST_LOG_SINCE="${SUBTEST_LOG_SINCE:-120s}"
-export LARGE_JAR_MB="${LARGE_JAR_MB:-200}"
-export DOS_LATENCY_THRESHOLD_US="${DOS_LATENCY_THRESHOLD_US:-60000000}"
 export MTLS_OK_RETRIES_AFTER_AGENT_RESTART="${MTLS_OK_RETRIES_AFTER_AGENT_RESTART:-24}"
 export MTLS_OK_DELAY_AFTER_AGENT_RESTART="${MTLS_OK_DELAY_AFTER_AGENT_RESTART:-5}"
 
@@ -364,17 +362,42 @@ create_jvm_entry() {
   spire_entry_delete_for_spiffe "$spiffe_id"
 
   log "Creating SPIRE entry $spiffe_id (parent=$parent_id, jar_sha256=${jar_hash:0:16}...)"
+  # Mirror jvmEntrySelectors() in wsldev/internal/apps/jvm_register.go: the plugin
+  # only emits launch facts (has_javaagent/has_jdwp/java_tool_options_set/attach_socket),
+  # so the entry must pin them "=false" for SPIRE's subset match to deny a tampered JVM.
   kubectl exec -n "$K8S_NAMESPACE" spire-server-0 -c spire-server -- \
     /opt/spire/bin/spire-server entry create \
     -spiffeID "$spiffe_id" \
     -parentID "$parent_id" \
     -selector "k8s:ns:${K8S_NAMESPACE}" \
     -selector "k8s:sa:${sa}" \
-    -selector "jvm:debug_clean=true" \
-    -selector "jvm:agent_flags_clean=true" \
+    -selector "jvm:has_javaagent=false" \
+    -selector "jvm:has_jdwp=false" \
+    -selector "jvm:java_tool_options_set=false" \
+    -selector "jvm:attach_socket=false" \
     -selector "jvm:maps_verified=true" \
     -selector "jvm:jar_sha256=${jar_hash}" \
     >/dev/null
+}
+
+# Guard against stale registrations: with --skip-setup nothing re-runs
+# `wsldev spire register-jvm`, so an entry created before the launch-facts pins
+# were added would silently accept -javaagent/-agentlib/jdwp JVMs.
+assert_entries_pin_launch_facts() {
+  local spiffe_id="spiffe://${TRUST_DOMAIN}/ns/${K8S_NAMESPACE}/sa/payments-app"
+  local selectors
+  selectors=$(kubectl exec -n "$K8S_NAMESPACE" spire-server-0 -c spire-server -- \
+    /opt/spire/bin/spire-server entry show -spiffeID "$spiffe_id" -output json 2>/dev/null | \
+    jq -r '.entries[]?.selectors[]? | "\(.type):\(.value)"' 2>/dev/null || true)
+  [[ -n "$selectors" ]] || die "no SPIRE entry for $spiffe_id; run without --skip-setup (or: wsldev spire register-jvm)"
+  local required missing=()
+  for required in jvm:has_javaagent=false jvm:has_jdwp=false jvm:java_tool_options_set=false jvm:attach_socket=false; do
+    grep -qxF "$required" <<<"$selectors" || missing+=("$required")
+  done
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    die "SPIRE entry $spiffe_id is stale: missing selectors ${missing[*]}. The wsldev binary that registered it predates the launch-facts pins. Rebuild it where run-all.sh finds it ($(command -v wsldev 2>/dev/null || echo "$REPO_ROOT/wsldev/wsldev")) and re-register: (cd $REPO_ROOT/wsldev && go build -o \"$(command -v wsldev 2>/dev/null || echo "$REPO_ROOT/wsldev/wsldev")\" ./cmd/wsldev) && wsldev spire register-jvm"
+  fi
+  log "SPIRE entry $spiffe_id pins launch-facts selectors (=false)"
 }
 
 ensure_spire_entries() {
@@ -508,7 +531,7 @@ attestor_evidence_reason() {
 assert_denied_by_attestor() {
   local pod=$1
   local log_file=$2
-  local log_pattern=${3:-'agent_flags_clean=false|debug_clean=false|suspicious_flag=|suspicious_env=|FailedPrecondition|checker failed|Attach API socket|tracer_pid='}
+  local log_pattern=${3:-'No identity issued|registered=false|failed to attest|attestation failed|FailedPrecondition|checker failed|Attach API socket'}
 
   if ! assert_log_contains_for_pod "$log_pattern" "$log_file" "$pod"; then
     return 1
@@ -540,7 +563,7 @@ assert_denied_by_attestor() {
 assert_denied_by_attestor_log_only() {
   local pod=$1
   local log_file=$2
-  local log_pattern=${3:-'FailedPrecondition|checker failed|Attach API socket|attach_socket_exposed'}
+  local log_pattern=${3:-'No identity issued|registered=false|failed to attest|attestation failed|FailedPrecondition|checker failed|Attach API socket'}
 
   if ! assert_log_contains_for_pod "$log_pattern" "$log_file" "$pod"; then
     return 1
@@ -608,8 +631,9 @@ tamper_payments_jar_and_reattest() {
 
 assert_bypass_limitation() {
   local log_file=$1
-  if assert_log_contains 'not a JVM process|selectors=0' "$log_file" 2>/dev/null; then
-  log "LIMITATION confirmed: JVM attestor skipped (ErrNotJVM or empty selectors)"
+  # Current plugin message: "process is not a JVM; skipping JVM attestation" (attestor.go)
+  if assert_log_contains 'not a JVM; skipping|selectors=0' "$log_file" 2>/dev/null; then
+    log "LIMITATION confirmed: JVM attestor skipped (ErrNotJVM or empty selectors)"
     return 0
   fi
   if assert_log_not_contains 'maps_verified=true' "$log_file"; then
@@ -841,28 +865,6 @@ EOF
             path: /run/spire/sockets
             type: DirectoryOrCreate
 FOOTER
-}
-
-attach_tracer_strace() {
-  local pod=$1
-  local pid=$2
-  local node
-  node=$(workload_node "$pod")
-  log "Attaching strace to PID $pid on node $node (privileged debug pod)"
-
-  kubectl debug "node/$node" -n "$K8S_NAMESPACE" --image=nicolaka/netshoot:latest \
-    --target="$PAYMENTS_DEPLOY" --profile=sysadmin -- \
-    sh -c "strace -f -p $pid -e trace=none 2>/dev/null & echo \$! > /tmp/tracer.pid; sleep 3600" \
-    >/dev/null 2>&1 &
-  sleep 3
-}
-
-stop_tracer_on_node() {
-  local node=$1
-  kubectl get pods -n "$K8S_NAMESPACE" --field-selector "spec.nodeName=$node" -o name 2>/dev/null | \
-    grep -E 'node-debugger' | while read -r p; do
-      kubectl delete -n "$K8S_NAMESPACE" "$p" --ignore-not-found=true --wait=false >/dev/null 2>&1 || true
-    done
 }
 
 create_attach_socket() {

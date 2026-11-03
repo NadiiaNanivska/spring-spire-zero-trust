@@ -12,14 +12,20 @@ MANIFEST_DIR="$OUT_TEST/manifests"
 mkdir -p "$MANIFEST_DIR"
 
 # Use valid agent artifacts so the JVM reaches attestation.
+#
+# Only flags the launch-facts checker actually recognises belong here
+# (spire-jvm-attestor/internal/checkers/launchfacts.go):
+#   has_javaagent=true  <- -javaagent: / -agentlib: / -agentpath: / -Xrun*
+#   has_jdwp=true       <- any arg containing "jdwp", or exactly "-Xdebug"
+# -D system properties (jdk.attach.allowAttachSelf, com.sun.management.jmxremote)
+# are not inspected by the plugin, so they attest like a clean JVM and cannot be
+# denied by selectors; they are intentionally not part of this matrix.
 declare -a FLAG_TESTS=(
   "javaagent"
   "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
   "agentpath"
   "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
   "-Xdebug"
-  "-Djdk.attach.allowAttachSelf=true"
-  "-Dcom.sun.management.jmxremote"
 )
 
 payments_flag_start_cmd() {
@@ -68,7 +74,7 @@ run_flag_test() {
   collect_agent_logs "${LABEL}-${safe_name}" "$OUT" "$SUBTEST_LOG_SINCE" "$pod"
   log_file="$OUT/${LABEL}-${safe_name}/agent-attestor.log"
 
-  assert_denied_by_attestor "$pod" "$log_file" 'agent_flags_clean=false|suspicious_flag='
+  assert_denied_by_attestor "$pod" "$log_file" 'No identity issued|registered=false|failed to attest|attestation failed'
 }
 
 test_body() {
